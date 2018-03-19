@@ -15,9 +15,9 @@ import aima.search.informed.SimulatedAnnealingSearch;
 public class DesastresDemo {
     
     public static void main(String[] args){
-        DesastresBoard TSPB=new DesastresBoard(30);
-        TSPHillClimbingSearch(TSPB);
-        TSPSimulatedAnnealingSearch(TSPB);
+        DesastresBoard DB =new DesastresBoard(30);
+        TSPHillClimbingSearch(DB);
+        TSPSimulatedAnnealingSearch(DB);
     }
     
     private static void TSPHillClimbingSearch(DesastresBoard TSPB) {
