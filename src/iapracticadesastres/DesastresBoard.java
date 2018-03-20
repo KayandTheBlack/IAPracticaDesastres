@@ -4,6 +4,8 @@
 package iapracticadesastres;
 
 import java.util.Random;
+import IA.Desastres.Grupos;
+import IA.Desastres.Centros;
 
 public class DesastresBoard {
 
@@ -11,20 +13,28 @@ public class DesastresBoard {
   public static String INTERCAMBIO = "Intercambio";
     
   /// Nuemro de ciudades
-  private int ncities;
+  //private int ncities;
   /// Orden entre las ciudades
-  private int [] path; 
+  //private int [] path; 
   /// Distancias entre las ciudades
-  private int [][] dist; 
+  //private int [][] dist; 
+  
+  private static Grupos gs;
+  private static Centros cs;
 
-  /*!\brief Genera una instancia del problema del TSP
+  /*!\brief Genera una instancia del problema Desastres
    *
-   * Crea una nueva instancia del problema del viajante de comercion con nc ciudades
+   * Crea una nueva instancia del problema Desastres con los parametros especificados
    * 
    * @param [in] nc Numero de ciudades
    */
-  public DesastresBoard(int nc) {
-    Random myRandom=new Random();
+  public DesastresBoard(int nGrupos, int nCentros, int nHelis, int Seed) {
+      gs = new Grupos(nGrupos, Seed);
+      cs = new Centros(nCentros, nHelis, Seed);
+    //Eo initialisation!
+    //Maybe add a distance static to ease calculus!
+    
+    /*Random myRandom=new Random();
     int d;
     
     path=new int[nc];
@@ -41,7 +51,7 @@ public class DesastresBoard {
           dist[i][j]=d;
           dist[j][i]=d;
         }
- 
+ */
   }
   
     public DesastresBoard(int nc, int seed) {
