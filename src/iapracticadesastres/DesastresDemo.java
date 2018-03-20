@@ -4,6 +4,7 @@ package iapracticadesastres;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
@@ -15,7 +16,8 @@ import aima.search.informed.SimulatedAnnealingSearch;
 public class DesastresDemo {
     
     public static void main(String[] args){
-        DesastresBoard DB =new DesastresBoard(30);
+        Random myRandom=new Random();
+        DesastresBoard DB =new DesastresBoard(30,30,30,myRandom.nextInt(400)); //modify for thingy
         TSPHillClimbingSearch(DB);
         TSPSimulatedAnnealingSearch(DB);
     }

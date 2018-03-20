@@ -5,16 +5,17 @@ Solution: Assignation of Flights to Helicopters, where a flight is a set of grou
 	means: Helicopter I, in its J-essim flight, rescues G_id as the kth group in that same flight
 	%%Might need to add a groupAss[G_id] = (Hi,Ji,Ki) reverse vector. REVISIT
 	%%When implementing, might need to change travels[i] to a vector of lists for efficiency (exchanging flights easily). Most likely not.
+        %% Will need auxiliar structure HeliOrder [NFlights] = H_id, meaning: the Nth flight is performed by helicopter H_id
 
 Eo: Our first solution will one of the worst: the first helicopter will rescue each group in a single flight.
 	This means, travels[0] has n vectors of length 1, where n is the number of groups.
 
 Operators:
 	Group wise: 
-		mov&del (g, %f1, f2): moves g from f1 to the last position of f2. It also deletes f1 if it is emptied.
+		mov&del (g, %f1, f2): moves g from f1 to the last position of f2. It also deletes f1 if it is emptied. //f1 and f2 must be different!
 		(*) swap (g1, %f1, g2, %f2): swaps g1 and g2, switching their positions from f1 and f2.
 			* remove this operand when doing experiments, should not be that helpful probably
-		Permute (f1, n): permutes the elements of a flight
+		Permute (f1, n): permutes the elements of a flight (*) this is not used when swap is!
 	Flight wise:
 		switchPilot (f, %h1, h2): delegates the flight f from H1 to H2.
 		(*) swapOrder (f1, %f2): swaps the order of flights from ... f1, f2... to ... f2, f1...
