@@ -6,6 +6,7 @@ package iapracticadesastres;
 import java.util.Random;
 import IA.Desastres.Grupos;
 import IA.Desastres.Centros;
+import java.util.ArrayList;
 
 public class DesastresBoard {
 
@@ -21,7 +22,11 @@ public class DesastresBoard {
   
   private static Grupos gs;
   private static Centros cs;
-
+  private static float groupdistances [][]; //from groups to groups (time)
+  private static float centreGroupdistances [][]; //from centres to groups (time)
+  
+  private ArrayList<ArrayList<ArrayList<Integer> > > travels; //recheck class? maybe not arraylist!
+  
   /*!\brief Genera una instancia del problema Desastres
    *
    * Crea una nueva instancia del problema Desastres con los parametros especificados
@@ -29,9 +34,10 @@ public class DesastresBoard {
    * @param [in] nc Numero de ciudades
    */
   public DesastresBoard(int nGrupos, int nCentros, int nHelis, int Seed) {
-      gs = new Grupos(nGrupos, Seed);
-      cs = new Centros(nCentros, nHelis, Seed);
+    gs = new Grupos(nGrupos, Seed);
+    cs = new Centros(nCentros, nHelis, Seed);
     //Eo initialisation!
+    travels = new ArrayList<ArrayList<ArrayList<Integer> > >(nHelis*nCentros);
     //Maybe add a distance static to ease calculus!
     
     /*Random myRandom=new Random();
@@ -55,7 +61,7 @@ public class DesastresBoard {
   }
   
     public DesastresBoard(int nc, int seed) {
-    Random myRandom=new Random();
+    /*Random myRandom=new Random();
     int d;
     
     myRandom.setSeed(seed);
@@ -73,7 +79,7 @@ public class DesastresBoard {
           dist[i][j]=d;
           dist[j][i]=d;
         }
- 
+ */
   }
 
   /*!\brief Genera una instancia del TSP con un camino inicial y una matriz de distancias
@@ -87,7 +93,7 @@ public class DesastresBoard {
    *
    */
   public DesastresBoard(int nc, int [] p, int [][] d) {
-
+/*
     path=new int[nc];
     dist= new int[nc][nc];
     
@@ -98,30 +104,31 @@ public class DesastresBoard {
 
     for (int i = 0; i < nc; i++)
       for (int j = 0; j < nc; j++)
-        dist[i][j]=d[i][j];
+        dist[i][j]=d[i][j];*/
   }
 
   /*!\brief Retorna el numero de ciudades de la instancia
    *
    */
-  public int getNCities(){return(ncities);}
+  //public int getNCities(){return(ncities);}
   
   /*!\brief Retorna el camino entre las ciudades
    *
    */
-  public int [] getPath(){return(path);}
+  //public int [] getPath(){return(path);}
   
   /*!\brief Retorna la matriz de distancias
    *
    */
-  public int [][] getDists(){return(dist);}
+  //public int [][] getDists(){return(dist);}
    
   /*!\brief Retorna la distancia entre la ciudad i y la siguiente ciudad en el camino
    *
    */
   public int distCities(int i){
-    if (i<ncities-1) return(dist[path[i]][path[i+1]]);
-    else return(dist[path[i]][path[0]]);
+    //if (i<ncities-1) return(dist[path[i]][path[i+1]]);
+    //else return(dist[path[i]][path[0]]);
+    return 0;
   }
 
   /*!\Brief Intercambia dos ciudades en el recorrido
@@ -129,18 +136,18 @@ public class DesastresBoard {
    * \pre los valores han de ser validos
    */
   public void swapCities(int i, int j){
-    int tmp;
+    /*int tmp;
 
     tmp=path[i];
     path[i]=path[j];
-    path[j]=tmp;
+    path[j]=tmp;*/
   }
 
   /*!\brief Retorna un string indicando la diferencia entre los recorridos
    *
    */
   public String getDiff(DesastresBoard t){
-   int [] b;
+   /*int [] b;
    String s="Intercambio ciudad ";
    boolean primera=true;
 
@@ -155,16 +162,18 @@ public class DesastresBoard {
      }
    }
 
-   return(s);
+   return(s);*/
+   return "";
   }
  
    /*!\brief Retorna el coste del recorrido
     *
     */
   public int pathCost(){
-   int sum=0;
-   for(int i=0;i<ncities;i++) sum=sum+distCities(i);
-   return sum;
+   //int sum=0;
+   //for(int i=0;i<ncities;i++) sum=sum+distCities(i);
+   //return sum;
+   return 0;
   }
   
   
@@ -173,9 +182,9 @@ public class DesastresBoard {
    */
   public String toString() {
     String retVal = "|";
-    for (int i = 0; i < ncities; i++) {
-      retVal = retVal + path[i] + "|";
-    }
+    //for (int i = 0; i < ncities; i++) {
+    //  retVal = retVal + path[i] + "|";
+    //}
     return retVal;
   }
 }
