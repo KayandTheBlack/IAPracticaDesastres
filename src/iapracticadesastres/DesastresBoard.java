@@ -61,7 +61,7 @@ public class DesastresBoard {
             double dist = Math.hypot(
                     Math.abs(a.getCoordX()-b.getCoordX()), 
                     Math.abs(a.getCoordY()-b.getCoordY()));
-            groupdistances[i][j] = dist*0.0006;
+            groupdistances[i][j] = dist*0.6; //Km and minutes
             groupdistances[j][i] = groupdistances[i][j];
         }
         for(int j=0; j<nCentros; j++) {
@@ -69,7 +69,7 @@ public class DesastresBoard {
             double dist = Math.hypot(
                     Math.abs(a.getCoordX()-b.getCoordX()), 
                     Math.abs(a.getCoordY()-b.getCoordY()));
-            centreGroupdistances[j][i] = dist*0.0006;
+            centreGroupdistances[j][i] = dist*0.6; //Km and minutes
         }
     }
     //Eo initialisation
