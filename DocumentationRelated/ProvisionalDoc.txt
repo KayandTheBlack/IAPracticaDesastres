@@ -25,10 +25,28 @@ Operators:
 
 Objetivos de la docu:
 
+identificar:
+
+RUBRICA:  TODO:
+La descripción del problema es algo más elaborada
+que la que ya hay en el enunciado.
+Identificación y análisis detallado de las características
+del problema.
+Hay una descripción detallada los elementos
+del estado del problema.
+Se justifica porqué es un problema de búsqueda
+local
+
 
 Razonar sobre qué elementos son los necesarios para plantear el espacio de soluciones del problema y
 como deberían representarse para solucionarlo mediante un algoritmo de búsqueda local. Se han de
 tener en cuenta las necesidades espacio/temporales de los algoritmos para elegir la representación.
+RUBRICA:
+Hay una descripción/justificación detallada
+de la representación del problema.
+La representación del problema es adecuada y
+eficiente.
+Hay un análisis del tamaño del espacio de búsqueda. TODO!
 
 	(*) El estado lo consideraremos como una asignación de grupos a viajes, y de viajes a helicopteros, estando ambas asignaciones consideradas como una secuencia cronológica. Con algo tan simple como esto podremos reconstruir una solución total. Notemos particularmente que en estas asignaciones, para que el estado sea solución, se dará que: un grupo está asociado a un y solo un vuelo, y los vuelos a un y solo un helicóptero. Mientras no deshagamos este hecho y nos aseguremos de cumplir las condiciones de carga del helicóptero y de numero de grupos por vuelo, nuestro estado seguirá siendo una solución, sea mejor o peor.
 		Notamos, además, que en la segunda versión de función de calidad, piden el tiempo máximo de rescate de un grupo de prioridad uno. Si consideramos los vuelos como una secuencia, no paralela, requeriríamos posiblemente de una estructura auxiliar para explicitar el orden en que los viajes son hechos entre helicópteros. Sin embargo, simplificamos este problema (bajo consulta al tutor), diciendo que los helicópteros trabajan en paralelo y considerando el tiempo máximo como el máximo de los tiempos que tarda un helicóptero (entre todos) en rescatar a su último grupo, eliminando la necesidad de la estructura auxiliar mencionada con anterioridad.
@@ -42,10 +60,18 @@ tener en cuenta las necesidades espacio/temporales de los algoritmos para elegir
 			TODO: implement
 		4. Igual que 2, pero en lugar de añadir un vector, tendremos tres valores que serán la referencia del vuelo que causa el tiempo máximo. De esta forma, nos aseguramos de que pocas operaciones requerirán de su actualización, y también reducimos el espacio del estado (de tener un vector C*H a uno de 3 posiciones). //puede ser que esto no funcione!
 			TODO: guess fucking what...
+		!!! DECIDIR IPSOFACTO! yo escogería el 2, 3 cuando sea tipo 2.
 
 Determinar qué formas existen para generar una solución inicial del problema y razonar y justificar
 cuales son las más adecuadas. Se han de elegir varias alternativas para poder experimentar y probar
 las decisiones empíricamente.
+RUBRICA:
+Hay una descripción del algoritmo para calcular
+las soluciones inciales.
+Hay una explicación/justificación de las elecciones
+de solucion inicial (bondad de la solución,
+coste de hallar la solución).
+
 	Bajo el conocimiento del funcionamiento de algoritmos a usar, nos hacemos vagamente a la idea de que soluciones poco óptimas tienen bastante más potencial de ser más óptimas tras correr el algoritmo, pues estarán más lejos de un mínimo local en nuestra función de calidad (nótese que este problema busca minimizar la función, bajo la función que usaremos, definida posteriormente).
 	Además, y tras examinar nuestras posibilidades de operadores, es importante que las soluciones iniciales permitan el acceso a todo el espacio de búsquedas para asegurar una mínima optimalidad. Bajo este hecho, y ya que nuestros conjuntos de operadores se mantienen mayormente (TODO: ENSURE AND REWORD) alejados de la posibilidad de 'crear' viajes nuevos o vacíos, nos mantendremos alejados de soluciones que ya comienzan con más de un grupo en un viaje.
 	Tenemos las siguientes posibilidades:
@@ -56,6 +82,14 @@ las decisiones empíricamente.
 Determinar qué operadores de transformación sobre la solución son posibles en el problema y qué
 combinación de estos operadores es adecuada para solucionar el problema considerando el factor de
 ramificación y la posibilidad de poder generar cualquier solución.
+RUBRICA
+Hay una descripción detallada de los operadores
+(sus condiciones de aplicabilidad y sus
+efectos).
+Hay un análisis del factor de ramificación de
+los operadores.
+Hay una explicación de la elección de los operadores.
+
 	Debido a que el número de helicópteros es fijo, nos damos cuenta de que no será necesario añadir o eliminar elementos en una dimensión del vector. Por otro lado, el número de vuelos es variable, y el número de grupos en un vuelo también lo es (aún siendo el número de grupos constante). Esto nos lleva a pensar en la necesidad de distintos tipos de operadores.
 	Inicialmente, y para potencialmente reducir el número de operadores inútiles, intuitivamente los dividimos por granularidad:
 	(*)Group-wise, o granularidad grupo, actuará sobre la asignación de grupos a vuelos. Deberían permitirnos no sólo cambiar un grupo de un vuelo a otro, sino también permutar el orden de 'visita' de un vuelo, ya que potencialmente puede reducir tiempos. (TODO: imagen?)
@@ -63,17 +97,123 @@ ramificación y la posibilidad de poder generar cualquier solución.
 	Aparentemente esta purga de operadores podría reducir nuestro espacio de búsqueda, aislandonos de la posible solución óptima. Tras un mejor vistazo, nos parece que, dados nuestros estados iniciales, esto es imposible. Cualquier grupo puede acabar en cualquier vuelo de cualquier helicóptero aplicando estos operadores (sin tener en cuenta la calidad), y lo único que podría impedir este hecho sería que la función de calidad impidiera el uso de ciertos operadores ya que inicialmente son malos y solo después nos llevan a una solución mejor. 
 	Sin embargo, y bajo el conocimiento de cómo se comportan los algoritmos y dado nuestro estado inicial, podemos intuir cómo se comportará el programa:
 		Inicialmente redistribuirá los vuelos entre los helicópteros, reduciendo tiempos de descanso y viaje de centro a grupo.
-		Después, comenzará a fusionar los grupos más cercanos, que deberían pertenecer al mismo helicóptero. Podría ser que dos grupos adyacentes fueran a helicópteros distintos(!!!! TODO: THIS IS FUCKED, COULD TOTALLY HAPPEN!), pero en dicho caso sería más probable que la fusión de (TODO: PANIC)
+		Después, comenzará a fusionar los grupos más cercanos, que deberían pertenecer al mismo helicóptero. Posteriormente nos dimos cuenta de que podría ser que dos grupos adyacentes fueran a helicópteros distintos, y de hecho es muy probable. Sin embargo, esta posibilidad tiene el potencial de decrecer enormemente si cambiamos los operadores por: de mismo helicóptero a cualquier helicóptero a otro del mismo centro. Para comprobarlo, crearemos otro subconjunto de operadores basado en este hecho, y para asegurarnos, experimentaremos también con el operador no restringido a helicopteros ni centros.
+
 	Dicho esto, tendremos un conjunto de operadores como el siguiente:
 		GroupWise:
-		mov&del (g, %f1, f2): mueve g de f1 a la última posición de f2. Si f1 queda vacío, lo elimina del conjunto de vuelos
+		movAndDelete (g, %f1, f2): mueve g de f1 a la última posición de f2. Si f1 queda vacío, lo elimina del conjunto de vuelos
 		swap (g1, %f1, g2, %f2): Intercambia g1 y g2 entre los vuelos, manteniendo la posición del intercambiado.
-		permute(f1, n): 
+		permute(f1, n): Intercambia el orden de visita de grupos dentro del vuelo. Hay 1 permutación para vuelos de 2, y 5 para vuelos de 3.
+
+		FlightWise:
+		switchPilot (f, %h1, h2): delega el vuelo f de H1 a H2.
+		swapOrder (f1, %f2): intercambia f1 y f2, dentro de los vuelos de un helicóptero. Nota: para reducir ramificación, f2 es el siguiente a f1 en el la planificación.
+		-Respecto a la nomenclatura, el % indica que va implícito 
+		Subconjuntos
+			1. movAndDelete, swap, switchPilot, para la primera versión del problema, sin permitir cambios entre helicópteros.
+			2. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios entre helicópteros del centro. (para cuando vayamos a más de 1 heli por centro!)
+			3. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios cualesquiera.
+			4. movAndDelete, permute, switchPilot, primera versión, cambios entre helicópteros del grupo TODO: asegurar experimentalmente!
+			TODO: mirar qué tal van antes de proseguir, prereq: experimento 1
 
 
 Determinar y justificar las funciones heurísticas que permitan optimizar la solución según unos criterios
 específicos. Comparar las funciones heurísticas empíricamente y razonar sobre los resultados.
+RUBRICA
+Hay una explicación/análisis de los factores
+que intervienen en la heurística del problema.
+Hay una justificación de las funciones heurísticas
+escogidas.
+Hay una explicación de los efectos de las funciones
+heurísticas en la búsqueda.
+Hay una justificación de las ponderaciones que
+aparecen entre los elementos de las heurísticas.
 	Intuitivamente, vemos que cada función de calidad nos permite...
+
+RUBRICAS VARIAS: (EXPERIMENTACIÓN)
+Son informativos y se han hecho varias ejecuciones
+de cada experimento.
+Están encaminados a destacar las diferencias
+entre los elementos comparados.
+Se explican y analizan correctamente los resultados
+(al menos con tablas, mejor con estadísticas
+y gráficos).
+Se compara lo que se esperaba con lo obtenido.
+
+Se muestra claramente la diferencia entre las
+soluciones inciales propuestas:
+• En función del coste temporal de la búsqueda
+y el ahorro justificable por partir
+desde cada solución inicial.
+• En función de la bondad de las soluciones
+comparando si partir de mejores
+soluciones iniciales lleva a mejores soluciones
+finales.
+
+Se muestra claramente la diferencia entre los
+conjuntos de operadores:
+• En función del coste temporal de la búsqueda.
+• En función de la bondad de las soluciones.
+
+Se muestra claramente la diferencia entre las
+funciones heuristicas:
+• En función del coste temporal de la búsqueda.
+• En función de la bondad de las soluciones.
+Se realizan experimentos para explorar la influencia
+de diferentes ponderaciones para los
+criterios de las funciónes heurísticas.
+
+Se ajustan los parámetros del Simulated Annealing
+explorando sistemáticamente los valores
+de sus parámetros.
+Se hace una comparación de los algoritmos de
+búsqueda en función de:
+• El coste temporal de la búsqueda.
+• La bondad de las soluciones.
+
+Se hacen los experimentos planteados en el
+enunciado, las explicaciones sobre los resultados
+son adecuadas y razonadas.
+Las explicaciones comparan/justifican los resultados
+que se esperaban con el escenario y
+los resultados obtenidos con los experimentos.
+Se responden a las preguntas del enunciado
+apoyando las explicaciones con los resultados
+de los experimentos y/o realizando experimentos
+adicionales.
+
+La práctica tiene una presentación adecuada.
+El documento está estucturado según los puntos
+que indica la práctica.
+La explicaciones están bien elaboradas y son
+inteligibles.
+La documentación demuestra una buena planificación
+del trabajo y un seguimiento del
+guión de la práctica.
+La documentación refleja el esfuerzo realizado.
+
+La práctica se ha realizado acorde a lo que
+pedía el enunciado
+
+El documento tiene pocas faltas de ortografía
+y gramaticales.
+
+Hay algún aspecto claramente mejorable.
+La introducción no acaba de centrar bien el
+tema, o los diferentes apartados no acaban de
+estar bien ligados en una secuencia lógica, o
+falta un buen cierre con resumen y/o conclusiones.
+
+En alguna ocasión hay alguna frase larga y
+confusa que se tiene que releer varias veces para
+acabar de entender.
+
+En algún punto del documento se echa en falta
+algún gráfico o figura que ayude a aclarar los
+conceptos.
+Alguna de las figuras o gráficos parece poco
+clarificadora o innecesaria.
+
 
 Plantear un conjunto de experimentos que muestren la ejecución de los algoritmos de búsqueda Hill
 Climbing y Simulated Annealing en escenarios diferentes. Escoger los experimentos que demuestren el
