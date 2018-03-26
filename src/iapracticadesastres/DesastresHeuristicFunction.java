@@ -13,12 +13,8 @@ public class DesastresHeuristicFunction implements HeuristicFunction  {
   
   public double getHeuristicValue(Object state) {
    DesastresBoard board=(DesastresBoard)state;
-   int sum=0,nc;
-   nc=board.getNCities();
 
-   for(int i=0;i<nc;i++) sum=sum+board.distCities(i);
-
-   return (sum);
+   return board.getTime();
   }
   
 }
