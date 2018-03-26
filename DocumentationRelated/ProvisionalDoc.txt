@@ -1,0 +1,88 @@
+
+
+Solution: Assignation of Flights to Helicopters, where a flight is a set of groups.
+	travels[i][j][k]  = G_id 	
+	means: Helicopter I, in its J-essim flight, rescues G_id as the kth group in that same flight
+	%%Might need to add a groupAss[G_id] = (Hi,Ji,Ki) reverse vector. REVISIT
+	%%When implementing, might need to change travels[i] to a vector of lists for efficiency (exchanging flights easily). Most likely not.
+        %% Will need auxiliar structure HeliOrder [NFlights] = H_id, meaning: the Nth flight is performed by helicopter H_id
+
+Eo: Our first solution will one of the worst: the first helicopter will rescue each group in a single flight.
+	This means, travels[0] has n vectors of length 1, where n is the number of groups.
+
+Operators:
+	Group wise: 
+		mov&del (g, %f1, f2): moves g from f1 to the last position of f2. It also deletes f1 if it is emptied. //f1 and f2 must be different!
+		(*) swap (g1, %f1, g2, %f2): swaps g1 and g2, switching their positions from f1 and f2.
+			* remove this operand when doing experiments, should not be that helpful probably
+		Permute (f1, n): permutes the elements of a flight (*) this is not used when swap is!
+	Flight wise:
+		switchPilot (f, %h1, h2): delegates the flight f from H1 to H2.
+		(*) swapOrder (f1, %f2): swaps the order of flights from ... f1, f2... to ... f2, f1...
+			* This is only necessary for the second quality function!
+
+
+
+Objetivos de la docu:
+
+
+Razonar sobre qué elementos son los necesarios para plantear el espacio de soluciones del problema y
+como deberían representarse para solucionarlo mediante un algoritmo de búsqueda local. Se han de
+tener en cuenta las necesidades espacio/temporales de los algoritmos para elegir la representación.
+
+	(*) El estado lo consideraremos como una asignación de grupos a viajes, y de viajes a helicopteros, estando ambas asignaciones consideradas como una secuencia cronológica. Con algo tan simple como esto podremos reconstruir una solución total. Notemos particularmente que en estas asignaciones, para que el estado sea solución, se dará que: un grupo está asociado a un y solo un vuelo, y los vuelos a un y solo un helicóptero. Mientras no deshagamos este hecho y nos aseguremos de cumplir las condiciones de carga del helicóptero y de numero de grupos por vuelo, nuestro estado seguirá siendo una solución, sea mejor o peor.
+		Notamos, además, que en la segunda versión de función de calidad, piden el tiempo máximo de rescate de un grupo de prioridad uno. Si consideramos los vuelos como una secuencia, no paralela, requeriríamos posiblemente de una estructura auxiliar para explicitar el orden en que los viajes son hechos entre helicópteros. Sin embargo, simplificamos este problema (bajo consulta al tutor), diciendo que los helicópteros trabajan en paralelo y considerando el tiempo máximo como el máximo de los tiempos que tarda un helicóptero (entre todos) en rescatar a su último grupo, eliminando la necesidad de la estructura auxiliar mencionada con anterioridad.
+
+	Partimos de 4 diferentes representaciones del estado, diferentes entre sí por motivos de eficiencia, no de expresividad:
+		1. Un vector tridimensional travels [i][j][k], donde el elemento iesimo representa los vuelos del helicoptero iesimo. Los vuelos son una secuencia ordenada de grupos. El espacio esperado es de O(C*H + G), donde C es el numero de centros, H el numero de helicopteros por centro y G el numero de grupos, si usamos un Array como estructura de datos. Nótese que ésta es la más óptima en termino espacial.
+			TODO: ALGORYTHM TEMP COST (+ implementation not done yet!)
+		2. Igual que 1, sin embargo introduciremos un dato adicional: Tiempo total. Debido al poco tamaño del dato, el tiempo de computación si tuvieramos que hacerlo a cada evaluación y la poca dificultad de actualizarlo en tiempo de 'operación', hemos considerado que este dato podría reducir significativamente el tiempo de ejecución, al menos para la versión uno de la función de calidad.
+			TODO: implement, obviously
+		3. Igual que 2, pero añadiremos otra estructura de datos adicional: un vector de tamaño C*H en que se guarde, para cada helicóptero, el tiempo que tarda en rescatar al último grupo de prioridad 1. Seguimos el razonamiento de 2, sin embargo un único valor tiempo no tiene suficiente expresividad para facilitar tanto el cálculo de la función de calidad 2. Cada vez que usemos una operación sobre un vuelo o helicóptero tendremos que actualizar todos los helicópteros asociados a ello, sin embargo. Nótese que ésta es la menos óptima espacialmente
+			TODO: implement
+		4. Igual que 2, pero en lugar de añadir un vector, tendremos tres valores que serán la referencia del vuelo que causa el tiempo máximo. De esta forma, nos aseguramos de que pocas operaciones requerirán de su actualización, y también reducimos el espacio del estado (de tener un vector C*H a uno de 3 posiciones). //puede ser que esto no funcione!
+			TODO: guess fucking what...
+
+Determinar qué formas existen para generar una solución inicial del problema y razonar y justificar
+cuales son las más adecuadas. Se han de elegir varias alternativas para poder experimentar y probar
+las decisiones empíricamente.
+	Bajo el conocimiento del funcionamiento de algoritmos a usar, nos hacemos vagamente a la idea de que soluciones poco óptimas tienen bastante más potencial de ser más óptimas tras correr el algoritmo, pues estarán más lejos de un mínimo local en nuestra función de calidad (nótese que este problema busca minimizar la función, bajo la función que usaremos, definida posteriormente).
+	Además, y tras examinar nuestras posibilidades de operadores, es importante que las soluciones iniciales permitan el acceso a todo el espacio de búsquedas para asegurar una mínima optimalidad. Bajo este hecho, y ya que nuestros conjuntos de operadores se mantienen mayormente (TODO: ENSURE AND REWORD) alejados de la posibilidad de 'crear' viajes nuevos o vacíos, nos mantendremos alejados de soluciones que ya comienzan con más de un grupo en un viaje.
+	Tenemos las siguientes posibilidades:
+		1. El estado inicial es, para cada grupo, un vuelo. Dicho vuelo será asignado a uno de los helicópteros, que rescatará a todos los grupos. Ésta es la solución trivial peor, prácticamente maximizando el tiempo total de rescate (podría peor si además asociasemos al grupo a su helicóptero más lejano), y por ello tiene potencial de acercarse más al mínimo general.
+		2. Similar a 1, sin embargo distribuiremos los viajes entre helicópteros. Expresado formalmente, el grupo Iésimo le será asignado al helicóptero (I mod (C*H))ésimo. El primer grupo al primer helicóptero, el segundo al segundo, y así sucesivamente hasta no tener más grupos. Si nos quedamos sin helicópteros, vuelta a empezar. Nótese, de nuevo, que evitamos tener dos grupos ya en un mismo vuelo.
+		3. TODO: think more? 
+
+Determinar qué operadores de transformación sobre la solución son posibles en el problema y qué
+combinación de estos operadores es adecuada para solucionar el problema considerando el factor de
+ramificación y la posibilidad de poder generar cualquier solución.
+	Debido a que el número de helicópteros es fijo, nos damos cuenta de que no será necesario añadir o eliminar elementos en una dimensión del vector. Por otro lado, el número de vuelos es variable, y el número de grupos en un vuelo también lo es (aún siendo el número de grupos constante). Esto nos lleva a pensar en la necesidad de distintos tipos de operadores.
+	Inicialmente, y para potencialmente reducir el número de operadores inútiles, intuitivamente los dividimos por granularidad:
+	(*)Group-wise, o granularidad grupo, actuará sobre la asignación de grupos a vuelos. Deberían permitirnos no sólo cambiar un grupo de un vuelo a otro, sino también permutar el orden de 'visita' de un vuelo, ya que potencialmente puede reducir tiempos. (TODO: imagen?)
+	(*)Flight-wise, o granularidad vuelo, que actuará sobre la asignación de vuelos completos a helicópteros. Directamente vemos que para ésta granularidad y la versión 1 de calidad, solo necesitamos un operador que nos permita cambiar un vuelo de un helicóptero a otro. Sin embargo, y debido a la segunda función de calidad, también necesitaremos poder cambiar el orden de los vuelos dentro de un mismo helicóptero.
+	Aparentemente esta purga de operadores podría reducir nuestro espacio de búsqueda, aislandonos de la posible solución óptima. Tras un mejor vistazo, nos parece que, dados nuestros estados iniciales, esto es imposible. Cualquier grupo puede acabar en cualquier vuelo de cualquier helicóptero aplicando estos operadores (sin tener en cuenta la calidad), y lo único que podría impedir este hecho sería que la función de calidad impidiera el uso de ciertos operadores ya que inicialmente son malos y solo después nos llevan a una solución mejor. 
+	Sin embargo, y bajo el conocimiento de cómo se comportan los algoritmos y dado nuestro estado inicial, podemos intuir cómo se comportará el programa:
+		Inicialmente redistribuirá los vuelos entre los helicópteros, reduciendo tiempos de descanso y viaje de centro a grupo.
+		Después, comenzará a fusionar los grupos más cercanos, que deberían pertenecer al mismo helicóptero. Podría ser que dos grupos adyacentes fueran a helicópteros distintos(!!!! TODO: THIS IS FUCKED, COULD TOTALLY HAPPEN!), pero en dicho caso sería más probable que la fusión de (TODO: PANIC)
+	Dicho esto, tendremos un conjunto de operadores como el siguiente:
+		GroupWise:
+		mov&del (g, %f1, f2): mueve g de f1 a la última posición de f2. Si f1 queda vacío, lo elimina del conjunto de vuelos
+		swap (g1, %f1, g2, %f2): Intercambia g1 y g2 entre los vuelos, manteniendo la posición del intercambiado.
+		permute(f1, n): 
+
+
+Determinar y justificar las funciones heurísticas que permitan optimizar la solución según unos criterios
+específicos. Comparar las funciones heurísticas empíricamente y razonar sobre los resultados.
+	Intuitivamente, vemos que cada función de calidad nos permite...
+
+Plantear un conjunto de experimentos que muestren la ejecución de los algoritmos de búsqueda Hill
+Climbing y Simulated Annealing en escenarios diferentes. Escoger los experimentos que demuestren el
+funcionamiento de los elementos que se han elegido (solución inicial, operadores, función heurística)
+en diferentes situaciones del problema. Debéis de ser capaces de justificar su elección y comparar lo
+que se esperaba intuitivamente con el experimento con los resultados reales.
+
+Experimentar con los parámetros del Simulated Annealing para escoger los más adecuados en los
+experimentos.
+
+Comparar el comportamiento del algoritmo de Hill Climbing y el de Simulated Annealing respecto a
+la calidad de sus soluciones.
