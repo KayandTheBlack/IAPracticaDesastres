@@ -45,8 +45,8 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
                                int g1 = group;
                                for (int k2 = 0; k2 < travels.get(i).get(j2).size(); k2++) {
                                    int g2 = k2;
-                                   if (board.swap(heli, f1, g1, f2, g2)) {
-                                        DesatresBoard board2 = board.clone();
+                                   if (board.possibleSwap(heli, f1, g1, f2, g2)) {
+                                        DesastresBoard board2 = board.clone();
                                         board2.swap(heli, f1, g1, f2, g2);
                                         retVal.add(board2);
                                    }
@@ -59,13 +59,13 @@ public class DesastresSuccessorFunction implements SuccessorFunction {
             
             // switchPilot
             for (int i2 = 0; i2 < travels.size(); i2++) {
-                if (i1 != i2) {
+                if (i != i2) {
                     for (int j = 0; j < travels.get(i2).size(); j++) {
                         int h1 = i;
                         int h2 = i2;
                         int f = j;
                         if (board.possibleSwitchPilot(h1, h2, f)) {
-                            DesatresBoard board2 = board.clone();
+                            DesastresBoard board2 = board.clone();
                             board2.switchPilot(h1, h2, f);
                             retVal.add(board2);
                         }   
