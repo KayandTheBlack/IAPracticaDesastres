@@ -161,7 +161,7 @@ public class DesastresBoard implements Cloneable {
   public void permute (int heli, int flight, int n){
     ArrayList<Integer> f = travels.get(heli).get(flight);
     int aux;
-    switch(n){
+    switch(n){ 
         case 0: //21 //swap the two elements of the flight
             aux = f.get(0);
             f.set(0, f.get(1));
