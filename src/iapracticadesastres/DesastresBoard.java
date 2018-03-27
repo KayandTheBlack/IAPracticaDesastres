@@ -36,8 +36,7 @@ public class DesastresBoard implements Cloneable {
   private static double centreGroupdistances [][]; //from centres to groups (time)
   
   
-  private static double heliTimes[];
-  private static double time;
+  private double time;
   
   private ArrayList<ArrayList<ArrayList<Integer> > > travels; //recheck class? maybe not arraylist!
   
@@ -82,7 +81,7 @@ public class DesastresBoard implements Cloneable {
             centreGroupdistances[j][i] = dist*0.6; //Km and minutes
         }
     }
-    //Eo initialisation
+    //Eo initialisation, take outside for testing
     int totalHelis = nHelis*nCentros;
     travels = new ArrayList (totalHelis);
     ArrayList<ArrayList<Integer> > firstHeli = new ArrayList(nGrupos);
@@ -97,33 +96,7 @@ public class DesastresBoard implements Cloneable {
     }
     int h0 = 0;
     int c0 = 0;
-    time = computeHelicopterTime(h0, c0);
-    heliTimes = new double[totalHelis];
-    heliTimes[0] = time;
-    //TODO: lacking the auxiliar array of order of flights between helicopters!
-    //TODO: {
-    //  Also add time for each helicopter, recomputate when needed? might reduce calculation time in exchange for space
-    // }
-    
-    //TSP code...
-    /*Random myRandom=new Random();
-    int d;
-    
-    path=new int[nc];
-    dist= new int[nc][nc];
-    ncities=nc;
-    
-    for (int i = 0; i < nc; i++) path[i]=i;
-    
-    for (int i = 0; i < nc; i++)
-      for (int j = i; j < nc; j++)
-        if (i==j) dist[i][j]=0;
-        else {
-          d=  myRandom.nextInt(50)+10;
-          dist[i][j]=d;
-          dist[j][i]=d;
-        }
- */
+    time = computeHelicopterTime(h0, c0); //reskin to only 1 helicopter
   }
 
   public int getNGrupos(){
@@ -152,23 +125,33 @@ public class DesastresBoard implements Cloneable {
    * \pre heli < travels.size()
    * \pre f1,f2 < travels[heli].size()
    * \pre group < travels[heli][f1].size()
-   * \@return true if movAndDelete is effective
    */
-  public void movAndDelete(int heli, int f1, int group, int f2){ //TODO: change in spec! Might give problems with heli times! Maybe do it bool for GenSucc?
+  public void movAndDelete(int heli, int f1, int group, int f2) {
+    double timef1 = computeTime...
+    double timef2 = computeTime...
+    time = time - timef1 - timef2;
+    
     ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp2=tmp.get(f2);
     Integer x = tmp.get(f1).remove(group);
     tmp2.add(x);
-    if(tmp.get(f1).isEmpty()) tmp.remove(f1);
-    
-    reassignHelicopterTime(heli);
-    
+    time += computeTime f2
+    if(tmp.get(f1).isEmpty()) {
+        tmp.remove(f1);
+        time -= 10 minutes  // in the version with movements between helicopters, additional checks are needed
+    } else {
+        time += computeTime f1
+    }
   }
 
   public void swap(int heli, int f1, int g1, int f2, int g2){
     ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp1=tmp.get(f1);
     ArrayList<Integer> tmp2=tmp.get(f2);
+    
+    double time1 = computeTime f1
+    double time2 = computeTime f2
+    time = time -time1 -time2;
     
     int aux = tmp1.get(g1);
     tmp1.set(g1, tmp2.get(g2));
@@ -286,15 +269,15 @@ public class DesastresBoard implements Cloneable {
       return true;
   }
   
-  public DesastresBoard clone() {
-      ArrayList<ArrayList<ArrayList<Integer> > > travs = null;
+  public DesastresBoard clone() {//fixed
+      ArrayList<ArrayList<ArrayList<Integer> > > travs = new ArrayList (travels.size());
       for (int i = 0; i < travels.size(); i++){
           ArrayList<ArrayList<Integer> > currI = travels.get(i);
-          travs.add(new ArrayList<ArrayList<Integer> > ());
+          travs.add(new ArrayList (currI.size()));
           ArrayList<ArrayList<Integer> > travsI = travs.get(i);
           for (int j = 0; j < currI.size(); j++){
               ArrayList<Integer> currJ = currI.get(j);
-              travsI.add(new ArrayList<Integer> ());
+              travsI.add(new ArrayList (currJ.size()));
               ArrayList<Integer> travsJ = travsI.get(j);
               for (int k = 0; k < currJ.size(); k++){
                   Integer currK = currJ.get(k);
@@ -306,7 +289,7 @@ public class DesastresBoard implements Cloneable {
       return clonedBoard;
   }
   
-  private double computeHelicopterTime(int heli, int centre) {
+  private double computeHelicopterTime(int heli) { //inferre centre
       double t = 0;
       
       for (int i = 0; i < travels.get(heli).size(); i++) {
@@ -320,7 +303,7 @@ public class DesastresBoard implements Cloneable {
       return t;
   }
   
-  private void reassignHelicopterTime(int heli) {
+  private void reassignHelicopterTime(int heli) { //wtf?
     time -= heliTimes[heli];
     int centre = getNHelis()/getNCentros() * heli;
     double t = computeHelicopterTime(heli,centre);
