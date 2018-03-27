@@ -95,8 +95,7 @@ public class DesastresBoard implements Cloneable {
         travels.add(new ArrayList());
     }
     int h0 = 0;
-    int c0 = 0;
-    time = computeHelicopterTime(h0, c0); //reskin to only 1 helicopter
+    time = computeHelicopterTime(h0);
   }
 
   public int getNGrupos(){
@@ -127,20 +126,20 @@ public class DesastresBoard implements Cloneable {
    * \pre group < travels[heli][f1].size()
    */
   public void movAndDelete(int heli, int f1, int group, int f2) {
-    double timef1 = computeTime...
-    double timef2 = computeTime...
+    double timef1 = computeFlightTime(f1,heli);
+    double timef2 = computeFlightTime(f2,heli);
     time = time - timef1 - timef2;
     
     ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp2=tmp.get(f2);
     Integer x = tmp.get(f1).remove(group);
     tmp2.add(x);
-    time += computeTime f2
+    time += computeFlightTime(f2,heli);
     if(tmp.get(f1).isEmpty()) {
         tmp.remove(f1);
-        time -= 10 minutes  // in the version with movements between helicopters, additional checks are needed
+        time -= 10;  // in the version with movements between helicopters, additional checks are needed
     } else {
-        time += computeTime f1
+        time += computeFlightTime(f1,heli);
     }
   }
 
@@ -149,8 +148,8 @@ public class DesastresBoard implements Cloneable {
     ArrayList<Integer> tmp1=tmp.get(f1);
     ArrayList<Integer> tmp2=tmp.get(f2);
     
-    double time1 = computeTime f1
-    double time2 = computeTime f2
+    double time1 = computeFlightTime(f1,heli);
+    double time2 = computeFlightTime(f2,heli);
     time = time -time1 -time2;
     
     int aux = tmp1.get(g1);
@@ -159,7 +158,6 @@ public class DesastresBoard implements Cloneable {
     
     
     
-    reassignHelicopterTime(heli);
   }
   
   public void permute (int heli, int flight, int n){
@@ -200,7 +198,6 @@ public class DesastresBoard implements Cloneable {
             break;
           
       }
-    reassignHelicopterTime(heli);
   }
   
   //GROUP WISE OPERATORS CHECKER
@@ -249,14 +246,11 @@ public class DesastresBoard implements Cloneable {
 // FLIGHT WISE OPERATORS
   public void switchPilot(int h1, int h2, int f) {
       travels.get(h2).add(travels.get(h1).remove(f));
-      reassignHelicopterTime(h1);
-      reassignHelicopterTime(h2);
   }
   public void swapOrder(int h1, int pos) { //pos < travels[h1].size-1
       ArrayList<Integer> aux = travels.get(h1).get(pos);
       travels.get(h1).set(pos, travels.get(h1).get(pos+1));
       travels.get(h1).set(pos+1, aux);
-      reassignHelicopterTime(h1);
   }
   
   // FLIGHT WISE OPERATORS CHECKER
@@ -289,26 +283,29 @@ public class DesastresBoard implements Cloneable {
       return clonedBoard;
   }
   
-  private double computeHelicopterTime(int heli) { //inferre centre
+  private double computeHelicopterTime(int heli) {
       double t = 0;
+      int centre = heli/(getNHelis()/getNCentros());
       
       for (int i = 0; i < travels.get(heli).size(); i++) {
-          t += centreGroupdistances[centre][travels.get(heli).get(heli).get(0)];
+          t += centreGroupdistances[centre][travels.get(heli).get(i).get(0)];
           if ((i > 0) && (i != travels.get(heli).size()-1))
               t += 10;
           for (int j = 0; j < travels.get(heli).get(i).size(); j++) {
-              t += gs.get(i).getPrioridad() * gs.get(i).getNPersonas();
+              t += gs.get(travels.get(heli).get(i).get(j)).getPrioridad() * gs.get(travels.get(heli).get(i).get(j)).getNPersonas();
           }
       }
       return t;
   }
   
-  private void reassignHelicopterTime(int heli) { //wtf?
-    time -= heliTimes[heli];
-    int centre = getNHelis()/getNCentros() * heli;
-    double t = computeHelicopterTime(heli,centre);
-    heliTimes[heli] = t;
-    time = time + t;
+  private double computeFlightTime(int flight, int heli) {
+      double t = 0;
+      int centre = heli/(getNHelis()/getNCentros());
+      t += centreGroupdistances[centre][travels.get(heli).get(heli).get(0)];
+      for (int j = 0; j < travels.get(heli).get(flight).size(); j++) {
+              t += gs.get(travels.get(heli).get(flight).get(j)).getPrioridad() * gs.get(travels.get(heli).get(flight).get(j)).getNPersonas();
+      }
+      return t;
   }
   
 }
