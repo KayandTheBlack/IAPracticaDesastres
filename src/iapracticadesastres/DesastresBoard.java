@@ -115,7 +115,7 @@ public class DesastresBoard implements Cloneable {
   }
   
   public double getTime() {
-      return time;
+    return time;
   }
   
 // GROUP WISE OPERATORS  (assuming the checkers passed)
@@ -155,6 +155,10 @@ public class DesastresBoard implements Cloneable {
     int aux = tmp1.get(g1);
     tmp1.set(g1, tmp2.get(g2));
     tmp2.set(g2, aux);
+    
+    time1 = computeFlightTime(f1,heli);
+    time2 = computeFlightTime(f2,heli);
+    time = time + time1 + time2;
     
     
     
@@ -243,14 +247,41 @@ public class DesastresBoard implements Cloneable {
     return true;
   }
   
+  
+  
 // FLIGHT WISE OPERATORS
   public void switchPilot(int h1, int h2, int f) {
+      
+      
+      int nFlightsH1 = travels.get(h1).size();
+      int nFlightsH2 = travels.get(h2).size();
+      int centre1 = h1/(getNHelis()/getNCentros());
+      int centre2 = h2/(getNHelis()/getNCentros());
+      
+      
+      double tF1 = computeFlightTime(f,h1);
+      time -= tF1;
+     
+          
+      double tF2 = tF1 - centreGroupdistances[centre1][travels.get(h1).get(f).get(0)] - centreGroupdistances[centre1][travels.get(h1).get(f).get(nFlightsH1-1)]; 
+      
+      
+      
       travels.get(h2).add(travels.get(h1).remove(f));
+      tF2 = tF2 + centreGroupdistances[centre2][travels.get(h2).get(f).get(0)] + centreGroupdistances[centre2][travels.get(h2).get(f).get(nFlightsH2)];
+      
+      
   }
+  
+
+  
   public void swapOrder(int h1, int pos) { //pos < travels[h1].size-1
+      time -= computeHelicopterTime(h1);
       ArrayList<Integer> aux = travels.get(h1).get(pos);
       travels.get(h1).set(pos, travels.get(h1).get(pos+1));
       travels.get(h1).set(pos+1, aux);
+      time += computeHelicopterTime(h1);
+      
   }
   
   // FLIGHT WISE OPERATORS CHECKER
@@ -285,15 +316,9 @@ public class DesastresBoard implements Cloneable {
   
   private double computeHelicopterTime(int heli) {
       double t = 0;
-      int centre = heli/(getNHelis()/getNCentros());
       
       for (int i = 0; i < travels.get(heli).size(); i++) {
-          t += centreGroupdistances[centre][travels.get(heli).get(i).get(0)];
-          if ((i > 0) && (i != travels.get(heli).size()-1))
-              t += 10;
-          for (int j = 0; j < travels.get(heli).get(i).size(); j++) {
-              t += gs.get(travels.get(heli).get(i).get(j)).getPrioridad() * gs.get(travels.get(heli).get(i).get(j)).getNPersonas();
-          }
+          t += computeFlightTime(i,heli);
       }
       return t;
   }
@@ -301,7 +326,9 @@ public class DesastresBoard implements Cloneable {
   private double computeFlightTime(int flight, int heli) {
       double t = 0;
       int centre = heli/(getNHelis()/getNCentros());
-      t += centreGroupdistances[centre][travels.get(heli).get(heli).get(0)];
+      t = t + centreGroupdistances[centre][travels.get(heli).get(flight).get(0)] + centreGroupdistances[centre][travels.get(heli).get(flight).get(travels.get(heli).get(flight).size()-1)];
+      if ((flight > 0) && (flight != travels.get(heli).size()-1))
+          t += 10;
       for (int j = 0; j < travels.get(heli).get(flight).size(); j++) {
               t += gs.get(travels.get(heli).get(flight).get(j)).getPrioridad() * gs.get(travels.get(heli).get(flight).get(j)).getNPersonas();
       }

@@ -15,7 +15,7 @@ import java.util.List;
  * @author Jordi Armengol Estapé
  *
  */
-public class DesastresSuccessorFunction implements SuccessorFunction {
+public class DesastresSuccessorFunction implements SuccessorFunction { // This version checks all possible values
     @SuppressWarnings("unchecked")
     public List getSuccessors(Object aState) {
         ArrayList                retVal = new ArrayList();
