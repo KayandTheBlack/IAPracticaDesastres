@@ -47,7 +47,7 @@ public class DesastresSuccessorFunctionv2 implements SuccessorFunction { // This
                                     board2.swap2(h1, h2, f1, g1, f2, g2);
                                     //double    v = DesHF.getHeuristicValue(board2); //peta
                                     double v = board2.getTime();
-                                    String S = DesastresBoard.SWAP + " h1 " + h1 + " f1 " + f1 + " g1 " + g1 + " f2 " + f2 + " g2 " + g2 +  " Cost(" + v + ") ---> " + board2.toString();
+                                    String S = DesastresBoard.SWAP + " h1 " + h1 + " f1 " + f1 + " g1 " + g1 + "h2" + h2 + " f2 " + f2 + " g2 " + g2 +  " Cost(" + v + ") ---> " + board2.toString();
                                     retVal.add(new Successor(S, board2));
                                 }
         }   }   }   }   }   }

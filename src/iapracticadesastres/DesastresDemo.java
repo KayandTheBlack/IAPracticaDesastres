@@ -16,12 +16,34 @@ import aima.search.informed.SimulatedAnnealingSearch;
 public class DesastresDemo {
     
     public static void main(String[] args){
-        Random myRandom=new Random();
-        DesastresBoard DB =new DesastresBoard(30,30,30,myRandom.nextInt(400)); //modify for thingy
-        TSPHillClimbingSearch(DB);
+        //Random myRandom=new Random();
+        //DesastresBoard DB =new DesastresBoard(30,30,30,myRandom.nextInt(400)); //modify for thingy
+        //TSPHillClimbingSearch(DB);
         //TSPSimulatedAnnealingSearch(DB);
+        experiment1();
     }
-    
+    private static void experiment1() {
+        try {
+            Random myRandom=new Random();
+            for (int i=0; i<10; i++) {
+                int seed = myRandom.nextInt(400);
+                System.out.println("Seed " + i + " is " + seed);
+                //timer here
+                DesastresBoard DB =new DesastresBoard(100,5,1,seed);
+                Problem problem =  new Problem(DB,new DesastresSuccessorFunction(), new DesastresGoalTest(),new DesastresHeuristicFunction());
+                Search search =  new HillClimbingSearch();
+                SearchAgent agent = new SearchAgent(problem,search);
+                //endtimer!
+                //agent stuff here
+                
+                // test2
+                DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,seed);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private static void TSPHillClimbingSearch(DesastresBoard TSPB) {
         System.out.println("\nTSP HillClimbing  -->");
         try {
