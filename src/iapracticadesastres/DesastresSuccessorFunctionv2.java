@@ -25,12 +25,6 @@ public class DesastresSuccessorFunctionv2 implements SuccessorFunction { // This
         ArrayList<ArrayList<ArrayList<Integer> > > travels = board.getTravels();
 
 
-        if (board.getTime() != board.computeTotalTime()) {
-            System.out.println(board.getTime() + " != " + board.computeTotalTime());
-            System.exit(1);
-        }
-        else
-            System.out.println("OK"); // checker here for troublcatching
         
         
         
