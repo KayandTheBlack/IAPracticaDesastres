@@ -148,10 +148,10 @@ public class DesastresBoardv2 implements Cloneable {
             double timef2 = computeFlightTime(f2,h2);
             time = time - timef1 - timef2;
             fl2.add(fl1.remove(group));
-            time += computeFlightTime(f2,h1);
+            time += computeFlightTime(f2,h2);
             if (fl1.isEmpty()) {
                 tmp1.remove(f1);
-                time -= 10;
+                if(!tmp1.isEmpty()) time -= 10; //still 1 heli left!!
             } else time += computeFlightTime(f1,h1);
             
       }
