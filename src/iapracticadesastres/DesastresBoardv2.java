@@ -237,26 +237,29 @@ public class DesastresBoardv2 implements Cloneable {
   }
   
   //GROUP WISE OPERATORS CHECKER
-  public Boolean possibleMovAndDelete (int heli, int f1, int group, int f2){
-    if (f1==f2) return false; //bounding, removes useless op, can be done with swap
-    ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
+  public Boolean possibleMovAndDeletev2 (int h1, int h2, int f1, int group, int f2) {
+    if (f1==f2 && h1 == h2) return false; //bounding, removes useless op, can be done with swap
+    ArrayList<ArrayList<Integer> > tmp = travels.get(h2);
     if(tmp.get(f2).size() >=3) return false;
     ArrayList<Integer> tmp2=tmp.get(f2);
     int pop = 0;
     for(int i=0; i<tmp2.size(); i++) {
         pop += gs.get(tmp2.get(i)).getNPersonas();
     }
-    Integer x = tmp.get(f1).get(group); //.remove(group);
+    Integer x = travels.get(h1).get(f1).get(group);
     if(pop + gs.get(x).getNPersonas() > 15) return false;
     //tmp2.add(x);
     //if(tmp.get(f1).isEmpty()) tmp.remove(f1);
     return true;
   }
   
-  public Boolean possibleSwap (int heli, int f1, int g1, int f2, int g2){
-    ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
-    ArrayList<Integer> tmp1=tmp.get(f1);
-    ArrayList<Integer> tmp2=tmp.get(f2);
+  public Boolean possibleSwap (int h1, int h2, int f1, int g1, int f2, int g2){
+    if(h1 == h2 && f1 == f2) {
+        if(g1 == g2) return false; //useless op
+        return true; //no conditions, can do
+    }
+    ArrayList<Integer> tmp1=travels.get(h1).get(f1);
+    ArrayList<Integer> tmp2=travels.get(h2).get(f2);
     
     int pop1=0; int pop2=0;
     for(int i=0; i<tmp1.size(); i++) pop1 += gs.get(tmp1.get(i)).getNPersonas();

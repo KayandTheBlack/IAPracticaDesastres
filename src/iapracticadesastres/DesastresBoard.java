@@ -240,6 +240,10 @@ public class DesastresBoard implements Cloneable {
   }
   
   public Boolean possibleSwap (int heli, int f1, int g1, int f2, int g2){
+    if (f1 == f2) {
+        if(g1 ==g2) return false; //useless to do this
+        return true; //no conditions to check
+    }
     ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp1=tmp.get(f1);
     ArrayList<Integer> tmp2=tmp.get(f2);
