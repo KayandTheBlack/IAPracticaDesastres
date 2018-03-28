@@ -24,7 +24,7 @@ public class DesastresSuccessorFunction implements SuccessorFunction { // This v
         
         ArrayList<ArrayList<ArrayList<Integer> > > travels = board.getTravels();
 
-
+        System.out.println(board.getTime()); //comment this
         /*if (board.getTime() != board.computeTotalTime()) {
             System.out.println(board.getTime() + " != " + board.computeTotalTime());
             System.exit(1);

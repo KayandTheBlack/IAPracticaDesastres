@@ -11,17 +11,37 @@ import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
+import java.util.ArrayList;
 
 
 public class DesastresDemo {
     
     public static void main(String[] args){
-        //Random myRandom=new Random();
-        //DesastresBoard DB =new DesastresBoard(30,30,30,myRandom.nextInt(400)); //modify for thingy
-        //TSPHillClimbingSearch(DB);
+        Random myRandom=new Random();
+        DesastresBoard DB =new DesastresBoard(5,1,2,1234); //modify for thingy
+        System.out.println("Original time:" + DB.getTime());
+        PrintArrayList(DB.getTravels());
+        TSPHillClimbingSearch(DB);
         //TSPSimulatedAnnealingSearch(DB);
-        experiment1();
+        //experiment1();
     }
+    public static void PrintArrayList (ArrayList<ArrayList<ArrayList<Integer>>> x) {
+        System.out.println("[");
+        for(int i=0; i<x.size(); i++) {
+            System.out.println("[");
+            for (int j=0; j<x.get(i).size(); j++) {
+                System.out.print("[");
+                for (int k=0; k<x.get(i).get(j).size(); k++) {
+                    System.out.print(x.get(i).get(j).get(k));
+                }
+                System.out.println("]");   
+            }
+            System.out.println("]");
+        }
+        System.out.println("]");
+    }
+    
+    public static void PrintArrayList (Object x) {}
     private static void experiment1() {
         try {
             Random myRandom=new Random();
@@ -52,8 +72,11 @@ public class DesastresDemo {
             SearchAgent agent = new SearchAgent(problem,search);
             
             System.out.println();
+            DesastresBoard b = (DesastresBoard) search.getGoalState();
             printActions(agent.getActions());
             printInstrumentation(agent.getInstrumentation());
+            System.out.println("Final time:" + b.getTime());
+            PrintArrayList(b.getTravels());
         } catch (Exception e) {
             e.printStackTrace();
         }

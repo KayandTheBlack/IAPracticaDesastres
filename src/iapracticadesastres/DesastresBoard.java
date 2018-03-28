@@ -114,7 +114,7 @@ public class DesastresBoard implements Cloneable {
   }
   
   public double getTime() {
-    return time;
+    return (Math.round(time*100)/100.);
   }
   
 // GROUP WISE OPERATORS  (assuming the checkers passed)
