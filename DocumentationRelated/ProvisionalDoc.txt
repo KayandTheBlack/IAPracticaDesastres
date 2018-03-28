@@ -140,6 +140,17 @@ Se explican y analizan correctamente los resultados
 y gráficos).
 Se compara lo que se esperaba con lo obtenido.
 
+Se muestra claramente la diferencia entre los
+conjuntos de operadores:
+• En función del coste temporal de la búsqueda.
+• En función de la bondad de las soluciones.
+
+EXPERIMENTO 1: SOBRE OPERADORES
+Observamos que un conjunto de operadores poco expresivo podría llevarnos a no encontrar la mejor solución, y que uno demasiado expresivo podría tener un factor de ramificación demasiado alto. Por ello, nos interesa ver qué conjunto base nos lleva a mejores soluciones.
+Plantearemos probar diferentes subconjuntos de operadores para nuestro problema, con diferentes restricciones de uso.
+Metodo: usaremos lo dicho por el enunciado (TODO: explicitar), blah blah blah
+HACER UN BOXPLOT CON LOS DATOS! ANALISIS POR PARES DE MUESTRAS!
+
 Se muestra claramente la diferencia entre las
 soluciones inciales propuestas:
 • En función del coste temporal de la búsqueda
@@ -150,10 +161,6 @@ comparando si partir de mejores
 soluciones iniciales lleva a mejores soluciones
 finales.
 
-Se muestra claramente la diferencia entre los
-conjuntos de operadores:
-• En función del coste temporal de la búsqueda.
-• En función de la bondad de las soluciones.
 
 Se muestra claramente la diferencia entre las
 funciones heuristicas:
