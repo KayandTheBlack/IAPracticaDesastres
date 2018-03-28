@@ -23,22 +23,36 @@ public class DesastresSuccessorFunction implements SuccessorFunction { // This v
         DesastresHeuristicFunction DesHF  = new DesastresHeuristicFunction();
         
         ArrayList<ArrayList<ArrayList<Integer> > > travels = board.getTravels();
+
+
+        /*if (board.getTime() != board.computeTotalTime()) {
+            System.out.println(board.getTime() + " != " + board.computeTotalTime());
+            System.exit(1);
+        }
+        else
+            System.out.println("OK");*/
+        
+        
         
         // movAndDelete, swap
         for (int i = 0; i < travels.size(); i++) {
             for (int j1 = 0; j1 < travels.get(i).size(); j1++) {
                 for (int j2 = 0; j2 < travels.get(i).size(); j2++) {
-                    if (j1 != j2) {
                         for (int k = 0; k < travels.get(i).get(j1).size(); k++) {
                                int heli = i;
                                int f1 = j1;
                                int group = k;
                                int f2 = j2;
-                               if (board.possibleMovAndDelete(heli, f1, group, f2)) {
-                                    DesastresBoard board2 = (DesastresBoard) board.clone();
-                                    board2.movAndDelete(heli, f1, group, f2);
-                                    retVal.add(board2);
-                                }
+                               if (j1 != j2) {
+                                    if (board.possibleMovAndDelete(heli, f1, group, f2)) {
+                                        DesastresBoard board2 = board.clone();
+                                        board2.movAndDelete(heli, f1, group, f2);
+                                        double    v = DesHF.getHeuristicValue(board2);
+                                        String S = DesastresBoard.MOVANDDELETE + " heli " + heli + " f1 " + f1 + " group " + group + " f2 " + f2 +  " Cost(" + v + ") ---> " + board2.toString();
+
+                                        retVal.add(new Successor(S, board2));
+                                    }
+                               }
                                
                                
                                // swap
@@ -48,26 +62,32 @@ public class DesastresSuccessorFunction implements SuccessorFunction { // This v
                                    if (board.possibleSwap(heli, f1, g1, f2, g2)) {
                                         DesastresBoard board2 = board.clone();
                                         board2.swap(heli, f1, g1, f2, g2);
-                                        retVal.add(board2);
+                                        double    v = DesHF.getHeuristicValue(board2);
+                                        String S = DesastresBoard.SWAP + " heli " + heli + " f1 " + f1 + " g1 " + g1 + " f2 " + f2 + " g2 " + g2 +  " Cost(" + v + ") ---> " + board2.toString();
+
+                                        retVal.add(new Successor(S, board2));
                                    }
                                }
                                       
                         }
-                    }
+                    
                 }
             }
             
             // switchPilot
             for (int i2 = 0; i2 < travels.size(); i2++) {
                 if (i != i2) {
-                    for (int j = 0; j < travels.get(i2).size(); j++) {
+                    for (int j = 0; j < travels.get(i).size(); j++) {
                         int h1 = i;
                         int h2 = i2;
                         int f = j;
                         if (board.possibleSwitchPilot(h1, h2, f)) {
                             DesastresBoard board2 = board.clone();
                             board2.switchPilot(h1, h2, f);
-                            retVal.add(board2);
+                            double    v = DesHF.getHeuristicValue(board2);
+                            String S = DesastresBoard.SWITCHPILOT + " h1 " + h1 + " h2 " + h2 + " f " + f +  " Cost(" + v + ") ---> " + board2.toString();
+
+                            retVal.add(new Successor(S, board2));
                         }   
                     }
                     
@@ -81,11 +101,13 @@ public class DesastresSuccessorFunction implements SuccessorFunction { // This v
                 if (board.swapOrder(h1, pos)) {
                     DesatresBoard board2 = board.clone();
                     board2.swapOrder(h1, pos);
-                    retVal.add(board2);
+                    double    v = DesHF.getHeuristicValue(board2);
+                    String S = DesastresBoard.SWAPORDER + " h1 " + h1 + " pos " + pos +  " Cost(" + v + ") ---> " + board2.toString();
+
+                    retVal.add(new Successor(S, board2));
                 }
             }*/
         }
-        
         return retVal;
     }
         

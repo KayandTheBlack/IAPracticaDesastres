@@ -19,7 +19,7 @@ public class DesastresDemo {
         Random myRandom=new Random();
         DesastresBoard DB =new DesastresBoard(30,30,30,myRandom.nextInt(400)); //modify for thingy
         TSPHillClimbingSearch(DB);
-        TSPSimulatedAnnealingSearch(DB);
+        //TSPSimulatedAnnealingSearch(DB);
     }
     
     private static void TSPHillClimbingSearch(DesastresBoard TSPB) {

@@ -17,6 +17,8 @@ import java.util.Random;
  * @author Javier Bejar
  *
  */
+
+
 public class DesastresSuccessorFunctionSA implements SuccessorFunction {
     public List getSuccessors(Object aState) {
         ArrayList                retVal = new ArrayList();
@@ -24,7 +26,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         DesastresHeuristicFunction TSPHF  = new DesastresHeuristicFunction();
         Random myRandom=new Random();
         int i,j;
-        
+       /*
         // Nos ahorramos generar todos los sucesores escogiendo un par de ciudades al azar
         
        i=myRandom.nextInt(board.getNCities());
@@ -42,7 +44,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
        String S = DesastresBoard.INTERCAMBIO + " " + i + " " + j + " Coste(" + v + ") ---> " + newBoard.toString();
 
       retVal.add(new Successor(S, newBoard));
-
+*/
       return retVal;
     }
 }
