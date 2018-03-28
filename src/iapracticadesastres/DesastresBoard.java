@@ -28,14 +28,7 @@ public class DesastresBoard implements Cloneable {
   public static String SWAP = "Swap";
   public static String SWITCHPILOT = "Switch pilot";
   public static String SWAPORDER = "Swap order";
-    
-  /// Nuemro de ciudades
-  //private int ncities;
-  /// Orden entre las ciudades
-  //private int [] path; 
-  /// Distancias entre las ciudades
-  //private int [][] dist; 
-  
+
   private static Grupos gs;
   private static Centros cs;
   private static double groupdistances [][]; //from groups to groups (time)
@@ -133,77 +126,61 @@ public class DesastresBoard implements Cloneable {
    */
   public void movAndDelete(int heli, int f1, int group, int f2) {
 
-      /*System.out.println("enter movAndDelete:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());*/
-
       /*double getTimePre = getTime();
-      double computeTotalTimePre = computeTotalTime2();*/
+      double computeTotalTimePre = computeTotalTime();*/
 
-      double timef1 = computeFlightTime2(f1,heli);
-    double timef2 = computeFlightTime2(f2,heli);
+      double timef1 = computeFlightTime(f1,heli);
+    double timef2 = computeFlightTime(f2,heli);
     time = time - timef1 - timef2;
     
     ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp2=tmp.get(f2);
     Integer x = tmp.get(f1).remove(group);
     tmp2.add(x);
-    time += computeFlightTime2(f2,heli);
+    time += computeFlightTime(f2,heli);
     if(tmp.get(f1).isEmpty()) {
         tmp.remove(f1);
         time -= 10;  // in the version with movements between helicopters, additional checks are needed
     } else {
-        time += computeFlightTime2(f1,heli);
+        time += computeFlightTime(f1,heli);
     }
 
-    //System.out.println((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre));
-     /*System.out.println("exit movAndDelete:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());*/
-      //System.exit(2);
-      /*if (((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre)) > 1) {
-          System.out.println((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre));
+      /*if (((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre)) > 1) {
+          System.out.println((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre));
           System.exit(1);
       }*/
   }
 
-  public void swap(int heli, int f1, int g1, int f2, int g2){ // falta cas particular si son el mateix vol, estariem duplicant diferencia. PERO: he testejat extensivament aquest cas i no hi ha error encara que no es tingui en compte...
-      /*System.out.println("enter swap:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());*/
+  // Case same flight (f1 == f2) not considered as a particular case (double difference)? But the tests seem fine
+  public void swap(int heli, int f1, int g1, int f2, int g2){
 
       /*double getTimePre = getTime();
-      double computeTotalTimePre = computeTotalTime2();*/
+      double computeTotalTimePre = computeTotalTime();*/
 
       ArrayList<ArrayList<Integer> > tmp = travels.get(heli);
     ArrayList<Integer> tmp1=tmp.get(f1);
     ArrayList<Integer> tmp2=tmp.get(f2);
     
-    double time1 = computeFlightTime2(f1,heli);
-    double time2 = computeFlightTime2(f2,heli);
+    double time1 = computeFlightTime(f1,heli);
+    double time2 = computeFlightTime(f2,heli);
     time = time -time1 -time2;
     
     int aux = tmp1.get(g1);
     tmp1.set(g1, tmp2.get(g2));
     tmp2.set(g2, aux);
     
-    time1 = computeFlightTime2(f1,heli);
-    time2 = computeFlightTime2(f2,heli);
+    time1 = computeFlightTime(f1,heli);
+    time2 = computeFlightTime(f2,heli);
     time = time + time1 + time2;
 
-      /*if (f1 == f2)
-      System.out.println((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre));*/
-      /*System.out.println("exit swap:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());
-      System.exit(3);*/
 
-      /*if (((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre)) > 1) {
-          System.out.println((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre));
-          System.exit(1);
+      /*if (((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre)) > 1) {
+          System.out.println((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre));
+          System.exit(2);
       }*/
   }
-  
+
+  // Not used in this version, no timer implemented
   public void permute (int heli, int flight, int n){
     ArrayList<Integer> f = travels.get(heli).get(flight);
     int aux;
@@ -292,12 +269,9 @@ public class DesastresBoard implements Cloneable {
 // FLIGHT WISE OPERATORS
   public void switchPilot(int h1, int h2, int f) {
 
-      /*System.out.println("enter switchPilot:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());*/
 
       /*double getTimePre = getTime();
-      double computeTotalTimePre = computeTotalTime2();*/
+      double computeTotalTimePre = computeTotalTime();*/
       
       
       int nFlightsH1 = travels.get(h1).size();
@@ -305,9 +279,8 @@ public class DesastresBoard implements Cloneable {
       int centre1 = h1/(getNHelis()/getNCentros());
       int centre2 = h2/(getNHelis()/getNCentros());
 
-      double tF1 = computeFlightTime2(f,h1);
+      double tF1 = computeFlightTime(f,h1);
       time -= tF1;
-      //if (f == 0 && nFlightsH1 > 1) // if first flight and more than one flight, subtract 10 because for the second one the heli doesn't have to wait anymore
       if (nFlightsH1 > 1) {
           time -= 10;
       }
@@ -325,10 +298,10 @@ public class DesastresBoard implements Cloneable {
       }
 
 
-      //System.out.println((getTime()-getTimePre) - (computeTotalTime2()-computeTotalTimePre));
-      /*System.out.println("exit switchPilot:");
-      System.out.println("getTime() = " + getTime());
-      System.out.println("computeTotalTime() = " + computeTotalTime());*/
+       /*if (((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre)) > 1) {
+          System.out.println((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre));
+          System.exit(3);
+      }*/
   }
 
   // Not used in this version. Time NOT tested.
@@ -371,53 +344,22 @@ public class DesastresBoard implements Cloneable {
       DesastresBoard clonedBoard = new DesastresBoard(travs,time);
       return clonedBoard;
   }
-  
+
+
+
   private double computeHelicopterTime(int heli) {
-      double t = 0;
-      
-      for (int i = 0; i < travels.get(heli).size(); i++) {
-          t += computeFlightTime(i,heli);
-      }
-      return t;
-  }
-  
-  private double computeFlightTime(int flight, int heli) {
-      double t = 0;
-      int centre = heli/(getNHelis()/getNCentros());
-      t = t + centreGroupdistances[centre][travels.get(heli).get(flight).get(0)] + centreGroupdistances[centre][travels.get(heli).get(flight).get(travels.get(heli).get(flight).size()-1)];
-      if ((flight > 0) && (flight != travels.get(heli).size()-1))
-          t += 10;
-      for (int j = 0; j < travels.get(heli).get(flight).size(); j++) {
-              t += gs.get(travels.get(heli).get(flight).get(j)).getPrioridad() * gs.get(travels.get(heli).get(flight).get(j)).getNPersonas();
-      }
-      return t;
-  }
-  
-  public double computeTotalTime() {
-      double t = 0;
-      for (int i = 0; i < getNHelis(); i++) {
-          t += computeHelicopterTime(i);
-      }
-      return t;
-  }
-
-
-
-
-
-
-    private double computeHelicopterTime2(int heli) {
         double t = 0;
 
         for (int i = 0; i < travels.get(heli).size(); i++) {
-            t += computeFlightTime2(i,heli);
-            if ((i > 0))// && (i != travels.get(heli).size()-1))
+            t += computeFlightTime(i,heli);
+            if ((i > 0))
                 t += 10;
         }
         return t;
     }
 
-    private double computeFlightTime2(int flight, int heli) {
+
+    private double computeFlightTime(int flight, int heli) {
         double t = 0;
         int centre = heli/(getNHelis()/getNCentros());
         t = t + centreGroupdistances[centre][travels.get(heli).get(flight).get(0)] + centreGroupdistances[centre][travels.get(heli).get(flight).get(travels.get(heli).get(flight).size()-1)];
@@ -427,10 +369,11 @@ public class DesastresBoard implements Cloneable {
         return t;
     }
 
-    public double computeTotalTime2() {
+    // only for debugging purposes
+    public double computeTotalTime() {
         double t = 0;
         for (int i = 0; i < getNHelis(); i++) {
-            t += computeHelicopterTime2(i);
+            t += computeHelicopterTime(i);
         }
         return t;
     }
