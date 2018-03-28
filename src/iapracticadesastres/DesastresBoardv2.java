@@ -173,7 +173,7 @@ public class DesastresBoardv2 implements Cloneable {
             tmp2.set(g2, aux);
             if (f1 != f2) {
                 double time1 = computeFlightTime(f1,h1);
-                double time2 = computeFlightTime(f2,h1);
+                double time2 = computeFlightTime(f2,h2);
                 time = time + time1 + time2;
             } else time += computeFlightTime(f1,h1);
         } else {
