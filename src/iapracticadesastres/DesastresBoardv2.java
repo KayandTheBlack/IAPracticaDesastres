@@ -253,7 +253,7 @@ public class DesastresBoardv2 implements Cloneable {
     return true;
   }
   
-  public Boolean possibleSwap (int h1, int h2, int f1, int g1, int f2, int g2){
+  public Boolean possibleSwapv2 (int h1, int h2, int f1, int g1, int f2, int g2){
     if(h1 == h2 && f1 == f2) {
         if(g1 == g2) return false; //useless op
         return true; //no conditions, can do
@@ -343,7 +343,7 @@ public class DesastresBoardv2 implements Cloneable {
       return true;
   }
   
-  public DesastresBoard clone() {//fixed
+  public DesastresBoardv2 clone() {//fixed
       ArrayList<ArrayList<ArrayList<Integer> > > travs = new ArrayList (travels.size());
       for (int i = 0; i < travels.size(); i++){
           ArrayList<ArrayList<Integer> > currI = travels.get(i);
@@ -359,7 +359,7 @@ public class DesastresBoardv2 implements Cloneable {
               }
           }
       }
-      DesastresBoard clonedBoard = new DesastresBoard(travs,time);
+      DesastresBoardv2 clonedBoard = new DesastresBoardv2(travs,time);
       return clonedBoard;
   }
 
