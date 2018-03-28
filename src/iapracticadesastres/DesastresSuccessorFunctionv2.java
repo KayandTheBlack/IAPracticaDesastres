@@ -40,7 +40,7 @@ public class DesastresSuccessorFunctionv2 implements SuccessorFunction { // This
                 for (int g1 = 0; g1 < travels.get(h1).get(f1).size(); g1++) {
                     for (int h2 = 0; h2 < travels.size(); h2++) {
                         for (int f2 = 0; f2 < travels.get(h2).size(); f2++) {
-                            if(board.possibleMovAndDeletev2(h1,f2,f1,g1,f2)) {
+                            if(board.possibleMovAndDeletev2(h1,h2,f1,g1,f2)) {
                                 DesastresBoardv2 board2 = board.clone();
                                 board2.movAndDelete2(h1, h2, f1, g1, f2);
                                 double v = board2.getTime();
