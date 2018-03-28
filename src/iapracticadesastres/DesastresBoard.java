@@ -161,18 +161,19 @@ public class DesastresBoard implements Cloneable {
     ArrayList<Integer> tmp1=tmp.get(f1);
     ArrayList<Integer> tmp2=tmp.get(f2);
     
-    double time1 = computeFlightTime(f1,heli);
-    double time2 = computeFlightTime(f2,heli);
-    time = time -time1 -time2;
-    
+    if (f1 != f2) {
+        double time1 = computeFlightTime(f1,heli);
+        double time2 = computeFlightTime(f2,heli);
+        time = time -time1 -time2;
+    } else time -= computeFlightTime(f1,heli);
     int aux = tmp1.get(g1);
     tmp1.set(g1, tmp2.get(g2));
     tmp2.set(g2, aux);
-    
-    time1 = computeFlightTime(f1,heli);
-    time2 = computeFlightTime(f2,heli);
-    time = time + time1 + time2;
-
+    if (f1 != f2) {
+        double time1 = computeFlightTime(f1,heli);
+        double time2 = computeFlightTime(f2,heli);
+        time = time + time1 + time2;
+    } else time += computeFlightTime(f1,heli);
 
       /*if (((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre)) > 1) {
           System.out.println((getTime()-getTimePre) - (computeTotalTime()-computeTotalTimePre));
