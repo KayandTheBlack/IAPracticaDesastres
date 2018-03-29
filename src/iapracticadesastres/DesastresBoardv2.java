@@ -195,9 +195,9 @@ public class DesastresBoardv2 implements Cloneable {
             time = time + time1 + time2;
         }
   }
-  // Not used in this version, no timer implemented
   public void permute (int heli, int flight, int n){
     ArrayList<Integer> f = travels.get(heli).get(flight);
+    double ftime = computeFlightTime(flight, heli);
     int aux;
     switch(n){ 
         case 0: //21 //swap the two elements of the flight
@@ -234,6 +234,7 @@ public class DesastresBoardv2 implements Cloneable {
             break;
           
       }
+    time += computeFlightTime(flight, heli)-ftime;
   }
   
   //GROUP WISE OPERATORS CHECKER

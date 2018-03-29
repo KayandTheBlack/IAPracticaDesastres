@@ -1,0 +1,56 @@
+seeds time1 time2 exec1 exec2
+46 2228.16 2127.78 3072 3193
+105 2266.58 2103.03 2052 2455
+273 2178.02 2118.93 2112 2665
+249 2196.85 2114.57 2195 2725
+164 2573.65 2419.55 2071 2485
+15 2159.78 2058.0 2117 2558
+36 2622.32 2475.0 1911 2419
+15 2159.78 2058.0 2129 2582
+143 2128.14 2043.1 2193 2825
+162 2461.33 2381.04 1943 2423
+
+
+
+
+ Paired t-test
+
+data:  time1 and time2
+t = 9.6251, df = 9, p-value = 2.457e-06
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 87.07592      Inf
+sample estimates:
+mean of the differences 
+                107.561
+
+Experiment 1.2
+
+seeds time1 time2 exec1 exec2
+320 1877.52 2084.57 4110 1365
+386 2250.67 2345.2 2519 992
+183 2184.32 2209.99 2796 1051
+157 2485.34 2499.49 2426 916
+73 2329.75 2419.46 2683 976
+326 2029.83 2108.88 2671 1005
+100 2066.32 2170.83 2542 939
+345 2087.86 2194.35 2768 1010
+353 2504.38 2574.76 2352 846
+245 2231.76 2334.35 2787 1015
+
+ Paired t-test
+
+data:  time1 and time2
+t = -5.3912, df = 9, p-value = 0.000219
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -59.01104
+sample estimates:
+mean of the differences 
+                -89.413
+
+
+
+
+FINAL CONCLUSION:
+	best subset is mov,swap,switch without restrictions, but it is also the more costly in execution time.

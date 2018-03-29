@@ -146,13 +146,19 @@ conjuntos de operadores:
 • En función de la bondad de las soluciones.
 
 EXPERIMENTO 1: SOBRE OPERADORES
-Observamos que un conjunto de operadores poco expresivo podría llevarnos a no encontrar la mejor solución, y que uno demasiado expresivo podría tener un factor de ramificación demasiado alto. Por ello, nos interesa ver qué conjunto base nos lleva a mejores soluciones.
+Observamos que un conjunto de operadores poco expresivo podría llevarnos a no encontrar la mejor solución, y que uno demasiado expresivo podría tener un factor de ramificación demasiado alto. Por ello, nos interesa ver qué conjunto base nos lleva a mejores soluciones, y compararemos el conjunto que permite swaps y movs entre helicópteros y el que no lo permite. (clases java board y boardv2, successor y succesor2...).
 Plantearemos probar diferentes subconjuntos de operadores para nuestro problema, con diferentes restricciones de uso.
 Metodo: usaremos lo dicho por el enunciado (TODO: explicitar), blah blah blah
 HACER UN BOXPLOT CON LOS DATOS! ANALISIS POR PARES DE MUESTRAS!
+Tenemos los datos y los boxplot en esta misma carpeta (TODO: change this, insert, blah blah)
+	Decidimos usar el conjunto no restringido en vista de los resultados! pero ahora, qué pasa si usamos permute en lugar de swap?
+Experimento 1.2
+	Mismo con permute en lugar de swap, usando clase 3!
+Comentarios:
+	OBSERVACIÓN ADICIONAL: primera fase de experimentos muestra bajo uso de swap! quitarlo?
 
 Se muestra claramente la diferencia entre las
-soluciones inciales propuestas:
+soluciones iniciales propuestas:
 • En función del coste temporal de la búsqueda
 y el ahorro justificable por partir
 desde cada solución inicial.
