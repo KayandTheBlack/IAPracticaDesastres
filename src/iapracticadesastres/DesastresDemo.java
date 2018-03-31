@@ -28,7 +28,8 @@ public class DesastresDemo {
         //DesastresBoardv2 DB =new DesastresBoardv2(10,5,2,1234);
         //DB.init2(10,5,2);
         //PrintArrayList(DB.getTravels());
-        experiment2();
+        //experiment2();
+        experiment8();
     }
     public static void PrintArrayList (ArrayList<ArrayList<ArrayList<Integer>>> x) {
         System.out.println("[");
@@ -213,6 +214,26 @@ public class DesastresDemo {
                 System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + z.get(i) + " " + times1.get(i) + " " + times2.get(i) + " " + times3.get(i));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void experiment8(){
+        try{
+        double time=0; long exectime =0;
+        for(int i=0; i<10; i++){
+            long start_time = System.currentTimeMillis();
+            DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,1234);
+            DB2.init2(100, 5, 1);
+            Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+            Search search2 = new HillClimbingSearch();
+            SearchAgent agent2 = new SearchAgent(problem2,search2);
+            long end_time = System.currentTimeMillis();
+            exectime += end_time-start_time;
+            DesastresBoardv2 b = (DesastresBoardv2) search2.getGoalState();
+            time += b.getTime();
+        }
+        System.out.println("Mean problem time: " + time/10. + ";  Mean execution time: " + exectime/10);
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }

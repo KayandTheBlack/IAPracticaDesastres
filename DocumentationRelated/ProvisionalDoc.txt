@@ -111,7 +111,7 @@ Hay una explicación de la elección de los operadores.
 		-Respecto a la nomenclatura, el % indica que va implícito 
 		Subconjuntos
 			1. movAndDelete, swap, switchPilot, para la primera versión del problema, sin permitir cambios entre helicópteros.
-			2. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios entre helicópteros del centro. (para cuando vayamos a más de 1 heli por centro!)
+			2. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios entre helicópteros del centro. (para cuando vayamos a más de 1 heli por centro!) //Deprecated after tests with just 1 heli per center
 			3. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios cualesquiera.
 			4. movAndDelete, permute, switchPilot, primera versión, cambios entre helicópteros del grupo TODO: asegurar experimentalmente!
 			TODO: mirar qué tal van antes de proseguir, prereq: experimento 1

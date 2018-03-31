@@ -1,0 +1,5 @@
+Mean problem time: 2107.75;  Mean execution time: 2268
+
+Relevant info:
+	Using operator set 3: movAndDelete, swap, switchPilot; not restricted to same helicopter.
+	Using initialisation method 3: round robin assignment to helicopters in nearest center. 
