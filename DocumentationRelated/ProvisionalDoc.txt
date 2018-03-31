@@ -77,7 +77,7 @@ coste de hallar la solución).
 	Tenemos las siguientes posibilidades:
 		1. El estado inicial es, para cada grupo, un vuelo. Dicho vuelo será asignado a uno de los helicópteros, que rescatará a todos los grupos. Ésta es la solución trivial peor, prácticamente maximizando el tiempo total de rescate (podría peor si además asociasemos al grupo a su helicóptero más lejano), y por ello tiene potencial de acercarse más al mínimo general.
 		2. Similar a 1, sin embargo distribuiremos los viajes entre helicópteros. Expresado formalmente, el grupo Iésimo le será asignado al helicóptero (I mod (C*H))ésimo. El primer grupo al primer helicóptero, el segundo al segundo, y así sucesivamente hasta no tener más grupos. Si nos quedamos sin helicópteros, vuelta a empezar. Nótese, de nuevo, que evitamos tener dos grupos ya en un mismo vuelo.
-		3. TODO: think more? 
+		3. Distribuiremos cada grupo en viajes de 1 grupo que irán a uno de los centros más cercanos. Los helicópteros se asignarán Round Robin.
 
 Determinar qué operadores de transformación sobre la solución son posibles en el problema y qué
 combinación de estos operadores es adecuada para solucionar el problema considerando el factor de

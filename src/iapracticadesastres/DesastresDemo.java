@@ -24,7 +24,11 @@ public class DesastresDemo {
         //TSPHillClimbingSearch(DB);
         //TSPSimulatedAnnealingSearch(DB);
         //experiment1();
-        experiment1_2();
+        //experiment1_2();
+        //DesastresBoardv2 DB =new DesastresBoardv2(10,5,2,1234);
+        //DB.init2(10,5,2);
+        //PrintArrayList(DB.getTravels());
+        experiment2();
     }
     public static void PrintArrayList (ArrayList<ArrayList<ArrayList<Integer>>> x) {
         System.out.println("[");
@@ -68,6 +72,7 @@ public class DesastresDemo {
                 // test2
                 start_time = System.currentTimeMillis();
                 DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,seed);
+                DB2.init0(100, 5, 1);
                 Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
                 Search search2 = new HillClimbingSearch();
                 SearchAgent agent2 = new SearchAgent(problem2,search2);
@@ -108,6 +113,7 @@ public class DesastresDemo {
                 //timer here
                 long start_time = System.currentTimeMillis();
                 DesastresBoardv2 DB =new DesastresBoardv2(100,5,1,seed);
+                DB.init0(100, 5, 1);
                 Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
                 Search search =  new HillClimbingSearch();
                 SearchAgent agent = new SearchAgent(problem,search);
@@ -120,6 +126,7 @@ public class DesastresDemo {
                 // test2
                 start_time = System.currentTimeMillis();
                 DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,seed);
+                DB2.init0(100, 5, 1);
                 Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv3(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
                 Search search2 = new HillClimbingSearch();
                 SearchAgent agent2 = new SearchAgent(problem2,search2);
@@ -141,6 +148,69 @@ public class DesastresDemo {
             System.out.println("seeds time1 time2 exec1 exec2");
             for(int i=0; i<10; i++) {
                 System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + times1.get(i) + " " + times2.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void experiment2() {
+        try {
+            Random myRandom=new Random();
+            ArrayList<Integer> seeds = new ArrayList(10);
+            ArrayList<Long> times1 = new ArrayList(10);
+            ArrayList<Double> x = new ArrayList(10);
+            ArrayList<Long> times2 = new ArrayList(10);
+            ArrayList<Double> y = new ArrayList(10);
+            ArrayList<Long> times3 = new ArrayList(10);
+            ArrayList<Double> z = new ArrayList(10);
+            for (int i=0; i<10; i++) {
+                //init0
+                int seed = myRandom.nextInt(400);
+                long start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB =new DesastresBoardv2(100,5,1,seed);
+                DB.init0(100, 5, 1);
+                Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search =  new HillClimbingSearch();
+                SearchAgent agent = new SearchAgent(problem,search);
+                long end_time = System.currentTimeMillis();
+                long difference = end_time-start_time;
+                DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                double time = b.getTime();
+                
+                // init1
+                start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,seed);
+                DB2.init1(100, 5, 1);
+                Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search2 = new HillClimbingSearch();
+                SearchAgent agent2 = new SearchAgent(problem2,search2);
+                end_time = System.currentTimeMillis();
+                long difference2 = end_time-start_time;
+                DesastresBoardv2 b2 = (DesastresBoardv2) search2.getGoalState();
+                double time2 = b2.getTime(); 
+                // init2
+                start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB3 =new DesastresBoardv2(100,5,1,seed);
+                DB3.init2(100, 5, 1);
+                Problem problem3 = new Problem(DB3, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search3 = new HillClimbingSearch();
+                SearchAgent agent3 = new SearchAgent(problem3,search3);
+                end_time = System.currentTimeMillis();
+                long difference3 = end_time-start_time;
+                DesastresBoardv2 b3 = (DesastresBoardv2) search3.getGoalState();
+                double time3 = b3.getTime(); 
+                
+                seeds.add(seed);
+                x.add(time);
+                times1.add(difference);
+                y.add(time2);
+                times2.add(difference2);
+                z.add(time3);
+                times3.add(difference3);
+            }
+            System.out.println("seeds time1 time2 time3 exec1 exec2 exec3");
+            for(int i=0; i<10; i++) {
+                System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + z.get(i) + " " + times1.get(i) + " " + times2.get(i) + " " + times3.get(i));
             }
         } catch (Exception e) {
             e.printStackTrace();

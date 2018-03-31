@@ -1,0 +1,51 @@
+seeds time1 time2 time3 exec1 exec2 exec3
+349 2451.37 2429.23 2447.96 3272 2582 1785
+70 2057.85 2064.92 2094.99 2727 3081 2057
+169 2450.9 2499.47 2419.82 2436 2612 1950
+13 2352.14 2316.31 2343.51 2375 2562 1981
+179 2035.77 2032.6 2004.01 2496 2895 2264
+260 2364.48 2390.22 2352.96 2348 2484 2047
+342 2250.05 2237.02 2255.04 2300 2614 1915
+358 2589.11 2557.42 2569.97 2048 2452 1639
+246 2450.26 2423.76 2433.17 2855 2645 2114
+146 2296.38 2298.71 2312.18 2222 2625 2063
+
+
+ Paired t-test
+
+data:  time1 and time2
+t = 0.57244, df = 9, p-value = 0.581
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -14.36057  24.09057
+sample estimates:
+mean of the differences 
+                  4.865
+
+Reject time1 and time2 difference because of p-value
+
+
+ Paired t-test
+
+data:  time1 and time3
+t = 0.96009, df = 9, p-value = 0.3621
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -8.774541 21.714541
+sample estimates:
+mean of the differences 
+                   6.47
+
+
+data:  time2 and time3
+t = 0.14342, df = 9, p-value = 0.8891
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -23.71042  26.92042
+sample estimates:
+mean of the differences 
+                  1.605
+
+Reject time1 and 2 different from time3.
+
+Seeing how 3 yields best exec times, we'll use 3.

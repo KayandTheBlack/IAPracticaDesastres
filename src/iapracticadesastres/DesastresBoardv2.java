@@ -79,7 +79,9 @@ public class DesastresBoardv2 implements Cloneable {
             centreGroupdistances[j][i] = dist*0.6; //Km and minutes
         }
     }
-    //Eo initialisation, take outside for testing
+    
+  }
+  public void init0(int nGrupos, int nCentros, int nHelis) { //original
     int totalHelis = nHelis*nCentros;
     travels = new ArrayList (totalHelis);
     ArrayList<ArrayList<Integer> > firstHeli = new ArrayList(nGrupos);
@@ -95,7 +97,47 @@ public class DesastresBoardv2 implements Cloneable {
     int h0 = 0;
     time = computeHelicopterTime(h0);
   }
-
+  public void init1(int nGrupos, int nCentros, int nHelis) { //Full round robin
+    int totalHelis = nHelis*nCentros;
+    travels = new ArrayList(totalHelis);
+    for(int i=0; i<totalHelis; i++) {
+        travels.add(new ArrayList(nGrupos/totalHelis)); //expected load factor
+    }
+    for(int i=0; i<nGrupos; i++) {
+        ArrayList<Integer> flight =new ArrayList(1);
+        flight.add(i);
+        travels.get(i%totalHelis).add(flight);
+    }
+    time = computeTotalTime();
+  }
+  public void init2(int nGrupos, int nCentros, int nHelis) {
+    int totalHelis = nHelis*nCentros;
+    travels = new ArrayList(totalHelis);
+    for(int i=0; i<totalHelis; i++) {
+        travels.add(new ArrayList(nGrupos/totalHelis)); //expected load factor with random distribution of centres and groups
+    }
+    ArrayList<Integer> robin = new ArrayList(nCentros);
+    for(int i=0; i<nCentros; i++) {
+        robin.add(0); //all to 0
+    }
+    for(int i=0; i<nGrupos; i++) {
+        ArrayList<Integer> flight = new ArrayList(1);
+        flight.add(i);
+        int mini=-1; double minTime = 1000000000000.;
+        for (int c =0; c < nCentros; c++) {
+            if(centreGroupdistances[c][i] < minTime) {
+                mini=c; 
+                minTime = centreGroupdistances[c][i];
+            }
+        }
+        if(mini==-1) System.out.println("Fuuuuuuuuck"); //BUG
+        //mini is closest centre
+        Integer heli = robin.get(mini);
+        robin.set(mini, (heli+1)%nHelis);
+        travels.get(mini*nHelis+heli).add(flight);
+    }
+    time = computeTotalTime();
+  }
   public int getNGrupos(){
     return gs.size();
   }
@@ -388,7 +430,7 @@ public class DesastresBoardv2 implements Cloneable {
         return t;
     }
 
-    // only for debugging purposes
+    // USED IN INIT1 AND 2!
     public double computeTotalTime() {
         double t = 0;
         for (int i = 0; i < getNHelis(); i++) {
