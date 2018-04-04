@@ -38,13 +38,9 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
         int movAndDeleteSpace = nGroups*nFlights;
         int swapSpace = nGroups*nGroups;
         int switchPilotSpace = nFlights*nHelis;
-        /*int movAndDeleteSpace = 30000;
-        int swapSpace = 30000;
-        int switchPilotSpace = 30000;*/
         int space = movAndDeleteSpace + swapSpace + switchPilotSpace;
         int random;
-        /*System.out.println(space + " " + switchPilotSpace);
-        System.exit(1);*/
+
 
         boolean op = false;
 
@@ -54,8 +50,9 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
 
             if (random < movAndDeleteSpace) { // movAndDelete
 
-                int group = random % nGroups;
-                int originalFlight = random % nFlights;
+                int group = random / nFlights;
+                int flight = random % nFlights;
+
 
                 int groupCounter = 0;
                 int flightCounter = 0;
@@ -67,7 +64,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
 
                 for (int i = 0; !found && i < travels.size(); i++) {
                     for (int h = 0; !f2Found && h < travels.get(i).size();h++) {
-                        if (originalFlight == flightCounter) {
+                        if (flight == flightCounter) {
                             h2 = i;
                             f2 = h;
                             f2Found = true;
@@ -77,7 +74,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
                     }
 
 
-                    for (int j = 0; !found && j < travels.get(i).size(); j++) {
+                    for (int j = 0; !gFound && j < travels.get(i).size(); j++) {
                         for (int k = 0; !gFound && k < travels.get(i).get(j).size(); k++) {
                             if (group == groupCounter) {
                                 h1 = i;
@@ -92,13 +89,15 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
 
                     }
                 }
+
+
                 if (found && board.possibleMovAndDeletev2(h1, h2, f1, g, f2)) {
                     DesastresBoardv2 board2 = board.clone();
                     board2.movAndDelete2(h1, h2, f1, g, f2);
                     double v = DesHF.getHeuristicValue(board2);
                     String S = DesastresBoard.MOVANDDELETE + " heli " + h1 + " f1 " + f1 + " group " + g + " f2 " + f2 +  " Cost(" + v + ") ---> " + board2.toString();
                     retVal.add(new Successor(S, board2));
-                    System.out.println(S);
+                    //System.out.println(S);
                     op = true;
                 }
 
@@ -144,7 +143,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
                     board2.swap2(h1, h2, f1, g1, f2, g2);
                     double v = DesHF.getHeuristicValue(board2);
                     String S = DesastresBoard.SWAP + " h1 " + h1 + " f1 " + f1 + " g1 " + g1 + "h2" + h2 + " f2 " + f2 + " g2 " + g2 + " Cost(" + v + ") ---> " + board2.toString();
-                    System.out.println(S);
+                    //System.out.println(S);
                     retVal.add(new Successor(S, board2));
                     op = true;
                 }
@@ -152,7 +151,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
             } else { // switchPilot
                 random = random - (movAndDeleteSpace + swapSpace);
                 int flight = random % nFlights;
-                int heli2 = random % nHelis;
+                int heli2 = random / nFlights;
 
                 int flightCounter = 0;
                 int h1 = 0, f = 0;
@@ -181,7 +180,7 @@ public class DesastresSuccessorFunctionSA implements SuccessorFunction {
                     board2.switchPilot(h1, h2, f);
                     double v = DesHF.getHeuristicValue(board2);
                     String S = DesastresBoard.SWITCHPILOT + " h1 " + h1 + " h2 " + h2 + " f " + f +  " Cost(" + v + ") ---> " + board2.toString();
-                    System.out.println(S);
+                    //System.out.println(S);
                     retVal.add(new Successor(S, board2));
                     op = true;
                 }
