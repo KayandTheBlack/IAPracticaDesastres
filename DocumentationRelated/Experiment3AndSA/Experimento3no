@@ -1,0 +1,30 @@
+Experimento 3
+
+Partiremos de los valores por defecto del ejemplo de TSP.
+SimulatedAnnealingSearch(2000,100,5,0.001);
+Primer parámetro: steps, máximo número de iteraciones.
+Segundo parámetro: stiter, número de iteraciones para cada paso de decremento de temperatura.
+Tercer y cuarto parámetro: k y lambda, determinan el comportamiento de la función de temperatura.
+Ver función de temperatura: F(T) = k*e^(-lambda*T)
+Dejaremos el número de iteraciones para el final, porque cabe deducir que como más iteraciones más probable será estar cerca del óptimo, con un cierto límite.
+
+
+Con los dichos valores iniciales de Simulated Annealing y con una seed de 1234, por ejemplo, los valores tienen una cierta desviación estándard porque es una función estocástica, aunque no es muy elevada. Por este motivo por una misma seed haremos la media de 3 ejecuciones.
+2235.46
+2208.99
+2176.90
+2180.05
+2191.32
+2238.84
+2234.56
+2196.62
+2236.87
+2216.92
+
+standard deviation = 24.38
+mean = 2211.653
+
+
+
+Para steps = 2000, stiter = 100, k = 5.
+Posibles valores de lambda: 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001

@@ -1,0 +1,4 @@
+Notas Simulated Annealing:
+-Con los valores por defecto, init1 parece ir un poco mejor.
+-Distribución en el random space: como se calcula a partir de una unica seed, los operadores no tendrán la misma probabilidad de ser escogidos en todos los casos, dependerá del valor del número de grupos, número de helicópteros y número de vuelos.
+-Muchísimo más rápido que hill climbing, con valores de tiempo iguales o mejores.

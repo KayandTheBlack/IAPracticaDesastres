@@ -1,0 +1,26 @@
+Experimento 3
+
+Seguiremos la guía para determinar los parámetros de simulated annealing del enunciado de la práctica.
+
+SimulatedAnnealingSearch(steps,stiter,lambda);
+steps: máximo número de iteraciones.
+stiter: número de iteraciones para cada paso de cambio de temperatura (divisor de steps).
+k y lambda: parámetros de la función de temperatura/aceptaciób de estados
+Ver función de temperatura: F(T) = k*e^(-lambda*T)
+Ver función de la probablidad de aceptación de un estado peor: P(estado) = e^(delta E/F(T))
+(esta última tiene rango [0,1] al tratarse de una probabilidad).
+
+Dejaremos steps para más adelante, porque va depender de los valores que hayamos escogido por k y lambda.
+
+Empezaremos con k y lambda.
+
+Dado que el comportamiento de la función no varía con el problema, tendremos que estudiar para un problema concreto cuántas iteraciones harán falta para que la exploración pueda sobrepasar el punto en que la probabilidad se hace 0, que es el momento en el que el algoritmo solo puede mejorar la solucíón actual. El problema concreto será el escenario del enunciado:
+DesastresBoardv2(100,5,1,Seed), esto es, 100 grupos, 5 centros y un helicópter.
+La seed irá variando aleatoriamente.
+
+Usaremos un número de iteraciones grande para asegurarnos de que lleguemos a converger y probaremos los valors para k = {1,5,25,125} y para lambda = {1,0.01,0.0001}
+
+
+Todas las combinaciones para estos valores para 10 seeds distintas.
+
+Observamos la tabla con las medias y la gráfica en 3D. Observamos que para lambda 0.01 siempre es bastante mejor y parece que con k's mas bien pequeñas es mejor, pero esto último no es conclusivo. Para la sigueinte iteración (archivos 2), probamos los mismos valores de k pero movemos lambda alrededor de 0.01: 0.1, 0.01 y 0.001. En las tablas y la gráfica 3D parece ser mejor lambda 0.001, pero con mucha menos diferencia que antes. En la iteración 3 controlamos con lambda = 0.001 y movemos la k, y observamos un mínimo en alrededor de k = 20. En la iteración 4, para asegurarnos, probamos con lambda 0.1,0.01 y 0.001 y k's más pequeñas, y confirmamos un aparente mínimo alredor de lambda = 0.001 y k = 20. [otra iteración más alrededor de estos valores?] Escogeremos, pues, estos valores, y ahora pasaremos a stiter y steps.
