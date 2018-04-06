@@ -221,26 +221,7 @@ public class DesastresDemo {
             e.printStackTrace();
         }
     }
-    public static void experiment3(){
-        try{
-        double time=0; long exectime =0;
-        for(int i=0; i<10; i++){
-            long start_time = System.currentTimeMillis();
-            DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,1,1234);
-            DB2.init2(100, 5, 1);
-            Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
-            Search search2 = new HillClimbingSearch();
-            SearchAgent agent2 = new SearchAgent(problem2,search2);
-            long end_time = System.currentTimeMillis();
-            exectime += end_time-start_time;
-            DesastresBoardv2 b = (DesastresBoardv2) search2.getGoalState();
-            time += b.getTime();
-        }
-        System.out.println("Mean problem time: " + time/10. + ";  Mean execution time: " + exectime/10);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public static void experiment8(){
         try{
@@ -505,7 +486,7 @@ public class DesastresDemo {
         }
     }
 
-
+/*
 
     public static void experiment33(){
         Random myRandom=new Random();
@@ -589,7 +570,7 @@ public class DesastresDemo {
         }
     }
 
-
+*/
     
     private static void printInstrumentation(Properties properties) {
         Iterator keys = properties.keySet().iterator();
