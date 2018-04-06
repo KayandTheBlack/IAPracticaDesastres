@@ -1,0 +1,105 @@
+Explicación experimento 3
+
+Vamos a optimizar (minimizar) la función de simulated annealing siguiendo la guía del enunciado de la práctica.
+
+SimulatedAnnealingSearch(steps,stiter,lambda);
+steps: máximo número de iteraciones.
+stiter: número de iteraciones para cada paso de cambio de temperatura (divisor de steps).
+k y lambda: parámetros de la función de temperatura/aceptaciób de estados
+Ver función de temperatura: F(T) = k*e^(-lambda*T)
+Ver función de la probablidad de aceptación de un estado peor: P(estado) = e^(delta E/F(T))
+(esta última tiene rango [0,1] al tratarse de una probabilidad).
+
+Dejaremos steps y stiter para más adelante, porque van depender de los valores que hayamos escogido por k y lambda.
+
+Empezaremos con k y lambda.
+
+Dado que el comportamiento de la función no varía con el problema, tendremos que estudiar para un problema concreto cuántas iteraciones harán falta para que la exploración pueda sobrepasar el punto en que la probabilidad se hace 0, que es el momento en el que el algoritmo solo puede mejorar la solucíón actual. El problema concreto será el escenario del enunciado:
+DesastresBoardv2(100,5,1,Seed), esto es, 100 grupos, 5 centros y un helicópter.
+La seed irá variando aleatoriamente.
+
+Para todo el experimento, guardaremos la seed, los parámetros, el reultado (value) y el tiempo de ejecución.
+
+En todos los casos haremos diez repeticiones para unos mismos parámetros y para hacer el análisis con los datos miraremos su media.
+
+
+Usaremos un número de iteraciones grande para asegurarnos de que lleguemos a converger y probaremos los valores para k = {1,5,25,125} y para lambda = {1,0.01,0.0001}. El número de iteraciones será steps = 15000, tomado a partir de la experiencia de varias ejecuciones, nos ha parecido un número suficientemente grande. Los posibles valores de k y lambda, los mismos que los de la guía, son valores "extremos", para poder acotar más tarde.
+
+
+LAMBDA Y K
+
+Haremos 6 iteraciones (de análisis, no de código). En la primera, tomamos los dichos valores iniciales, ejecutamos la función que hemos escrito para probarlos, hacemos las medias para unos mismos parámetros y observamos el gráfico en 3D resultante, como en la guía. Cabe destacar que las diferentes medias, para una media de 2122.98, presentan una desviación estándar de 175.97, un valor relativamente grande para su media (a modo de comparación, 10 ejecuciones con una misma seed con unos parámetros arbitrarios podrían dar resultados del orden de media = 211165 y desviación estándar de solo 24.38.
+
+[medias iteración 1]
+
+2267,367
+2318,174
+1952,042
+1970,005
+1960,409
+1967,729
+1962,248
+1973,921
+2163,498
+2428,853
+
+
+Mean = 2122.9780833333
+Standard Deviation = 175.97183378002
+
+[ejecuciones con una misma seed]
+
+2235.46
+2208.99
+2176.90
+2180.05
+2191.32
+2238.84
+2234.56
+2196.62
+2236.87
+2216.92
+
+standard deviation = 24.38
+mean = 2211.653
+
+Nota: los detalles exactos de los parámetros y los resultados así como la relación de gráficos se hallan en exp3Data.txt
+
+En la iteración 1 la diferencia significativa. Vemos que lambda = 0.001 es mucho mejor. Parece haber un mínimo en k = 1 pero en k = 20 el valor también es pequeño. Funciona mejor con todas las ks en general, fijado a lambda = 0.001
+
+Por eso en la iteración 2 mantenemos las mismas k pero acotamos las lambdas alrededor de 0.01. Lambda = 0.001 parece funcionar mejor. Vuelve a parecer un valor pequeño en k = 20, esta vez siendo el mínimo de los observados.
+
+En la iteración 3 solo miraremos dos dimensiones: valores con k variable y lambda fijada a 0.001. Alrededor de 20, más bien entre el 20 y el 30 se encuentra el mínimo.
+
+En la iteración 4 acotamos más tanto las ks como lambda: alrededor de 0.001 y k = 15. Lambda 0.001 y k = 20 de nuevo es el mínimo, aunque hay resultados prometedores en k = 30 para lambda = 0.001 y con ks más pequeñas.
+
+Sin embargo, cada vez es menos significativa la diferencia, y hay un componente aleatorio.
+
+n la última iteración, la 5, acotamos aún más: lambdas de 0.001, 0.0015 y 0.0005, y ks entre 5 y 30. Observamos un mínimo en k = 30 y y otro valor muy reducido en k = 30, con lambda = 0.0015 y lambda = 0.0005, respectivamente. Sin embargo, si calculamos la desviación estándard observamoremos veremos que está alrededor de 5, siendo muchísimo más pequeña que la media y bastante menor que la desviación estándar para una misma seed y mismos parámetros.
+
+La conclusión a la que llegamos es que optimizar hasta cierto punto con estos valores puede ser difícil por el componente aleatorio, así que la decisión puede resultar un tanto arbitraria. Por otra parte, es indudable que con lambda alrededor de 0.001 es mejor. La k es más variable, perocComo en varias iteraciones hemos apreciado o bien un mínimo o bien un valor bastante bajo alrededor de k = 20, vamos a tomar este valor.
+
+STITER
+
+Dependiendo de cómo hayamos optimizado k y lambda nos saldrá un stiter diferente.
+
+Fijamos los parámetros k = 20 y lambda = 0.001.
+
+Ahora ya trataremos con una sola dimensión.
+
+En el gráfico observamos un mínimo en stiter = 100, así que lo escogeremos, pero cabe destacar que la varianza es muy pequeña.
+
+STEPS
+
+Como se explica en la guía, si la función empeorara con más steps, podría ser que realmente no estuviésemos considerando valores suficientemente grandes.
+
+En la guía se menciona que para determinar el número de iteraciones mínimo para unos valores concretos de k y lambda existe una iteración en que la probabilidad de aceptación se hace 0, y partir de ella el algoritmo solo acepta mejores soluciones, así que para hallar una buena solución hemos de usar un valor mayor. El cuanto mayor se deberá experiementar.
+
+En nuestro caso, previamente al experimento en sí, hemos probado números de steps muy elevados para comprobar que el coste siempre se estabiliza alrededor de 2000 y poco (dependiendo de la seed). Con el experimento nos hemos dado cuenta de que el coste de la función tiende a estabilizarse alrededor de 75000 iteraciones.
+
+En principio, a más iteraciones, mejor resultado (con un límite), con el coste proporiconal en tiempo de ejecución. Sin embargo, como hemos dicho, hemos detectado que alrededor de 75000 tiende a estabilizarse observando las tablas de resultados (medias) y las gráficas. Como mucho en algún caso podría bajar 2 puntos más subiendo al orden del millón, a costa de incrementar mucho el tiempo de ejecución, y además no en todos los casos se aprecia la diminuta mejora.
+
+Si el coste en tiempo de ejecución fuera crítico, sería perfectamente aceptable reducir steps a 15000 (valor usado en la otra parte del experimento), con pérdidas de optimización del orden de las decenas.
+
+Elegimos:
+steps = 75000, stiter = 100, k = 20, lambda = 0.001.

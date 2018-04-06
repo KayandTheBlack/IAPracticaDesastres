@@ -31,7 +31,7 @@ public class DesastresDemo {
         //experiment2();
         //experiment8();
         //experiment33();
-        experiment3_kLambda_4();
+        experiment3_steps();
     }
 
 
@@ -263,7 +263,7 @@ public class DesastresDemo {
         }
     }
 
-    private static void experiment3_kLambda_ini() {
+    private static void experiment3_kLambda() {
         try {
             int n = 10;
             Random myRandom = new Random();
@@ -272,158 +272,39 @@ public class DesastresDemo {
             ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
             ArrayList<ArrayList<Integer>> used_ks = new ArrayList(n);
             ArrayList<ArrayList<Double>> used_lambdas = new ArrayList(n);
+            /*
+            // ini 1
             double lambdas[] = {1,0.01,0.0001};
             int ks[] = {1,5,25,125};
-            int steps = 15000;
-            int stiter = 100;
-            int nGrupos = 100;
-            int nCentros = 5;
-            int nHelis = 1;
-            for (int i = 0; i < n; i++) {
-                int seed = myRandom.nextInt(400);
-                //seeds.set(i,seed);
-                seeds.add(seed);
-                ArrayList<Double> values_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Long> exec_times_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Integer> used_ks_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Double> used_lambdas_set = new ArrayList(lambdas.length*ks.length);
-                for (int j = 0; j < lambdas.length; j++) {
-                    double lambda = lambdas[j];
-                    for (int h = 0; h < ks.length; h++) {
-                        int k = ks[h];
+            */
 
-                        DesastresBoardv2 DB2 =new DesastresBoardv2(nGrupos,nCentros,nHelis,seed);
-                        DB2.init2(nGrupos, nCentros, nHelis);
-                        Problem problem =  new Problem(DB2,new DesastresSuccessorFunctionSA(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
-                        SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(steps,stiter,k,lambda);
-                        //search.traceOn();
-                        SearchAgent agent = new SearchAgent(problem,search);
-                        long end_time = System.currentTimeMillis();
-                        long exec_time = end_time-start_time;
-                        DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
-                        //printInstrumentation(agent.getInstrumentation());
-                        //values_set.set(j*lambdas.length + h,b.getTime());
-                        //exec_times_set.set(j*lambdas.length + h,exec_time);
-                        values_set.add(b.getTime());
-                        exec_times_set.add(exec_time);
-                        used_ks_set.add(k);
-                        used_lambdas_set.add(lambda);
-                    }
-                }
-                /*values.set(i,values_set);
-                exec_times.set(i,exec_times_set);*/
-                values.add(values_set);
-                exec_times.add(exec_times_set);
-                used_ks.add( used_ks_set);
-                used_lambdas.add(used_lambdas_set);
-
-            }
-            System.out.println("seed lambda k value exec_time");
-            for (int i = 0; i < n; i++) {
-                int s = seeds.get(i);
-                for (int j = 0; j < lambdas.length*ks.length; j++) {
-                    double l = used_lambdas.get(i).get(j);
-                    int k = used_ks.get(i).get(j);
-                    double v = values.get(i).get(j);
-                    double et = exec_times.get(i).get(j);
-                    System.out.println(s + " " + " " + l + " " + k + " " + v + " " + et);
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void experiment3_kLambda_4() {
-        try {
-            int n = 10;
-            Random myRandom = new Random();
-            ArrayList<Integer> seeds = new ArrayList(n);
-            ArrayList<ArrayList<Double>> values = new ArrayList(n);
-            ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
-            ArrayList<ArrayList<Integer>> used_ks = new ArrayList(n);
-            ArrayList<ArrayList<Double>> used_lambdas = new ArrayList(n);
-            double lambdas[] = {0.01,0.001,0.0001};
-            int ks[] = {1,3,5,10,15,20,30};
-            int steps = 15000;
-            int stiter = 100;
-            int nGrupos = 100;
-            int nCentros = 5;
-            int nHelis = 1;
-            for (int i = 0; i < n; i++) {
-                int seed = myRandom.nextInt(400);
-                //seeds.set(i,seed);
-                seeds.add(seed);
-                ArrayList<Double> values_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Long> exec_times_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Integer> used_ks_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Double> used_lambdas_set = new ArrayList(lambdas.length*ks.length);
-                for (int j = 0; j < lambdas.length; j++) {
-                    double lambda = lambdas[j];
-                    for (int h = 0; h < ks.length; h++) {
-                        int k = ks[h];
-
-                        DesastresBoardv2 DB2 =new DesastresBoardv2(nGrupos,nCentros,nHelis,seed);
-                        DB2.init2(nGrupos, nCentros, nHelis);
-                        Problem problem =  new Problem(DB2,new DesastresSuccessorFunctionSA(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
-                        SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(steps,stiter,k,lambda);
-                        //search.traceOn();
-                        SearchAgent agent = new SearchAgent(problem,search);
-                        long end_time = System.currentTimeMillis();
-                        long exec_time = end_time-start_time;
-                        DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
-                        //printInstrumentation(agent.getInstrumentation());
-                        //values_set.set(j*lambdas.length + h,b.getTime());
-                        //exec_times_set.set(j*lambdas.length + h,exec_time);
-                        values_set.add(b.getTime());
-                        exec_times_set.add(exec_time);
-                        used_ks_set.add(k);
-                        used_lambdas_set.add(lambda);
-                    }
-                }
-                /*values.set(i,values_set);
-                exec_times.set(i,exec_times_set);*/
-                values.add(values_set);
-                exec_times.add(exec_times_set);
-                used_ks.add( used_ks_set);
-                used_lambdas.add(used_lambdas_set);
-
-            }
-            System.out.println("seed lambda k value exec_time");
-            for (int i = 0; i < n; i++) {
-                int s = seeds.get(i);
-                for (int j = 0; j < lambdas.length*ks.length; j++) {
-                    double l = used_lambdas.get(i).get(j);
-                    int k = used_ks.get(i).get(j);
-                    double v = values.get(i).get(j);
-                    double et = exec_times.get(i).get(j);
-                    System.out.println(s + " " + " " + l + " " + k + " " + v + " " + et);
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // lambda bo: al voltant 0.01, k no queda clar
-
-    private static void experiment3_kLambda2() {
-        try {
-            int n = 10;
-            Random myRandom = new Random();
-            ArrayList<Integer> seeds = new ArrayList(n);
-            ArrayList<ArrayList<Double>> values = new ArrayList(n);
-            ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
-            ArrayList<ArrayList<Integer>> used_ks = new ArrayList(n);
-            ArrayList<ArrayList<Double>> used_lambdas = new ArrayList(n);
+            /*
+            // 2
+            // lambda bo: al voltant 0.01, k no queda clar
             double lambdas[] = {0.1,0.01,0.001};
             int ks[] = {1,5,25,125};
+            */
+            /*
+            // 3
+            double lambdas[] = {0.001};
+            int ks[] = {1,5,25,50,100,125};
+            */
+
+
+            /*
+            // 4
+            double lambdas[] = {0.01,0.001,0.0001};
+            int ks[] = {1,3,5,10,15,20,30};
+             */
+/*
+            // 5
+            double lambdas[] = {0.0015,0.001,0.0005};
+            int ks[] = {10,15,20,25,30};*/
+
+            // 6
+            double lambdas[] = {0.015,0.05,0.01,0.005,0.001,0.0005};
+            int ks[] = {1,2,3,4,5};
+
             int steps = 15000;
             int stiter = 100;
             int nGrupos = 100;
@@ -487,19 +368,21 @@ public class DesastresDemo {
         }
     }
 
-    private static void experiment3_kLambda3() {
+
+    private static void experiment3_stiter() {
         try {
             int n = 10;
             Random myRandom = new Random();
             ArrayList<Integer> seeds = new ArrayList(n);
             ArrayList<ArrayList<Double>> values = new ArrayList(n);
             ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
-            ArrayList<ArrayList<Integer>> used_ks = new ArrayList(n);
-            ArrayList<ArrayList<Double>> used_lambdas = new ArrayList(n);
-            double lambdas[] = {0.001};
-            int ks[] = {1,5,25,50,100,125};
+            ArrayList<ArrayList<Integer>> used_stiters = new ArrayList(n);
+
+            int stiters[] = {1,5,10,25,50,100,150,500,1000,1500};
+
             int steps = 15000;
-            int stiter = 100;
+            double lambda = 0.001;
+            int k = 20;
             int nGrupos = 100;
             int nCentros = 5;
             int nHelis = 1;
@@ -507,14 +390,11 @@ public class DesastresDemo {
                 int seed = myRandom.nextInt(400);
                 //seeds.set(i,seed);
                 seeds.add(seed);
-                ArrayList<Double> values_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Long> exec_times_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Integer> used_ks_set = new ArrayList(lambdas.length*ks.length);
-                ArrayList<Double> used_lambdas_set = new ArrayList(lambdas.length*ks.length);
-                for (int j = 0; j < lambdas.length; j++) {
-                    double lambda = lambdas[j];
-                    for (int h = 0; h < ks.length; h++) {
-                        int k = ks[h];
+                ArrayList<Double> values_set = new ArrayList(stiters.length);
+                ArrayList<Long> exec_times_set = new ArrayList(stiters.length);
+                ArrayList<Integer> used_stiter_set = new ArrayList(stiters.length);
+                for (int j = 0; j < stiters.length; j++) {
+                        int stiter = stiters[j];
 
                         DesastresBoardv2 DB2 =new DesastresBoardv2(nGrupos,nCentros,nHelis,seed);
                         DB2.init2(nGrupos, nCentros, nHelis);
@@ -531,27 +411,23 @@ public class DesastresDemo {
                         //exec_times_set.set(j*lambdas.length + h,exec_time);
                         values_set.add(b.getTime());
                         exec_times_set.add(exec_time);
-                        used_ks_set.add(k);
-                        used_lambdas_set.add(lambda);
-                    }
+                        used_stiter_set.add(stiter);
                 }
                 /*values.set(i,values_set);
                 exec_times.set(i,exec_times_set);*/
                 values.add(values_set);
                 exec_times.add(exec_times_set);
-                used_ks.add( used_ks_set);
-                used_lambdas.add(used_lambdas_set);
+                used_stiters.add(used_stiter_set);
 
             }
-            System.out.println("seed lambda k value exec_time");
+            System.out.println("seed stiter value exec_time");
             for (int i = 0; i < n; i++) {
                 int s = seeds.get(i);
-                for (int j = 0; j < lambdas.length*ks.length; j++) {
-                    double l = used_lambdas.get(i).get(j);
-                    int k = used_ks.get(i).get(j);
+                for (int j = 0; j < stiters.length; j++) {
+                    int st = used_stiters.get(i).get(j);
                     double v = values.get(i).get(j);
                     double et = exec_times.get(i).get(j);
-                    System.out.println(s + " " + " " + l + " " + k + " " + v + " " + et);
+                    System.out.println(s + " " + st + " " + v + " " + et);
 
                 }
             }
@@ -560,6 +436,75 @@ public class DesastresDemo {
             e.printStackTrace();
         }
     }
+
+    private static void experiment3_steps() {
+        try {
+            int n = 10;
+            Random myRandom = new Random();
+            ArrayList<Integer> seeds = new ArrayList(n);
+            ArrayList<ArrayList<Double>> values = new ArrayList(n);
+            ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
+            ArrayList<ArrayList<Integer>> used_steps = new ArrayList(n);
+
+            int steps[] = {100,500,800,1000,1200,1500,1700,2000,2200,2500,2700,3000,3200,3500,3700,4000,4500,5000,6000,7000,8000,9000,10000,12000,15000,20000,25000,50000,75000, 100000,125000,150000,175000,200000,400000,600000,800000,1000000,1500000};
+
+            int stiter = 100;
+            double lambda = 0.001;
+            int k = 20;
+            int nGrupos = 100;
+            int nCentros = 5;
+            int nHelis = 1;
+            for (int i = 0; i < n; i++) {
+                int seed = myRandom.nextInt(400);
+                //seeds.set(i,seed);
+                seeds.add(seed);
+                ArrayList<Double> values_set = new ArrayList(steps.length);
+                ArrayList<Long> exec_times_set = new ArrayList(steps.length);
+                ArrayList<Integer> used_steps_set = new ArrayList(steps.length);
+                for (int j = 0; j < steps.length; j++) {
+                    int step = steps[j];
+
+                    DesastresBoardv2 DB2 =new DesastresBoardv2(nGrupos,nCentros,nHelis,seed);
+                    DB2.init2(nGrupos, nCentros, nHelis);
+                    Problem problem =  new Problem(DB2,new DesastresSuccessorFunctionSA(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                    long start_time = System.currentTimeMillis();
+                    SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(step,stiter,k,lambda);
+                    //search.traceOn();
+                    SearchAgent agent = new SearchAgent(problem,search);
+                    long end_time = System.currentTimeMillis();
+                    long exec_time = end_time-start_time;
+                    DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                    //printInstrumentation(agent.getInstrumentation());
+                    //values_set.set(j*lambdas.length + h,b.getTime());
+                    //exec_times_set.set(j*lambdas.length + h,exec_time);
+                    values_set.add(b.getTime());
+                    exec_times_set.add(exec_time);
+                    used_steps_set.add(step);
+                }
+                /*values.set(i,values_set);
+                exec_times.set(i,exec_times_set);*/
+                values.add(values_set);
+                exec_times.add(exec_times_set);
+                used_steps.add(used_steps_set);
+
+            }
+            System.out.println("seed steps value exec_time");
+            for (int i = 0; i < n; i++) {
+                int s = seeds.get(i);
+                for (int j = 0; j < steps.length; j++) {
+                    int st = used_steps.get(i).get(j);
+                    double v = values.get(i).get(j);
+                    double et = exec_times.get(i).get(j);
+                    System.out.println(s + " " + st + " " + v + " " + et);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static void experiment33(){

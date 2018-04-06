@@ -1,0 +1,16 @@
+Explicacion experimento 3
+
+-Iteración 1: diferencia significativa. Vemos que lambda = 0.001 es mucho mejor. Parece haber un mínimo en k = 1 pero en k = 20 el valor también es pequeño. Funciona mejor con todas las ks en general, fijado a lambda = 0.001
+
+Por eso en la iteración 2 mantenemos las mismas k pero acotamos las lambdas alrededor de 0.01. Lambda = 0.001 parece funcionar mejor. Vuelve a parecer un valor pequeño en k = 20, esta vez siendo el mínimo de los observados.
+En la iteración 3 solo miraremos dos dimensiones: valores con k variable y lambda fijada a 0.001. Alrededor de 20, más bien entre el 20 y el 30 se encuentra el mínimo.
+
+En la iteración 4 acotamos más tanto las ks como lambda: alrededor de 0.001 y k = 15. Lambda 0.001 y k = 20 de nuevo es el mínimo, aunque hay resultados prometedores en k = 30 para lambda = 0.001 y con ks más pequeñas.
+
+Sin embargo, cada vez es menos significativa la diferencia, y hay un componente aleatorio.
+
+En la última iteración, la 5, acotamos aún más: lambdas de 0.001, 0.0015 y 0.0005, y ks entre 5 y 30. Observamos un mínimo en k = 30 y y otro valor muy reducido en k = 30, con lambda = 0.0015 y lambda = 0.0005, respectivamente. Sin embargo, si calculamos la desviación estándard observamoremos veremos que está alrededor de 5, siendo muchísimo más pequeña que la media y bastante menor que la desviación estándard para una misma seed y mismos parámetros.
+
+La conclusión a la que llegamos es que optimizar hasta cierto punto con estos valores puede ser difícil por el componente aleatorio, así que la decisión puede resultar un tanto arbitraria. Por otra parte, es indudable que con lambda alrededor de 0.001 es mejor. La k es más variable, perocComo en varias iteraciones hemos apreciado o bien un mínimo o bien un valor bastante bajo alrededor de k = 20, vamos a tomar este valor.
+
+Dependiendo de cómo hayamos optimizado k y lambda nos saldrá un stiter diferente.
