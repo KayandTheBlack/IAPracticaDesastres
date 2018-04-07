@@ -425,6 +425,8 @@ public class DesastresBoardv2 implements Cloneable {
         int centre = heli/(getNHelis()/getNCentros());
         t = t + centreGroupdistances[centre][travels.get(heli).get(flight).get(0)] + centreGroupdistances[centre][travels.get(heli).get(flight).get(travels.get(heli).get(flight).size()-1)];
         for (int j = 0; j < travels.get(heli).get(flight).size(); j++) {
+            if (j != (travels.get(heli).get(flight).size() -1))
+                t += groupdistances[travels.get(heli).get(flight).get(j)][travels.get(heli).get(flight).get(j+1)];
             int p;
             if (gs.get(travels.get(heli).get(flight).get(j)).getPrioridad() == 1)
                 p = 2;
