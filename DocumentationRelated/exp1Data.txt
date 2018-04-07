@@ -54,3 +54,81 @@ mean of the differences
 
 FINAL CONCLUSION:
 	best subset is mov,swap,switch without restrictions, but it is also the more costly in execution time.
+
+Experiment 1:
+
+seeds time1 time2 exec1 exec2
+283 2645.49 2583.71 6877 5572
+127 2546.3 2528.84 3988 5262
+239 2968.49 2905.53 2820 4263
+228 2549.25 2539.88 3110 4479
+290 2909.79 2900.35 3181 4562
+33 2373.53 2339.85 3542 5311
+13 2706.88 2646.48 3398 5276
+238 2460.62 2382.68 3508 5980
+53 2503.36 2465.18 3676 5938
+345 2410.85 2333.74 3798 5651
+
+
+	Paired t-test
+
+data:  A and B
+t = 5.3064, df = 9, p-value = 0.0004897
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 25.71975 63.94425
+sample estimates:
+mean of the differences 
+                 44.832 
+
+(pvalue below 0.05 means there's a difference)
+
+	Paired t-test
+
+data:  A and B
+t = 5.3064, df = 9, p-value = 0.9998
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 60.31939
+sample estimates:
+mean of the differences 
+                 44.832 
+
+
+Experiment 1.2:
+
+seeds time1 time2 exec1 exec2
+386 2561.98 2602.68 9161 2001
+350 2669.25 2678.46 4428 1598
+372 2348.92 2383.13 4828 1765
+200 2436.96 2431.57 4478 1536
+32 2351.08 2358.19 5241 2042
+368 2475.6 2512.31 4848 1580
+43 2662.18 2681.55 4942 1629
+385 2507.8 2503.11 5079 1740
+92 2564.04 2583.39 4871 1635
+34 2512.56 2570.35 4753 1505
+
+	Paired t-test
+
+data:  A and B
+t = -3.2756, df = 9, p-value = 0.009597
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -36.241636  -6.632364
+sample estimates:
+mean of the differences 
+                -21.437 
+
+
+	Paired t-test
+
+data:  A and B
+t = -3.2756, df = 9, p-value = 0.004798
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -9.440234
+sample estimates:
+mean of the differences 
+                -21.437 
+

@@ -49,3 +49,221 @@ mean of the differences
 Reject time1 and 2 different from time3.
 
 Seeing how 3 yields best exec times, we'll use 3.
+
+
+
+REDO:
+
+seeds time1 time2 time3 exec1 exec2 exec3
+365 2332.04 2344.37 2377.08 4671 4422 2172
+7 2540.04 2515.37 2537.5 3183 3549 2208
+274 2443.88 2480.62 2505.72 2939 3428 2180
+7 2540.04 2515.37 2537.5 3218 3501 2126
+114 2713.12 2691.61 2700.95 3270 3410 2170
+369 2431.98 2368.52 2388.4 3323 3860 2187
+114 2713.12 2691.61 2700.95 3246 3441 2167
+214 2756.84 2750.09 2787.04 3143 3496 2240
+65 2605.74 2564.44 2644.47 3404 3581 2183
+364 2419.06 2408.98 2394.94 3170 3701 2239
+
+	Paired t-test
+
+data:  A and B
+t = 1.896, df = 9, p-value = 0.09046
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.183843 36.159843
+sample estimates:
+mean of the differences 
+                 16.488 
+
+
+	Paired t-test
+
+data:  A and C
+t = -0.73077, df = 9, p-value = 0.4835
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -32.22821  16.49021
+sample estimates:
+mean of the differences 
+                 -7.869 
+
+
+	Paired t-test
+
+data:  B and C
+t = -3.1789, df = 9, p-value = 0.0112
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -41.689881  -7.024119
+sample estimates:
+mean of the differences 
+                -24.357 
+
+
+	Paired t-test
+
+data:  B and C
+t = -3.1789, df = 9, p-value = 0.9944
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ -38.4025      Inf
+sample estimates:
+mean of the differences 
+                -24.357 
+
+
+REREDO
+
+seeds time1 time2 time3 exec1 exec2 exec3
+62 2227.35 2226.02 2274.82 4417 5071 2647
+318 2426.29 2442.7 2457.74 3333 3955 2500
+120 2311.19 2384.34 2345.09 3140 4209 2211
+41 2522.03 2505.43 2519.45 3080 3802 2152
+365 2332.04 2344.37 2377.08 3522 4262 2170
+230 2103.33 2130.48 2128.93 3455 4082 2596
+28 2515.43 2488.28 2501.38 3477 3273 2246
+80 2444.53 2421.59 2436.11 3132 4446 2403
+50 2192.75 2241.59 2211.97 3415 4025 2586
+316 2488.86 2489.33 2466.04 3245 3667 1985
+
+> t.test(A,B, paired=TRUE)
+
+	Paired t-test
+
+data:  A and B
+t = -1.0902, df = 9, p-value = 0.304
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -33.92734  11.86134
+sample estimates:
+mean of the differences 
+                -11.033 
+
+> t.test(A,C, paired=TRUE)
+
+	Paired t-test
+
+data:  A and C
+t = -1.9211, df = 9, p-value = 0.0869
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -33.710016   2.748016
+sample estimates:
+mean of the differences 
+                -15.481 
+
+> t.test(B,C, paired=TRUE)
+
+	Paired t-test
+
+data:  B and C
+t = -0.50358, df = 9, p-value = 0.6266
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -24.42893  15.53293
+sample estimates:
+mean of the differences 
+                 -4.448 
+
+
+REREREDO:
+
+seeds time1 time2 time3 exec1 exec2 exec3
+91 2253.62 2283.38 2274.61 4037 3804 2309
+204 2594.0 2615.11 2608.5 2981 3387 1995
+164 2790.31 2777.17 2766.17 3000 3141 2073
+218 2666.64 2650.52 2639.06 3068 3471 2612
+324 2588.68 2554.57 2598.58 3341 3702 2112
+1 2670.06 2644.12 2662.93 3207 3756 1951
+76 2655.07 2692.92 2654.91 2780 2905 1940
+136 2404.64 2437.6 2435.75 3292 3845 2280
+318 2426.29 2442.7 2457.74 3225 3788 2364
+72 2725.81 2704.23 2733.94 2587 2814 2072
+199 2792.71 2802.92 2871.88 3210 3331 1630
+195 2541.78 2568.9 2603.75 2822 3344 2187
+34 2512.56 2528.33 2586.73 3343 3476 2592
+186 2342.41 2386.17 2400.09 3153 3885 2072
+306 2427.66 2439.59 2432.59 3500 3665 2599
+242 2622.83 2565.6 2585.36 3064 3635 1931
+173 2486.43 2482.51 2542.13 3213 3529 1978
+357 2438.96 2416.63 2470.81 3079 3547 2095
+157 2989.81 2941.41 2996.97 2859 2976 1953
+287 2730.55 2710.91 2739.71 3338 3118 2102
+253 2939.15 2948.59 2971.52 3207 3090 1689
+148 2394.72 2403.21 2433.65 3274 3557 2054
+76 2655.07 2692.92 2654.91 2874 2987 2004
+221 2465.44 2506.34 2496.99 3031 3351 1865
+245 2311.16 2323.85 2376.13 3095 3796 2066
+397 2431.37 2408.39 2418.39 3074 3474 2390
+55 2714.83 2652.17 2678.41 3432 3373 2136
+100 2439.94 2438.42 2426.72 3166 3752 2184
+254 2411.94 2388.29 2422.45 3353 3483 2139
+52 2539.0 2522.44 2522.2 2942 3506 2160
+
+
+> t.test(A,B, paired=TRUE)
+
+	Paired t-test
+
+data:  A and B
+t = 0.20768, df = 29, p-value = 0.8369
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -9.889203 12.124537
+sample estimates:
+mean of the differences 
+               1.117667 
+
+> t.test(A,C, paired=TRUE)
+
+	Paired t-test
+
+data:  A and C
+t = -2.8255, df = 29, p-value = 0.008456
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -28.738670  -4.603997
+sample estimates:
+mean of the differences 
+              -16.67133 
+
+> t.test(B,C, paired=TRUE)
+
+	Paired t-test
+
+data:  B and C
+t = -3.3899, df = 29, p-value = 0.002033
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -28.521569  -7.056431
+sample estimates:
+mean of the differences 
+                -17.789 
+
+> t.test(A,C, paired=TRUE,alt="greater")
+
+	Paired t-test
+
+data:  A and C
+t = -2.8255, df = 29, p-value = 0.9958
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ -26.69658       Inf
+sample estimates:
+mean of the differences 
+              -16.67133 
+
+> t.test(B,C, paired=TRUE,alt="greater")
+
+	Paired t-test
+
+data:  B and C
+t = -3.3899, df = 29, p-value = 0.999
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ -26.70536       Inf
+sample estimates:
+mean of the differences 
+                -17.789 
