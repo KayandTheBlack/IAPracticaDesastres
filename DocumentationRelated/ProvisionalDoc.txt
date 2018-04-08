@@ -37,6 +37,25 @@ del estado del problema.
 Se justifica porqué es un problema de búsqueda
 local
 
+Tratamos con un problema que definiremos formalmente como el siguiente:
+Recibimos C centros, con sus respectivas localizaciones (que deben estar en el borde de un rectángulo de 50Km*50Km)
+Recibimos G grupos, con un numero x de personas t.q 1<=x<=12, una prioridad p, que será 1 o 2, y una localización dentro del area de 50*50.
+Recibimos un numero H de helicópteros por centro.
+Tenemos que dar los recorridos de los helicópteros de manera que reducimos el tiempo de rescate, y posteriormente lo que tarda en rescatarse al último grupo de heridos siguiendo una serie de restricciones:
+	- Un helicóptero, en un vuelo, puede rescatar máximo 15 personas.
+	- Un helicóptero, en un vuelo, puede recoger hasta 3 grupos máximo.
+	- Todo vuelo de un helicóptero comienza y termina en su centro de orígen.
+	- Los grupos no pueden rescatarse parcialmente. Se ha de rescatar a todos los miembros en la misma 'recogida'.
+El tiempo en este problema lo calcularemos a partir de las siguientes suposiciones:
+	- Un helicóptero viaja a 100 Km/h, siguiendo el recorrido más corto (distancia euclídea)
+	- Un rescate de un grupo tarda 1 minuto por miembro, 2 si el grupo es de prioridad 1.
+	- Si un helicóptero debe hacer un vuelo después de otro, debe reposar 10 minutos con anterioridad. No contaremos los 10 minutos del último rescate de cada helicóptero. 
+Nótese que, aunque consideramos el tiempo de rescate como el sumatorio del tiempo de los helicópteros como si fueran en serie, la 'latencia' la consideraremos interna de cada helicóptero (cuánto tarda cada helicóptero en rescatar a su último grupo de heridos). En éste caso, tampoco contaremos los 10 minutos de reposo de esta última salida, pues los heridos ya habrán llegado al centro.
+
+Nos percatamos de que éste problema se trata de una asignación de grupos a helicópteros, con la peculiaridad de que se realizan en 'viajes', que llamaremos vuelos. Así pues, el problema se puede resolver dando las asignaciones de los grupos a los vuelos, y de los vuelos a los helicópteros, o de los helicópteros a los vuelos a los grupos.
+Vemos también que el espacio de soluciones de este problema, planteado de una forma correcta y con operadores bien seleccionados, puede explorarlo entero sin salirse de él, asegurando que se mantienen las restricciones.
+Nótese también que el tiempo es una buena función de calidad continua y con pocas mesetas. De hecho, con un buen conjunto de operadores podríamos hasta asegurar que no tiene mínimos locales demasiado lejos de la solución real.
+Por todas estas razones nos decantamos a pensar que este problema se puede resolver mediante búsqueda local.
 
 Razonar sobre qué elementos son los necesarios para plantear el espacio de soluciones del problema y
 como deberían representarse para solucionarlo mediante un algoritmo de búsqueda local. Se han de
@@ -48,19 +67,29 @@ La representación del problema es adecuada y
 eficiente.
 Hay un análisis del tamaño del espacio de búsqueda. TODO!
 
-	(*) El estado lo consideraremos como una asignación de grupos a viajes, y de viajes a helicopteros, estando ambas asignaciones consideradas como una secuencia cronológica. Con algo tan simple como esto podremos reconstruir una solución total. Notemos particularmente que en estas asignaciones, para que el estado sea solución, se dará que: un grupo está asociado a un y solo un vuelo, y los vuelos a un y solo un helicóptero. Mientras no deshagamos este hecho y nos aseguremos de cumplir las condiciones de carga del helicóptero y de numero de grupos por vuelo, nuestro estado seguirá siendo una solución, sea mejor o peor.
-		Notamos, además, que en la segunda versión de función de calidad, piden el tiempo máximo de rescate de un grupo de prioridad uno. Si consideramos los vuelos como una secuencia, no paralela, requeriríamos posiblemente de una estructura auxiliar para explicitar el orden en que los viajes son hechos entre helicópteros. Sin embargo, simplificamos este problema (bajo consulta al tutor), diciendo que los helicópteros trabajan en paralelo y considerando el tiempo máximo como el máximo de los tiempos que tarda un helicóptero (entre todos) en rescatar a su último grupo, eliminando la necesidad de la estructura auxiliar mencionada con anterioridad.
+	(*) El estado lo consideraremos como una asignación de grupos a vuelos, y de vuelos a helicopteros, estando ambas asignaciones consideradas como una secuencia cronológica. Con algo tan simple como esto podremos reconstruir una solución total. Notemos particularmente que en estas asignaciones, para que el estado sea solución, se dará que: un grupo está asociado a un y solo un vuelo, y los vuelos a un y solo un helicóptero. Mientras no deshagamos este hecho y nos aseguremos de cumplir las restricciones de carga del helicóptero y de numero de grupos por vuelo, nuestro estado seguirá siendo una solución, sea mejor o peor.
+	Notamos, además, que en la segunda versión de función de calidad, piden el tiempo máximo de rescate de un grupo de prioridad uno. Si consideramos los vuelos como una secuencia, no paralela, requeriríamos posiblemente de una estructura auxiliar para explicitar el orden en que los vuelos son hechos entre helicópteros. Sin embargo, simplificamos este problema, diciendo que los helicópteros trabajan en paralelo (para este subproblema) y considerando el tiempo máximo como el máximo de los tiempos que tarda un helicóptero (entre todos) en rescatar a su último grupo de heridos, eliminando la necesidad de la estructura auxiliar mencionada con anterioridad.
+
+	Examinemos ahora, de manera muy aproximada, cuál es el tamaño del espacio de búsqueda. Tenemos G grupos a distribuir de diversas formas, o bien en grupos de 1 (1 posibilidad), todo grupos de 1 excepto uno de 2... todo grupos de 2, todo grupos de 1 menos un grupo de 3... todo grupos de 1 menos un grupo de 2 y uno de 3... obviamente teniendo en cuenta todas las posibles ordenaciones de cada grupo de más de 1 elemento.
+	Esto crece muy rápido. De hecho, si no tuvieramos en cuenta la posible ordenación de cada subset, tendríamos un subset de la partición del conjunto de grupos (numero de Bell, crece a ritmo e^(e^G -1)). Como para cada vuelo G hay un numero constante de permutaciones, y habrá máximo un numero G de vuelos (máximo 6, permutaciones sobre un vuelo de 3), esto se multiplica por 6^G. A ojo, esto crece a un ritmo O(6^G*e^e^G).
+	Además, para cada una de estas posibilidades, debemos asignar cada grupo a un helicóptero. O lo que es lo mismo, dada una de estas distribuciones, debemos dar a cada conjunto un valor entre 0 y C*H. Esto se traduce en O(C*H^(6^G*e^e^G)).
+	Conclusión: el espacio de soluciones es enorme.
 
 	Partimos de 4 diferentes representaciones del estado, diferentes entre sí por motivos de eficiencia, no de expresividad:
-		1. Un vector tridimensional travels [i][j][k], donde el elemento iesimo representa los vuelos del helicoptero iesimo. Los vuelos son una secuencia ordenada de grupos. El espacio esperado es de O(C*H + G), donde C es el numero de centros, H el numero de helicopteros por centro y G el numero de grupos, si usamos un Array como estructura de datos. Nótese que ésta es la más óptima en termino espacial.
-			TODO: ALGORYTHM TEMP COST (+ implementation not done yet!)
+		1. Un vector tridimensional travels [i][j][k], donde el elemento iesimo representa los vuelos del helicoptero iesimo. Los vuelos son una secuencia ordenada de grupos. 
+		El coste espacial esperado es de O(C*H + G), donde C es el numero de centros, H el numero de helicopteros por centro y G el numero de grupos, si usamos un Array como estructura de datos. Ésto sale del hecho de que habrá G grupos en el vector exáctamente, sin embargo si C y H son muy grandes debemos considerar que la estructura en sí es la que ocupa (como en los costes de grafos O(V+E)). Nótese que ésta es la más óptima en termino espacial.
+		Sin embargo, el coste de recomputar el tiempo para cada evaluación de la heurística requeriría de recorrer todo el vector, que sería coste O(C*H+G) también. Podríamos encontrar también el tiempo latencia de la segunda función de calidad en el mismo tiempo.
+
 		2. Igual que 1, sin embargo introduciremos un dato adicional: Tiempo total. Debido al poco tamaño del dato, el tiempo de computación si tuvieramos que hacerlo a cada evaluación y la poca dificultad de actualizarlo en tiempo de 'operación', hemos considerado que este dato podría reducir significativamente el tiempo de ejecución, al menos para la versión uno de la función de calidad.
-			TODO: implement, obviously
-		3. Igual que 2, pero añadiremos otra estructura de datos adicional: un vector de tamaño C*H en que se guarde, para cada helicóptero, el tiempo que tarda en rescatar al último grupo de prioridad 1. Seguimos el razonamiento de 2, sin embargo un único valor tiempo no tiene suficiente expresividad para facilitar tanto el cálculo de la función de calidad 2. Cada vez que usemos una operación sobre un vuelo o helicóptero tendremos que actualizar todos los helicópteros asociados a ello, sin embargo. Nótese que ésta es la menos óptima espacialmente
-			TODO: implement
-		4. Igual que 2, pero en lugar de añadir un vector, tendremos tres valores que serán la referencia del vuelo que causa el tiempo máximo. De esta forma, nos aseguramos de que pocas operaciones requerirán de su actualización, y también reducimos el espacio del estado (de tener un vector C*H a uno de 3 posiciones). //puede ser que esto no funcione!
-			TODO: guess fucking what...
-		!!! DECIDIR IPSOFACTO! yo escogería el 2, 3 cuando sea tipo 2.
+		El coste espacial esperado es O(C*H+G), igual que en 1.
+		El coste temporal esperado cambia. El acceso al tiempo es O(1), y el coste es un recorrido por un o dos vectores de máximo 3 posiciones O(1) para la mayoría de operaciones (tan solo requiere cambio el operador swapPilot, de la versión 2, que requiere un recorrido O(G) en peor caso). Si queremos calcular la segunda función de calidad, sin embargo, este tiempo requiere de nuevo de un recorrido por todo el vector (O(C*H+G))
+
+		3. Igual que 2, pero añadiremos otra estructura de datos adicional: un vector de tamaño C*H en que se guarde, para cada helicóptero, el tiempo que tarda en rescatar al último grupo de prioridad 1. Seguimos el razonamiento de 2, sin embargo un único valor tiempo no tiene suficiente expresividad para facilitar tanto el cálculo de la función de calidad 2. Cada vez que usemos una operación sobre un vuelo o helicóptero tendremos que actualizar todos los helicópteros asociados a ello, sin embargo. Nótese que ésta es la menos óptima espacialmente.
+		El coste espacial es O(C*H+G), aunque tendremos 2 vectores C*H.
+		El coste temporal es el mismo para el cálculo de tiempo global, sin embargo para la latencia requiere de un recorrido por un vector C*H, y para cada operación requiere O(G) worst case (recálculo del peor tiempo de un o dos helicópteros).
+
+	Las representaciones que nos interesan son la 2 y la 3. Usaremos la 2 siempre que sepamos que usaremos solo la primera función de calidad.
+		
 
 Determinar qué formas existen para generar una solución inicial del problema y razonar y justificar
 cuales son las más adecuadas. Se han de elegir varias alternativas para poder experimentar y probar
@@ -71,13 +100,14 @@ las soluciones inciales.
 Hay una explicación/justificación de las elecciones
 de solucion inicial (bondad de la solución,
 coste de hallar la solución).
-
-	Bajo el conocimiento del funcionamiento de algoritmos a usar, nos hacemos vagamente a la idea de que soluciones poco óptimas tienen bastante más potencial de ser más óptimas tras correr el algoritmo, pues estarán más lejos de un mínimo local en nuestra función de calidad (nótese que este problema busca minimizar la función, bajo la función que usaremos, definida posteriormente).
-	Además, y tras examinar nuestras posibilidades de operadores, es importante que las soluciones iniciales permitan el acceso a todo el espacio de búsquedas para asegurar una mínima optimalidad. Bajo este hecho, y ya que nuestros conjuntos de operadores se mantienen mayormente (TODO: ENSURE AND REWORD) alejados de la posibilidad de 'crear' viajes nuevos o vacíos, nos mantendremos alejados de soluciones que ya comienzan con más de un grupo en un viaje.
+	//TODO: NOTESE EXP USAMOS 30 ITERACIONES PARA TENER N BUENA YA QUE MENOS ERA INCONSISTENTE ENTRE REPETICIONES (?)
+	Bajo el conocimiento del funcionamiento de algoritmos a usar, nos hacemos vagamente a la idea de que soluciones poco óptimas tienen bastante más potencial de ser más óptimas tras correr el algoritmo de búsqueda, pues estarán más lejos de un mínimo local en nuestra función de calidad (nótese que este problema busca minimizar la función, bajo la función que usaremos, definida posteriormente).
+	Además, y tras examinar nuestras posibilidades de operadores, es importante que las soluciones iniciales permitan el acceso a todo el espacio de búsquedas para asegurar una mínima optimalidad. Bajo este hecho, y ya que nuestros conjuntos de operadores se mantienen mayormente alejados de la posibilidad de 'crear' vuelos nuevos o mantener vacíos (pues dichos operadores serían descartados rápidamente con nuestras funciones de calidad), nos mantendremos alejados de soluciones que ya comienzan con más de un grupo en un vuelo.
 	Tenemos las siguientes posibilidades:
-		1. El estado inicial es, para cada grupo, un vuelo. Dicho vuelo será asignado a uno de los helicópteros, que rescatará a todos los grupos. Ésta es la solución trivial peor, prácticamente maximizando el tiempo total de rescate (podría peor si además asociasemos al grupo a su helicóptero más lejano), y por ello tiene potencial de acercarse más al mínimo general.
-		2. Similar a 1, sin embargo distribuiremos los viajes entre helicópteros. Expresado formalmente, el grupo Iésimo le será asignado al helicóptero (I mod (C*H))ésimo. El primer grupo al primer helicóptero, el segundo al segundo, y así sucesivamente hasta no tener más grupos. Si nos quedamos sin helicópteros, vuelta a empezar. Nótese, de nuevo, que evitamos tener dos grupos ya en un mismo vuelo.
-		3. Distribuiremos cada grupo en viajes de 1 grupo que irán a uno de los centros más cercanos. Los helicópteros se asignarán Round Robin.
+		1. El estado inicial es, para cada grupo, un vuelo. Dicho vuelo será asignado a uno de los helicópteros, que rescatará a todos los grupos. Ésta es la solución trivial peor, prácticamente maximizando el tiempo total de rescate (podría peor si además asociasemos al grupo a su helicóptero más lejano), y por ello tiene potencial de acercarse más al mínimo general. El coste de hallar la solución es O(G)
+		2. Similar a 1, sin embargo distribuiremos los vuelos entre helicópteros. Expresado formalmente, el grupo Iésimo le será asignado al helicóptero (I mod (C*H))ésimo. El primer grupo al primer helicóptero, el segundo al segundo, y así sucesivamente hasta no tener más grupos. Si nos quedamos sin helicópteros, vuelta a empezar. Nótese, de nuevo, que evitamos tener dos grupos ya en un mismo vuelo. La bondad debería ser mejor, pues ahorramos más descansos al repartirlo entre helicópteros. El coste, sin embargo, es el mismo.
+		3. Distribuiremos cada grupo en vuelos de 1 grupo que irán a uno de los centros más cercanos. Los helicópteros se asignarán según el método Round Robin. Esta es la solución con mejor fitness inicial. El coste se eleva al tener que buscar el centro más cercano, pasando a ser O(G*C)
+	Avanzamos los resultados empíricos recibidos: Usando un conjunto de operadores ya decidido previamente al experimento (detallado en el siguiente apartado), corrimos el algoritmo 10 veces con cada solución, y sin embargo los datos eran poco consistentes entre repeticiones del experimento. Para precisar mejor las diferencias entre ellos, subimos a 30 el número de iteraciones, y entonces vimos claramente que entre la primera y la segunda soluciones, el 'coste' era el mismo bajo un t-test, y menor que el de la tercera opción. Llegado este punto, escojimos la primera opción, pues experimentalmente el tiempo de ejecución era ligeramente mejor que el del segundo (hallaba la solución final antes).
 
 Determinar qué operadores de transformación sobre la solución son posibles en el problema y qué
 combinación de estos operadores es adecuada para solucionar el problema considerando el factor de
@@ -91,30 +121,40 @@ los operadores.
 Hay una explicación de la elección de los operadores.
 
 	Debido a que el número de helicópteros es fijo, nos damos cuenta de que no será necesario añadir o eliminar elementos en una dimensión del vector. Por otro lado, el número de vuelos es variable, y el número de grupos en un vuelo también lo es (aún siendo el número de grupos constante). Esto nos lleva a pensar en la necesidad de distintos tipos de operadores.
-	Inicialmente, y para potencialmente reducir el número de operadores inútiles, intuitivamente los dividimos por granularidad:
-	(*)Group-wise, o granularidad grupo, actuará sobre la asignación de grupos a vuelos. Deberían permitirnos no sólo cambiar un grupo de un vuelo a otro, sino también permutar el orden de 'visita' de un vuelo, ya que potencialmente puede reducir tiempos. (TODO: imagen?)
+	Inicialmente, y para potencialmente reducir el número de operadores inútiles, intuitivamente tuvimos la idea de dividirlos por granularidad:
+	(*)Group-wise, o granularidad grupo, actuará sobre la asignación de grupos a vuelos. Deberían permitirnos no sólo cambiar un grupo de un vuelo a otro, sino también permutar el orden de 'visita' de un vuelo, ya que potencialmente puede reducir tiempos.
 	(*)Flight-wise, o granularidad vuelo, que actuará sobre la asignación de vuelos completos a helicópteros. Directamente vemos que para ésta granularidad y la versión 1 de calidad, solo necesitamos un operador que nos permita cambiar un vuelo de un helicóptero a otro. Sin embargo, y debido a la segunda función de calidad, también necesitaremos poder cambiar el orden de los vuelos dentro de un mismo helicóptero.
 	Aparentemente esta purga de operadores podría reducir nuestro espacio de búsqueda, aislandonos de la posible solución óptima. Tras un mejor vistazo, nos parece que, dados nuestros estados iniciales, esto es imposible. Cualquier grupo puede acabar en cualquier vuelo de cualquier helicóptero aplicando estos operadores (sin tener en cuenta la calidad), y lo único que podría impedir este hecho sería que la función de calidad impidiera el uso de ciertos operadores ya que inicialmente son malos y solo después nos llevan a una solución mejor. 
-	Sin embargo, y bajo el conocimiento de cómo se comportan los algoritmos y dado nuestro estado inicial, podemos intuir cómo se comportará el programa:
-		Inicialmente redistribuirá los vuelos entre los helicópteros, reduciendo tiempos de descanso y viaje de centro a grupo.
-		Después, comenzará a fusionar los grupos más cercanos, que deberían pertenecer al mismo helicóptero. Posteriormente nos dimos cuenta de que podría ser que dos grupos adyacentes fueran a helicópteros distintos, y de hecho es muy probable. Sin embargo, esta posibilidad tiene el potencial de decrecer enormemente si cambiamos los operadores por: de mismo helicóptero a cualquier helicóptero a otro del mismo centro. Para comprobarlo, crearemos otro subconjunto de operadores basado en este hecho, y para asegurarnos, experimentaremos también con el operador no restringido a helicopteros ni centros.
+	Ésta fue nuestra idea original, y sin embargo nos planteamos posteriormente que deberíamos poder cambiar grupos entre vuelos de helicópteros del mismo centro.
+	Y sin embargo, no nos detuvimos ahí. Dudando de nuestras decisiones intuitivas, decidimos incluir también un set de operadores altamente expresivos, con una ramificación altísima, que nos permitiera mover grupos entre vuelos de dos helicópteros cualesquiera.
 
-	Dicho esto, tendremos un conjunto de operadores como el siguiente:
+	Dicho esto, tendremos un conjunto genérico de operadores como el siguiente (nótese que el símbolo % indica parametro implícito en otros parámetros):
 		GroupWise:
-		movAndDelete (g, %f1, f2): mueve g de f1 a la última posición de f2. Si f1 queda vacío, lo elimina del conjunto de vuelos
+		movAndDelete (g, %f1, f2): mueve g de f1 a la última posición de f2. Si f1 queda vacío, lo elimina del conjunto de vuelos.
+			Ramificación: G*O(G), pues en el peor caso hay G vuelos. Vemos, sin embargo, que lo esperado es mucho menos. Si además consideramos la versión 'restringida', el esperado es G*(O(G)/(C*H)), pues esperamos que los vuelos esten bastante repartidos entre helicópteros durante la mayor parte de la ejecución.
 		swap (g1, %f1, g2, %f2): Intercambia g1 y g2 entre los vuelos, manteniendo la posición del intercambiado.
+			Ramificación: G*G. Por la misma lógica que antes, se espera G*(G/(C*H)) en la versión restringida.
 		permute(f1, n): Intercambia el orden de visita de grupos dentro del vuelo. Hay 1 permutación para vuelos de 2, y 5 para vuelos de 3.
+			Ramificación: O(G).
 
 		FlightWise:
 		switchPilot (f, %h1, h2): delega el vuelo f de H1 a H2.
+			Ramificación: O(G)*H
 		swapOrder (f1, %f2): intercambia f1 y f2, dentro de los vuelos de un helicóptero. Nota: para reducir ramificación, f2 es el siguiente a f1 en el la planificación.
-		-Respecto a la nomenclatura, el % indica que va implícito 
-		Subconjuntos
+			Ramificación: O(G)
+		Subconjuntos elegidos para experimentación:
 			1. movAndDelete, swap, switchPilot, para la primera versión del problema, sin permitir cambios entre helicópteros.
 			2. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios entre helicópteros del centro. (para cuando vayamos a más de 1 heli por centro!) //Deprecated after tests with just 1 heli per center
-			3. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios cualesquiera.
-			4. movAndDelete, permute, switchPilot, primera versión, cambios entre helicópteros del grupo TODO: asegurar experimentalmente!
-			TODO: mirar qué tal van antes de proseguir, prereq: experimento 1
+			3. movAndDelete, swap, switchPilot, para la primera versión del problema, permitiendo cambios cualesquiera (no restringido).
+			4. movAndDelete, permute, switchPilot, primera versión, restringido
+			5. movAndDelete, permute, switchPilot, primera versión, no restringido.
+			6. movAndDelete, swap, switchPilot, swapOrder, segunda versión, no restringido.
+
+	Avanzando resultados experimentales, mucho de los subconjuntos anteriores no se llegaron ni a contrastar debido a obsolescencia respecto a resultados empíricos. Nuestros experimentos contrastaron 1 con 3 y demostraron que 3 era bastante mejor que 1, bajo el supuesto de solo un helicóptero por centro. Esto eliminó a 1 y a 2 de nuestra lista de candidatos.
+	Posteriormente comparamos nuestro ganador, 3, con 5, y de nuevo vimos que 3 era el mejor. Este hecho eliminó a todos nuestros candidatos de la versión uno, pues 5 era el segundo más expresivo tras 3 de nuestra lista de candidatos actualizada.
+	Finalmente, decidimos dos subconjuntos de operadores: 3 y 6, para las versiones 1 y 2 del problema.
+
+
 
 
 Determinar y justificar las funciones heurísticas que permitan optimizar la solución según unos criterios
@@ -128,7 +168,14 @@ Hay una explicación de los efectos de las funciones
 heurísticas en la búsqueda.
 Hay una justificación de las ponderaciones que
 aparecen entre los elementos de las heurísticas.
-	Intuitivamente, vemos que cada función de calidad nos permite...
+	Bajo el enunciado del problema, tenemos dos criterios ya numéricos a optimizar ya de por si: el tiempo secuencial y la tardía en rescatar heridos. Inicialmente pensamos en buscar criterios más complejos que posiblemente nos permitiera usar operadores con menos ramificación porque el heurístico guiara a la búsqueda mejor, y sin embargo las opciones que surgían no nos convencían, pues podían acabar en zonas que ni siquiera eran mínimo local de la función original a optimizar. 
+	Por ejemplo, pensamos añadir una ponderación añadida para ayudar a que los grupos fueran al centro más cercano, pero esto podría separar dos grupos que en un viaje serían rescatados más rápido en dos helicópteros, pues sus centros más cercanos no coincidieran.
+	Buscamos también encontrar una manera de hacer una función que 'premiara', crear nuevos vuelos, para evitar el castigo en tiempo que es la espera entre vuelos de un helicóptero, pero tampoco nos acabó de convencer.
+	Finalmente nos decidimos por forzar operadores más ramificados y simplificar la función de calidad a los criterios dados.
+	Nuestras funciones de calidad son, pues:
+	1. Sumatorio de los tiempos de los helicópteros.
+	2. Sumatorio de los tiempos de los helicópteros +  \ * máx(tiempo en rescatar al último grupo de heridos de cada helicóptero)
+	Usamos un parámetro \, a decidir en tiempo de ejecución, pues no es nuestra decisión qué importa más, si el tiempo total del rescate o la tardía en salvar heridos, sino del usuario final.
 
 RUBRICAS VARIAS: (EXPERIMENTACIÓN)
 Son informativos y se han hecho varias ejecuciones
@@ -155,7 +202,7 @@ Tenemos los datos y los boxplot en esta misma carpeta (TODO: change this, insert
 Experimento 1.2
 	Mismo con permute en lugar de swap, usando clase 3!
 Comentarios:
-	OBSERVACIÓN ADICIONAL: primera fase de experimentos muestra bajo uso de swap! quitarlo?
+	OBSERVACIÓN ADICIONAL: primera fase de experimentos muestra bajo uso de swap! quitarlo? FALSO, JODIDAMENTE FALSO
 
 Se muestra claramente la diferencia entre las
 soluciones iniciales propuestas:
@@ -168,7 +215,7 @@ soluciones iniciales lleva a mejores soluciones
 finales.
 
 
-Se muestra claramente la diferencia entre las
+Se muestra claramente la diferencia entre las //Hacemos un experimento sobre una chorrifunción?
 funciones heuristicas:
 • En función del coste temporal de la búsqueda.
 • En función de la bondad de las soluciones.
