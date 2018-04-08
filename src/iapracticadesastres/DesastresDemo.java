@@ -230,58 +230,104 @@ public class DesastresDemo {
 
     private static void experiment7() {
         try {
+            int n = 6;
+            
             Random myRandom=new Random();
-            ArrayList<Integer> seeds = new ArrayList(10);
-            ArrayList<Long> times1 = new ArrayList(10);
-            ArrayList<Double> x = new ArrayList(10);
-            ArrayList<Long> times2 = new ArrayList(10);
-            ArrayList<Double> y = new ArrayList(10);
+            int seeds [] = new int[10];
+            
+            long times1 [][]= new long[10][n];
+            //ArrayList<Double> x = new ArrayList(10);
+            long times2 [][] = new long[10][n];
+            //ArrayList<Double> y = new ArrayList(10);
+            
+            double h1Hill [][]= new double[10][n];
+            double h2Hill [][]= new double[10][n];
+            double h1SA [][]= new double[10][n];
+            double h2SA [][]= new double[10][n];
+            
             for (int i=0; i<10; i++) {
                 int seed = myRandom.nextInt(400);
                 //System.out.println("Seed " + i + " is " + seed);
                 //timer here
-                long start_time = System.currentTimeMillis();
-                DesastresBoardv3 DB =new DesastresBoardv3(100,5,1,seed);
-                DB.init0(100,5,1);
-                Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv4(), new DesastresGoalTest(),new DesastresHeuristicFunctionv3());
-                Search search =  new HillClimbingSearch();
-                SearchAgent agent = new SearchAgent(problem,search);
-                long end_time = System.currentTimeMillis();
-                //agent stuff here
-                long difference = end_time-start_time;
-                DesastresBoardv3 b = (DesastresBoardv3) search.getGoalState();
-                 DesastresHeuristicFunctionv3 DesHF  = new DesastresHeuristicFunctionv3();
-                double time = DesHF.getHeuristicValue(b);
                 
-                // test2
-                //have to modify so it does SA
-                
-                start_time = System.currentTimeMillis();
-                DesastresBoardv3 DB2 =new DesastresBoardv3(100,5,1,seed);
-                DB2.init0(100, 5, 1);
-                Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionSAv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv3());
-                Search search2 = new SimulatedAnnealingSearch(30400, 160, 5, 0.0001); //params from experiment 3
-                SearchAgent agent2 = new SearchAgent(problem2,search2);
-                end_time = System.currentTimeMillis();
-                long difference2 = end_time-start_time;
-                DesastresBoardv3 b2 = (DesastresBoardv3) search2.getGoalState();
-                double time2 = b2.getTime(); 
+                for (int exp = 1; exp <= n; exp++){
+                    
+                    long start_time = System.currentTimeMillis();
+                    DesastresBoardv3 DB =new DesastresBoardv3(100,5,1,seed);
+                    DB.init0(100,5,1);
+                    Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv4(), new DesastresGoalTest(),new DesastresHeuristicFunctionv3((2^(exp-1))));
+                    Search search =  new HillClimbingSearch();
+                    SearchAgent agent = new SearchAgent(problem,search);
+                    long end_time = System.currentTimeMillis();
+                    //agent stuff here
+                    long difference = end_time-start_time;
+                    DesastresBoardv3 b = (DesastresBoardv3) search.getGoalState();
+                    DesastresHeuristicFunctionv3 DesHF  = new DesastresHeuristicFunctionv3((2^(exp-1)));
+                    double time = DesHF.getHeuristicValue(b);
+                    h1Hill[i][exp-1] = b.getTime();
+                    h2Hill[i][exp-1] = b.getMaxTimePriority();
+                    
 
+                    // test2
+                    //have to modify so it does SA
+
+                    long difference2 = 0;
+                    double time2 = 0;
+                    double tmph1SA = 0;
+                    double tmph2SA = 0;
+
+                    for (int j = 0; j < 3; j++){
+
+                        start_time = System.currentTimeMillis();
+                        DesastresBoardv3 DB2 =new DesastresBoardv3(100,5,1,seed);
+                        DB2.init0(100, 5, 1);
+                        Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionSAv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv3((2^(exp-1))));
+                        Search search2 = new SimulatedAnnealingSearch(30400, 160, 5, 0.0001); //params from experiment 3
+                        SearchAgent agent2 = new SearchAgent(problem2,search2);
+                        end_time = System.currentTimeMillis();
+                        difference2 += end_time-start_time;
+                        DesastresBoardv3 b2 = (DesastresBoardv3) search2.getGoalState();
+                        time2 += DesHF.getHeuristicValue(b2);
+                        tmph1SA += b2.getTime();
+                        tmph2SA += b2.getMaxTimePriority();
+                    }
+
+                    time2 = time2 / 3.0;
+                    difference2 = difference2 / 3;
+                    h1SA[i][exp-1] = tmph1SA/3.0;
+                    h2SA[i][exp-1] = tmph2SA/3.0;
+
+                    //System.out.println(time2);
+                    //System.out.println(difference + " " + difference2);
+                    /*double debug = b2.computeTotalTime();
+                    if(time2 != debug) System.out.println("ERRORTIME : " + time2 +' '+ debug);*/
+
+                    seeds[i] = seed;
+                    //x.add(time);
+                    times1[i][exp-1] = difference;
+                    //y.add(time2);
+                    times2[i][exp-1] = difference2;
+                    
+                }
                 
-                //System.out.println(time2);
-                //System.out.println(difference + " " + difference2);
-                /*double debug = b2.computeTotalTime();
-                if(time2 != debug) System.out.println("ERRORTIME : " + time2 +' '+ debug);*/
                 
-                seeds.add(seed);
-                x.add(time);
-                times1.add(difference);
-                y.add(time2);
-                times2.add(difference2);
             }
-            System.out.println("seeds time1 time2 exec1 exec2");
+            //System.out.println("seeds time1 time2 exec1 exec2");
+            System.out.print("seeds");
+            for (int exp = 1; exp <= n; exp++){
+                System.out.print(" HillH1_"+exp+ " HillH2_"+exp + " HillHT_"+exp+ " HillExec"+exp+" SAH1_"+exp+ " SAH2_"+exp + " SAHT_"+exp+ " SAExec"+exp );
+            }
+            System.out.println();
+            
             for(int i=0; i<10; i++) {
-                System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + times1.get(i) + " " + times2.get(i));
+                System.out.print(seeds[i]+" ");
+                for (int exp = 1; exp <= n; exp++){
+                    double tmphHill = h1Hill[i][exp-1] + (h2Hill[i][exp-1]*(2^(exp-1)));
+                    double tmphSA = h1SA[i][exp-1] + (h2SA[i][exp-1]*(2^(exp-1)));
+                    System.out.print(h1Hill[i][exp-1]+" "+ h2Hill[i][exp-1]+" " + tmphHill +" " + times1[i][exp-1]+" " + h1SA[i][exp-1]+" "+ h2SA[i][exp-1]+" " + tmphSA +" " + times2[i][exp-1]+" " );
+                }
+                System.out.println();
+                //System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + times1.get(i) + " " + times2.get(i));
             }
         } catch (Exception e) {
             e.printStackTrace();

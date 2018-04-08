@@ -20,7 +20,7 @@ public class DesastresSuccessorFunctionv4 implements SuccessorFunction { // This
     public List getSuccessors(Object aState) {
         ArrayList                retVal = new ArrayList();
         DesastresBoardv3             board  = (DesastresBoardv3) aState;
-        DesastresHeuristicFunctionv3 DesHF  = new DesastresHeuristicFunctionv3();
+        //DesastresHeuristicFunctionv3 DesHF  = new DesastresHeuristicFunctionv3();
         
         ArrayList<ArrayList<ArrayList<Integer> > > travels = board.getTravels();
 
@@ -37,7 +37,7 @@ public class DesastresSuccessorFunctionv4 implements SuccessorFunction { // This
                             if(board.possibleMovAndDeletev2(h1,h2,f1,g1,f2)) {
                                 DesastresBoardv3 board3 = board.clone();
                                 board3.movAndDelete2(h1, h2, f1, g1, f2);
-                                double v = DesHF.getHeuristicValue(board3);
+                                double v =-1;// DesHF.getHeuristicValue(board3);
                                 String S = DesastresBoard.MOVANDDELETE + " heli " + h1 + " f1 " + f1 + " group " + g1 + " f2 " + f2 +  " Cost(" + v + ") ---> " + board3.toString();
                                 retVal.add(new Successor(S, board3));
                             }
@@ -46,7 +46,7 @@ public class DesastresSuccessorFunctionv4 implements SuccessorFunction { // This
                                     DesastresBoardv3 board3 = board.clone();
                                     board3.swap2(h1, h2, f1, g1, f2, g2);
                                     //double    v = DesHF.getHeuristicValue(board2); //peta
-                                    double v = DesHF.getHeuristicValue(board3);
+                                    double v = -1;//DesHF.getHeuristicValue(board3);
                                     String S = DesastresBoard.SWAP + " h1 " + h1 + " f1 " + f1 + " g1 " + g1 + "h2" + h2 + " f2 " + f2 + " g2 " + g2 +  " Cost(" + v + ") ---> " + board3.toString();
                                     retVal.add(new Successor(S, board3));
                                 }
@@ -59,7 +59,7 @@ public class DesastresSuccessorFunctionv4 implements SuccessorFunction { // This
                         if (board.possibleSwitchPilot(h1, h2, f)) {
                             DesastresBoardv3 board3 = board.clone();
                             board3.switchPilot(h1, h2, f);
-                            double v = DesHF.getHeuristicValue(board3);
+                            double v =-1;// DesHF.getHeuristicValue(board3);
                             String S = DesastresBoard.SWITCHPILOT + " h1 " + h1 + " h2 " + h2 + " f " + f +  " Cost(" + v + ") ---> " + board3.toString();
                             retVal.add(new Successor(S, board3));
                         }   
@@ -71,7 +71,7 @@ public class DesastresSuccessorFunctionv4 implements SuccessorFunction { // This
             for (int f = 0; f < travels.get(h).size()-1; f++) { // using -1 due to op restrictions
                 DesastresBoardv3 board3 = board.clone();
                 board3.swapOrder(h,f);
-                double v = DesHF.getHeuristicValue(board3);
+                double v = -1;//DesHF.getHeuristicValue(board3);
                 String S = DesastresBoard.SWAPORDER + "heli" + h + "f" + f + "Cost(" + v + ") ---> " + board3.toString();
                 retVal.add(new Successor(S,board3));
             }
