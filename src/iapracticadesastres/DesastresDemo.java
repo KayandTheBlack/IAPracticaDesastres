@@ -174,7 +174,7 @@ public class DesastresDemo {
             ArrayList<Double> y = new ArrayList(10);
             ArrayList<Long> times3 = new ArrayList(10);
             ArrayList<Double> z = new ArrayList(10);
-            for (int i=0; i<10; i++) {
+            for (int i=0; i<30; i++) {
                 //init0
                 int seed = myRandom.nextInt(400);
                 long start_time = System.currentTimeMillis();
