@@ -1,0 +1,90 @@
+> t.test(HillH1_Old, HillH1_1, paired=TRUE)
+
+	Paired t-test
+
+data:  HillH1_Old and HillH1_1
+t = -2.5676, df = 9, p-value = 0.03031
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -92.527975  -5.852025
+sample estimates:
+mean of the differences 
+                 -49.19 
+
+> t.test(HillH1_Old, HillH1_1, paired=TRUE, alt="less")
+
+	Paired t-test
+
+data:  HillH1_Old and HillH1_1
+t = -2.5676, df = 9, p-value = 0.01515
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -14.07157
+sample estimates:
+mean of the differences 
+                 -49.19 
+
+> t.test(HillExec_Old, HillExec1, paired=TRUE)
+
+	Paired t-test
+
+data:  HillExec_Old and HillExec1
+t = -9.8505, df = 9, p-value = 4.056e-06
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3847.944 -2410.656
+sample estimates:
+mean of the differences 
+                -3129.3 
+
+> t.test(HillExec_Old, HillExec1, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  HillExec_Old and HillExec1
+t = -9.8505, df = 9, p-value = 2.028e-06
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -2546.955
+sample estimates:
+mean of the differences 
+                -3129.3 
+
+> t.test(SAH1_Old, SAH1_1, paired=TRUE)
+
+	Paired t-test
+
+data:  SAH1_Old and SAH1_1
+t = -13.235, df = 9, p-value = 3.328e-07
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -150.9058 -106.8509
+sample estimates:
+mean of the differences 
+              -128.8783 
+
+> t.test(SAH1_Old, SAH1_1, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  SAH1_Old and SAH1_1
+t = -13.235, df = 9, p-value = 1.664e-07
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -111.0287
+sample estimates:
+mean of the differences 
+              -128.8783 
+
+> t.test(SAExec_Old, SAExec1, paired=TRUE)
+
+	Paired t-test
+
+data:  SAExec_Old and SAExec1
+t = 0.73545, df = 9, p-value = 0.4808
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -83.65761 164.25761
+sample estimates:
+mean of the differences 
+                   40.3 

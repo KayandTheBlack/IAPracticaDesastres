@@ -206,6 +206,8 @@ public class DesastresSuccessorFunctionSAv2 implements SuccessorFunction {
                             double v = -1;//DesHF.getHeuristicValue(board3);
                             String S = DesastresBoard.SWAPORDER + "heli" + heli + "f" + flight + "Cost(" + v + ") ---> " + board3.toString();
                             retVal.add(new Successor(S,board3));
+                            i = travels.size();
+                            op = true;
                         }
                     }
                 }
