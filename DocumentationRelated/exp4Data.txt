@@ -1,3 +1,5 @@
+/*
+
 -4GB RAM
 -OJO primera línea: optimización de JVM (JIT,...)
 
@@ -26,3 +28,12 @@ seed nCentros nGrupos costSA costHC exec_timeSA exec_timeHC
 197 10 200 4376.756666666667 4365.18 226.0 83813.0
 
 Conclusión: SA es constante como era de esperar porque tiene un número de steps fijo, pero HC es exponencial.
+
+*/
+
+
+
+seed nCentros nGrupos costSA costHC exec_timeSA exec_timeHC
+247 5 100 2319.9500000000003 2335.59 687.0 4247.0
+247 10 200 4475.796666666666 4471.01 255.0 85278.0
+247 15 300 6692.69 6426.36 325.0 851790.0

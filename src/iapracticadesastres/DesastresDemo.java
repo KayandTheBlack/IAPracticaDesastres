@@ -39,7 +39,8 @@ public class DesastresDemo {
         //experiment3_prevSteps();
         //experiment7();
         //experiment7_2();
-        experiment4(0,2);
+        //experiment4(0,2);
+        experiment5_esc2();
     }
 
 
@@ -921,7 +922,7 @@ public class DesastresDemo {
 
     private static void experiment4(int lowerIt, int maxIt) {
         try {
-            int n = 1;
+            int n = 10;
             int nReps = 3;
             //int nCentrosAProbar = 1; // mantener proporcion 5:100 centros/grupos
             int nCentrosAProbar = maxIt-lowerIt+1;
@@ -1020,7 +1021,9 @@ hasta que se vea la tendencia*/
                     double vHC = valuesHC.get(i).get(j);
                     double etSA = exec_timesSA.get(i).get(j);
                     double etHC = exec_timesHC.get(i).get(j);
-                    System.out.println(s + " " + 5+5*j + " " + 20*(5+5*j) + " " + vSA + " " + vHC + " " +  etSA + " " + etHC);
+                    int nC = 5+5*j;
+                    int nG=  20*nC;
+                    System.out.println(s + " " + nC + " " + nG + " " + vSA + " " + vHC + " " +  etSA + " " + etHC);
 
                 }
             }
@@ -1033,9 +1036,8 @@ hasta que se vea la tendencia*/
 
     private static void experiment5_esc1() {
         try {
-            int n = 10;
-            int nReps = 3;
-            int nGruposAProbar = 4;
+            int n = 1;
+            int nGruposAProbar = 3;
             Random myRandom = new Random();
             ArrayList<Integer> seeds = new ArrayList(n);
             ArrayList<ArrayList<Double>> values = new ArrayList(n);
@@ -1057,24 +1059,24 @@ hasta que se vea la tendencia*/
                     double meanValue = 0;
                     long meanExecTime = 0;
 
-                    for (int z = 0; z < nReps; z++) {
+                    long start_time = System.currentTimeMillis();
+                    DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                    DB2.init0(nGrupos, nCentros, nHelis);
+                    Problem problem = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
 
-                        DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
-                        DB2.init0(nGrupos, nCentros, nHelis);
-                        Problem problem = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
-                        HillClimbingSearch search = new HillClimbingSearch();
-                        //search.traceOn();
-                        SearchAgent agent = new SearchAgent(problem, search);
-                        long end_time = System.currentTimeMillis();
-                        long exec_time = end_time - start_time;
-                        DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
-                        meanValue += b.getTime();
-                        meanExecTime += exec_time;
-                    }
-                    values_set.add(meanValue/nReps);
-                    exec_times_set.add(meanExecTime/nReps);
+                    HillClimbingSearch search = new HillClimbingSearch();
+                    //search.traceOn();
+                    SearchAgent agent = new SearchAgent(problem, search);
+                    long end_time = System.currentTimeMillis();
+                    long exec_time = end_time - start_time;
+                    DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                    meanValue = b.getTime();
+                    meanExecTime = exec_time;
+
+                    values_set.add(meanValue);
+                    exec_times_set.add(meanExecTime);
                     used_nGrupos_set.add(nGrupos);
+                    System.out.println(j);
                 }
                 values.add(values_set);
                 exec_times.add(exec_times_set);
@@ -1101,8 +1103,7 @@ hasta que se vea la tendencia*/
     private static void experiment5_esc2() {
         try {
             int n = 10;
-            int nReps = 3;
-            int nCentrosAProbar = 4;
+            int nCentrosAProbar = 10;
             Random myRandom = new Random();
             ArrayList<Integer> seeds = new ArrayList(n);
             ArrayList<ArrayList<Double>> values = new ArrayList(n);
@@ -1110,7 +1111,7 @@ hasta que se vea la tendencia*/
             ArrayList<ArrayList<Integer>> used_nCentros = new ArrayList(n);
 
             int nGrupos = 100;
-            int nCentros = 5;
+            int nCentros;
             int nHelis = 1;
             for (int i = 0; i < n; i++) {
                 int seed = myRandom.nextInt(400);
@@ -1120,28 +1121,28 @@ hasta que se vea la tendencia*/
                 ArrayList<Long> exec_times_set = new ArrayList(nCentrosAProbar);
                 ArrayList<Integer> used_nCentros_set = new ArrayList(nCentrosAProbar);
                 for (int j = 0; j < nCentrosAProbar; j++) {
-                    nCentros = nCentros + j*5;
+                    nCentros = 5 + j*5;
                     double meanValue = 0;
                     long meanExecTime = 0;
 
-                    for (int z = 0; z < nReps; z++) {
+                    long start_time = System.currentTimeMillis();
+                    DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                    DB2.init0(nGrupos, nCentros, nHelis);
+                    Problem problem = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
 
-                        DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
-                        DB2.init0(nGrupos, nCentros, nHelis);
-                        Problem problem = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
-                        HillClimbingSearch search = new HillClimbingSearch();
-                        //search.traceOn();
-                        SearchAgent agent = new SearchAgent(problem, search);
-                        long end_time = System.currentTimeMillis();
-                        long exec_time = end_time - start_time;
-                        DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
-                        meanValue += b.getTime();
-                        meanExecTime += exec_time;
-                    }
-                    values_set.add(meanValue/nReps);
-                    exec_times_set.add(meanExecTime/nReps);
+                    HillClimbingSearch search = new HillClimbingSearch();
+
+                    SearchAgent agent = new SearchAgent(problem, search);
+                    long end_time = System.currentTimeMillis();
+                    long exec_time = end_time - start_time;
+                    DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                    meanValue = b.getTime();
+                    meanExecTime = exec_time;
+
+                    values_set.add(meanValue);
+                    exec_times_set.add(meanExecTime);
                     used_nCentros_set.add(nCentros);
+                    System.out.println(j);
                 }
                 values.add(values_set);
                 exec_times.add(exec_times_set);
