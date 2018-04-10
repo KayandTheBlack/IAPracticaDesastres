@@ -37,7 +37,8 @@ public class DesastresDemo {
         //experiment888();
         //experiment88();
         //experiment3_prevSteps();
-        experiment7();
+        //experiment7();
+        experiment4(0,2);
     }
 
 
@@ -50,7 +51,7 @@ public class DesastresDemo {
                 for (int k=0; k<x.get(i).get(j).size(); k++) {
                     System.out.print(x.get(i).get(j).get(k));
                 }
-                System.out.println("]");   
+                System.out.println("]");
             }
             System.out.println("]");
         }
@@ -733,7 +734,7 @@ public class DesastresDemo {
 
     private static void experiment4(int lowerIt, int maxIt) {
         try {
-            int n = 10;
+            int n = 1;
             int nReps = 3;
             //int nCentrosAProbar = 1; // mantener proporcion 5:100 centros/grupos
             int nCentrosAProbar = maxIt-lowerIt+1;
@@ -743,8 +744,8 @@ public class DesastresDemo {
             ArrayList<ArrayList<Double>> valuesHC = new ArrayList(n);
             ArrayList<ArrayList<Long>> exec_timesSA = new ArrayList(n);
             ArrayList<ArrayList<Long>> exec_timesHC = new ArrayList(n);
-            ArrayList<ArrayList<Integer>> used_nGrupos = new ArrayList(n);
-            ArrayList<ArrayList<Integer>> used_nCentros = new ArrayList(n);
+            //ArrayList<ArrayList<Integer>> used_nGrupos = new ArrayList(n);
+            //ArrayList<ArrayList<Integer>> used_nCentros = new ArrayList(n);
 
 
 
@@ -768,8 +769,8 @@ hasta que se vea la tendencia*/
                 ArrayList<Double> valuesHC_set = new ArrayList(nCentrosAProbar);
                 ArrayList<Long> exec_timesSA_set = new ArrayList(nCentrosAProbar);
                 ArrayList<Long> exec_timesHC_set = new ArrayList(nCentrosAProbar);
-                ArrayList<Integer> used_nGrupos_set = new ArrayList(nCentrosAProbar);
-                ArrayList<Integer> used_nCentros_set = new ArrayList(nCentrosAProbar);
+                //ArrayList<Integer> used_nGrupos_set = new ArrayList(nCentrosAProbar);
+                //ArrayList<Integer> used_nCentros_set = new ArrayList(nCentrosAProbar);
                 //for (int j = 0; j < nCentrosAProbar; j++) {
                 for (int j = lowerIt; j <= maxIt; j++) {
                     int nCentros = 5 + j*5;
@@ -778,12 +779,12 @@ hasta que se vea la tendencia*/
                     double valueMeanHC = 0;
                     long exec_timeMeanSA = 0;
                     long exec_timeMeanHC = 0;
-
+                    System.out.println("Test suite with " + nCentros + "c, " + nGrupos+"g");
                     for (int z = 0; z < nReps; z++) {
+                        long start_time = System.currentTimeMillis();
                         DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
                         DB2.init0(nGrupos, nCentros, nHelis);
                         Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
                         SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(steps, stiter, k, lambda);
                         //search.traceOn();
                         SearchAgent agent = new SearchAgent(problem, search);
@@ -793,51 +794,46 @@ hasta que se vea la tendencia*/
                         valueMeanSA += b.getTime();
                         exec_timeMeanSA += exec_time;
 
-
-
-                        DesastresBoardv2 DBHC = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
-                        DBHC.init0(nGrupos, nCentros, nHelis);
-                        Problem problemHC = new Problem(DBHC, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_timeHC = System.currentTimeMillis();
-                        HillClimbingSearch searchHC = new HillClimbingSearch();
-                        SearchAgent agentHC = new SearchAgent(problemHC, searchHC);
-                        long end_timeHC = System.currentTimeMillis();
-                        long exec_timeHC = end_timeHC - start_timeHC;
-                        DesastresBoardv2 bHC = (DesastresBoardv2) searchHC.getGoalState();
-                        valueMeanHC += bHC.getTime();
-                        exec_timeMeanHC += exec_timeHC;
-
+                        System.out.print("SA" + z);
                     }
+                    //HC
+                    long start_timeHC = System.currentTimeMillis();
+                     DesastresBoardv2 DBHC = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                     DBHC.init0(nGrupos, nCentros, nHelis);
+                     Problem problemHC = new Problem(DBHC, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
+                     HillClimbingSearch searchHC = new HillClimbingSearch();
+                     SearchAgent agentHC = new SearchAgent(problemHC, searchHC);
+                     long end_timeHC = System.currentTimeMillis();
+                     long exec_timeHC = end_timeHC - start_timeHC;
+                     DesastresBoardv2 bHC = (DesastresBoardv2) searchHC.getGoalState();
+                     valueMeanHC += bHC.getTime();
+                     exec_timeMeanHC += exec_timeHC;
+                     System.out.println(" HC");
+                     
                     valueMeanSA = valueMeanSA/nReps;
-                    valueMeanHC= valueMeanHC/nReps;
                     exec_timeMeanSA = exec_timeMeanSA/nReps;
-                    exec_timeMeanHC = exec_timeMeanHC/nReps;
                     valuesSA_set.add(valueMeanSA);
                     valuesHC_set.add(valueMeanHC);
                     exec_timesSA_set.add(exec_timeMeanSA);
                     exec_timesHC_set.add(exec_timeMeanHC);
-                    used_nCentros_set.add(nCentros);
-                    used_nGrupos_set.add(nGrupos);
                 }
                 valuesSA.add(valuesSA_set);
                 valuesHC.add(valuesHC_set);
                 exec_timesSA.add(exec_timesSA_set);
                 exec_timesHC.add(exec_timesHC_set);
-                used_nCentros.add(used_nCentros_set);
-                used_nGrupos.add(used_nGrupos_set);
 
             }
             System.out.println("seed nCentros nGrupos costSA costHC exec_timeSA exec_timeHC");
             for (int i = 0; i < n; i++) {
                 int s = seeds.get(i);
                 for (int j = 0; j < nCentrosAProbar; j++) {
-                    int nC = used_nCentros.get(i).get(j);
-                    int nG = used_nGrupos.get(i).get(j);
+                    //int nC = used_nCentros.get(i).get(j);
+                    //int nG = used_nGrupos.get(i).get(j);
                     double vSA = valuesSA.get(i).get(j);
                     double vHC = valuesHC.get(i).get(j);
                     double etSA = exec_timesSA.get(i).get(j);
                     double etHC = exec_timesHC.get(i).get(j);
-                    System.out.println(s + " " + nC + " " + nG + " " + vSA + " " + vHC + " " +  etSA + " " + etHC);
+                    System.out.println(s + " " + 5+5*j + " " + 20*(5+5*j) + " " + vSA + " " + vHC + " " +  etSA + " " + etHC);
 
                 }
             }
