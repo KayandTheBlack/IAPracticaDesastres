@@ -1,0 +1,31 @@
+Experimento 4 - 3 ("repetir experimento 3" para más grupos y centros)
+
+Repetiremos el mismo proceso que en el experimento 3, adaptado a las nuevas circunstancias y alguna modificación. Cabe tener en cuenta que, a diferencia del experimento 3, esta vez no va a ser viable ir comparando con HC, así que compareremos al final para comprobar que SA supera HC.
+
+1-Con los parámetros por defecto de SA, corremos varias ejecuciones (con sus respectivas seeds) aumentando nGrupos y nCentros con la proporción 
+steps = {1000,5000,10000,30000,60000,120000,500000,1000000,2000000}
+Nos fijamos en los dos casos extremos: nCentros = 5, nGrupos = 100; nCentros = 35, nGrupos = 700 y calculamos una tabla de medias y graficamos resultados.
+Confirmamos que con 30k da tiempo a converger en el caso inicial, pero en el grande aún varía demasiado en 30k. En 500k ya obervamos una cierta estabilidad, y aún es un número razonable de pasos, así que tomaremos 500k para hacer las pruebas.
+2-Fijando steps = 500k, stiter = 100 (por defecto), y tomando valores extremos de k y lambda como en el experimento 3, graficamos en 3D para buscar cómo se minimiza el coste según k y lambda. Las condiciones serán las del caso de nCentros = 35, nGrupos = 700.
+lambdas[] = {1,0.01,0.0001}
+ks[] = {1,5,25,125}
+
+Los resultados tienen una desviación alta: rango de entre 13600 y 34000 aproximadamente. Observamos que los parámetros k y lambda determinados en el experimento 3 siguen dando buenos resultados, lo que es muy buena señal. Concretamente, para k = 5 y lambda = 0.0001, tenemos el segundo valor más pequeño. Sin embargo, a diferencia del experimento 3, en que había más irregularidades pero habíamos detectado una zona que minimizaba en una esquina de los valores probados, esta vez observamos que los resultados son buenos para todo lambda = 0.0001 (en el 3, con esta lambda con K alta daba un resultado no muy bueno). Así, esta vez fijaremos lambda = 0.0001 y variaremos k. Escogeremos el mínimo.
+
+lambdas[] = {0.0001}
+ks[] = {5,[25-200] de cinco en cinco}
+
+
+Observamos una variabilidad pequeña y no parece haber ninguna tendencia remarcable. Simplemente, escogeremos el mínimo, k = 175. Notamos, sin embargo, que está muy cerca del valor escogido en el experimento 3, así que también podríamos haber quedado con él. El componente aleatorio se ha intentado minimizar ejecutando varias ejecuciones con seeds distintas y, para una misma seed, corriendo alguna repetición para tomar la media.
+
+3-Una vez fijadas k y lambda (k = 125, lambda = 0.0001), nos fijaremos en stiter. Cabe recordar que según la guía de la práctica es posible que sea más o menos importante según los parámetros k y lambda fijados (en el 3 nos ha salido que era poco importante).
+De nuevo, el stiter parece muy poco relevante en este contexto, varía muy poco la función y no se aprecia ninguna tendencia. Pero puestos a escoger vamos a tomar el mínimo, quen es 1000.
+
+4-Finalmente, vamos a volver a medir diferencias con el número de pasos para ver cómo converge con los nuevos parámetros. La media de 500k, el valor inicial que hab íamos escogido para optimizar los demás parámetros, comprobamos que SA ya se ha estabilizado, aunque en 1M y 2M de pasos sigue bajando algo. Si cuadriplicar (aproximadamente) el tiempo de ejecución no es un problema y queremos afinar mucho la optimizaxión, podríamos quedarnos con el valor de 2M, que sigue siendo medianamente razonable, pero en 500k ya ha convergido.
+
+CONCLUSIÓN:
+
+lambda = 0.0001, el parámetro más determinante.
+k = 125, aunque k = 5 sigue dando resultados aceptables.
+stiter = 1000 para minimizar, pero poco relevante.
+steps: en 500k podríamos decir que ya ha convergido, pero si queremos afinar la optimización podríamos llegar a 2M.
