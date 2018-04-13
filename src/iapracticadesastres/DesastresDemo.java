@@ -40,7 +40,12 @@ public class DesastresDemo {
         //experiment7();
         //experiment7_2();
         //experiment4(0,2);
-        experiment5_esc2();
+        //experiment5_esc2();
+        //experiment4OnlySA(3,6);
+        //experiment43_prevSteps(0,6);
+        //experiment3_kLambda2();
+        //experiment3_stiter2();
+        //experiment43_prevSteps(6,6);
     }
 
 
@@ -685,10 +690,11 @@ public class DesastresDemo {
                     long exec_timeMeanHC = 0;
 
                     for (int z = 0; z < nReps; z++) {
+                        long start_time = System.currentTimeMillis();
                         DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
                         DB2.init0(nGrupos, nCentros, nHelis);
                         Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
+
                         SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(step, stiter, k, lambda);
                         //search.traceOn();
                         SearchAgent agent = new SearchAgent(problem, search);
@@ -700,17 +706,7 @@ public class DesastresDemo {
 
 
 
-                        DesastresBoardv2 DBHC = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
-                        DBHC.init0(nGrupos, nCentros, nHelis);
-                        Problem problemHC = new Problem(DBHC, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_timeHC = System.currentTimeMillis();
-                        HillClimbingSearch searchHC = new HillClimbingSearch();
-                        SearchAgent agentHC = new SearchAgent(problemHC, searchHC);
-                        long end_timeHC = System.currentTimeMillis();
-                        long exec_timeHC = end_timeHC - start_timeHC;
-                        DesastresBoardv2 bHC = (DesastresBoardv2) searchHC.getGoalState();
-                        valueMeanHC += bHC.getTime();
-                        exec_timeMeanHC += exec_timeHC;
+
                         //printInstrumentation(agent.getInstrumentation());
                         //values_set.set(j*lambdas.length + h,b.getTime());
                         //exec_times_set.set(j*lambdas.length + h,exec_time);
@@ -718,10 +714,23 @@ public class DesastresDemo {
                         exec_times_set.add(exec_time);
                         used_steps_set.add(step);*/
                     }
+
+                    DesastresBoardv2 DBHC = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                    DBHC.init0(nGrupos, nCentros, nHelis);
+                    Problem problemHC = new Problem(DBHC, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
+                    long start_timeHC = System.currentTimeMillis();
+                    HillClimbingSearch searchHC = new HillClimbingSearch();
+                    SearchAgent agentHC = new SearchAgent(problemHC, searchHC);
+                    long end_timeHC = System.currentTimeMillis();
+                    long exec_timeHC = end_timeHC - start_timeHC;
+                    DesastresBoardv2 bHC = (DesastresBoardv2) searchHC.getGoalState();
+                    valueMeanHC = bHC.getTime();
+                    exec_timeMeanHC = exec_timeHC;
+
                     valueMeanSA = valueMeanSA/nReps;
-                    valueMeanHC= valueMeanHC/nReps;
+                    valueMeanHC= valueMeanHC;
                     exec_timeMeanSA = exec_timeMeanSA/nReps;
-                    exec_timeMeanHC = exec_timeMeanHC/nReps;
+                    exec_timeMeanHC = exec_timeMeanHC;
                     valuesSA_set.add(valueMeanSA);
                     valuesHC_set.add(valueMeanHC);
                     exec_timesSA_set.add(exec_timeMeanSA);
@@ -767,19 +776,36 @@ public class DesastresDemo {
             ArrayList<ArrayList<Integer>> used_ks = new ArrayList(n);
             ArrayList<ArrayList<Double>> used_lambdas = new ArrayList(n);
 
-            // 1
+            // 1 (comun en 3 y 4 - 3
             /*double lambdas[] = {1,0.01,0.0001};
             int ks[] = {1,5,25,125};*/
             // 2
-            double lambdas[] = {0.001, 0.0001,0.00001};
-            int ks[] = {1,5,10,15};
+            /*double lambdas[] = {0.001, 0.0001,0.00001};
+            int ks[] = {1,5,10,15};*/
 
-
-            int steps = 20000;
+            // Experimento 3
+            /*int steps = 20000;
             int stiter = 100;
             int nGrupos = 100;
-            int nCentros = 5;
+            int nCentros = 5;*/
+
+            // Segunda parte experimento 4 - 3
+            double lambdas[] = {0.0001};
+            int ks[] = {5,25,50,75,100,125,150,175,200};
+
+
+            // Experimento 4 - 3
+            int steps = 500000;
+            int stiter = 100;
+            int nGrupos = 700;
+            int nCentros = 35;
+
+
+
+
+
             int nHelis = 1;
+
             for (int i = 0; i < n; i++) {
                 int seed = myRandom.nextInt(400);
                 //seeds.set(i,seed);
@@ -795,11 +821,10 @@ public class DesastresDemo {
                         double meanValue = 0;
                         long meanExecTime = 0;
                         for (int z = 0; z < nReps; z++) {
-
+                            long start_time = System.currentTimeMillis();
                             DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
                             DB2.init0(nGrupos, nCentros, nHelis);
                             Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                            long start_time = System.currentTimeMillis();
                             SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(steps, stiter, k, lambda);
                             //search.traceOn();
                             SearchAgent agent = new SearchAgent(problem, search);
@@ -824,6 +849,7 @@ public class DesastresDemo {
                 exec_times.add(exec_times_set);
                 used_ks.add( used_ks_set);
                 used_lambdas.add(used_lambdas_set);
+                System.out.println(seed);
 
             }
             System.out.println("seed lambda k value exec_time");
@@ -846,22 +872,39 @@ public class DesastresDemo {
 
     private static void experiment3_stiter2() {
         try {
-            int n = 10;
-            int nReps = 3;
+            int n = 5;
+            int nReps = 1;
             Random myRandom = new Random();
             ArrayList<Integer> seeds = new ArrayList(n);
             ArrayList<ArrayList<Double>> values = new ArrayList(n);
             ArrayList<ArrayList<Long>> exec_times = new ArrayList(n);
             ArrayList<ArrayList<Integer>> used_stiters = new ArrayList(n);
 
-            int stiters[] = {50,80,100,125,160,200,250,400,500,625,800,1000,1250};
+            // Exp 3
+
+            /*int stiters[] = {50,80,100,125,160,200,250,400,500,625,800,1000,1250};
+
 
             int steps = 20000;
             double lambda = 0.0001;
             int k = 5;
             int nGrupos = 100;
             int nCentros = 5;
+            int nHelis = 1;*/
+
+            // Exp 3 - 4
+
+
+            int stiters[] = {50,100,125,200,250,500,800,1000,1500};
+
+            int steps = 500000;
+            double lambda = 0.0001;
+            int k = 5;
+            int nGrupos = 700;
+            int nCentros = 35;
             int nHelis = 1;
+
+
             for (int i = 0; i < n; i++) {
                 int seed = myRandom.nextInt(400);
                 //seeds.set(i,seed);
@@ -875,11 +918,10 @@ public class DesastresDemo {
                     long meanExecTime = 0;
 
                     for (int z = 0; z < nReps; z++) {
-
+                        long start_time = System.currentTimeMillis();
                         DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
                         DB2.init0(nGrupos, nCentros, nHelis);
                         Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
-                        long start_time = System.currentTimeMillis();
                         SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(steps, stiter, k, lambda);
                         //search.traceOn();
                         SearchAgent agent = new SearchAgent(problem, search);
@@ -901,6 +943,7 @@ public class DesastresDemo {
                 values.add(values_set);
                 exec_times.add(exec_times_set);
                 used_stiters.add(used_stiter_set);
+                System.out.println(seed);
 
             }
             System.out.println("seed stiter value exec_time");
@@ -1024,6 +1067,96 @@ hasta que se vea la tendencia*/
                     int nC = 5+5*j;
                     int nG=  20*nC;
                     System.out.println(s + " " + nC + " " + nG + " " + vSA + " " + vHC + " " +  etSA + " " + etHC);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void experiment4OnlySA(int lowerIt, int maxIt) {
+        try {
+            int n = 1;
+            int nReps = 3;
+            //int nCentrosAProbar = 1; // mantener proporcion 5:100 centros/grupos
+            int nCentrosAProbar = maxIt-lowerIt+1;
+            Random myRandom = new Random();
+            ArrayList<Integer> seeds = new ArrayList(n);
+            ArrayList<ArrayList<Double>> valuesSA = new ArrayList(n);
+            ArrayList<ArrayList<Long>> exec_timesSA = new ArrayList(n);
+            //ArrayList<ArrayList<Integer>> used_nGrupos = new ArrayList(n);
+            //ArrayList<ArrayList<Integer>> used_nCentros = new ArrayList(n);
+
+
+
+
+            /*5:100
+para centros y grupos. Comenzad con 5 centros de distribución e incrementad el número de 5 en 5
+hasta que se vea la tendencia*/
+
+
+            int steps = 30400;
+            int stiter = 160;
+            int k = 5;
+            double lambda = 0.0001;
+
+            int nHelis = 1;
+            for (int i = 0; i < n; i++) {
+                int seed = myRandom.nextInt(400);
+                //seeds.set(i,seed);
+                seeds.add(seed);
+                ArrayList<Double> valuesSA_set = new ArrayList(nCentrosAProbar);
+                ArrayList<Long> exec_timesSA_set = new ArrayList(nCentrosAProbar);
+                //ArrayList<Integer> used_nGrupos_set = new ArrayList(nCentrosAProbar);
+                //ArrayList<Integer> used_nCentros_set = new ArrayList(nCentrosAProbar);
+                //for (int j = 0; j < nCentrosAProbar; j++) {
+                for (int j = lowerIt; j <= maxIt; j++) {
+                    int nCentros = 5 + j*5;
+                    int nGrupos = nCentros * 20;
+                    double valueMeanSA = 0;
+                    double valueMeanHC = 0;
+                    long exec_timeMeanSA = 0;
+                    long exec_timeMeanHC = 0;
+                    System.out.println("Test suite with " + nCentros + "c, " + nGrupos+"g");
+                    for (int z = 0; z < nReps; z++) {
+                        long start_time = System.currentTimeMillis();
+                        DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                        DB2.init0(nGrupos, nCentros, nHelis);
+                        Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
+                        SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(steps, stiter, k, lambda);
+                        //search.traceOn();
+                        SearchAgent agent = new SearchAgent(problem, search);
+                        long end_time = System.currentTimeMillis();
+                        long exec_time = end_time - start_time;
+                        DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                        valueMeanSA += b.getTime();
+                        exec_timeMeanSA += exec_time;
+
+                        System.out.print("SA" + z);
+                    }
+
+                    valueMeanSA = valueMeanSA/nReps;
+                    exec_timeMeanSA = exec_timeMeanSA/nReps;
+                    valuesSA_set.add(valueMeanSA);
+                    exec_timesSA_set.add(exec_timeMeanSA);
+                }
+                valuesSA.add(valuesSA_set);
+                exec_timesSA.add(exec_timesSA_set);
+
+            }
+            System.out.println("seed nCentros nGrupos costSA exec_timeSA");
+            for (int i = 0; i < n; i++) {
+                int s = seeds.get(i);
+                for (int j = 0; j < nCentrosAProbar; j++) {
+                    //int nC = used_nCentros.get(i).get(j);
+                    //int nG = used_nGrupos.get(i).get(j);
+                    double vSA = valuesSA.get(i).get(j);
+                    double etSA = exec_timesSA.get(i).get(j);
+                    int nC = 5+5*j;
+                    int nG=  20*nC;
+                    System.out.println(s + " " + nC + " " + nG + " " + vSA + " " +  etSA);
 
                 }
             }
@@ -1165,6 +1298,160 @@ hasta que se vea la tendencia*/
             e.printStackTrace();
         }
     }
+
+    private static void experiment43_prevSteps(int lowerIt, int maxIt) {
+        try {
+            int n = 5;
+            int nReps = 1;
+            int nGruposAProbar = maxIt - lowerIt + 1;
+            Random myRandom = new Random();
+            ArrayList<Integer> seeds = new ArrayList(n);
+            ArrayList<ArrayList<ArrayList<Double>>> valuesSA = new ArrayList(n);
+            ArrayList<ArrayList<ArrayList<Long>>> exec_timesSA = new ArrayList(n);
+            ArrayList<ArrayList<Integer>> used_steps = new ArrayList(n);
+
+            /*
+            // para el paso final
+            ArrayList<ArrayList<ArrayList<Double>>> valuesHC = new ArrayList(n);
+            ArrayList<ArrayList<ArrayList<Long>>> exec_timesHC = new ArrayList(n);*/
+
+            /*int stiter = 100;
+            double lambda = 0.005;
+            int k = 20;*/
+
+            //int steps[] = {1000,5000,10000,30000,60000,120000,500000,1000000,2000000};
+
+            // paso final experiment43
+
+            int stiter = 1000;
+            double lambda = 0.0001;
+            int k = 175;
+            int steps[] = {100000,500000,1000000,2000000};
+
+
+            int nHelis = 1;
+            for (int i = 0; i < n; i++) {
+                int seed = myRandom.nextInt(400);
+                //seeds.set(i,seed);
+                seeds.add(seed);
+                ArrayList<ArrayList<Double>> valuesSA_setSet = new ArrayList(steps.length);
+                ArrayList<ArrayList<Long>> exec_timesSA_setSet = new ArrayList(steps.length);
+                ArrayList<Integer> used_steps_set = new ArrayList(steps.length);
+
+                /*
+                // para el paso final
+                ArrayList<ArrayList<Double>> valuesHC_setSet = new ArrayList(steps.length);
+                ArrayList<ArrayList<Long>> exec_timesHC_setSet = new ArrayList(steps.length);*/
+
+
+                for (int j = 0; j < steps.length; j++) {
+                    int step = steps[j];
+                    ArrayList<Double> valuesSA_set = new ArrayList(nGruposAProbar);
+                    ArrayList<Long> exec_timesSA_set = new ArrayList(nGruposAProbar);
+
+                    /*
+                    // para el paso final
+                    ArrayList<Double> valuesHC_set = new ArrayList(nGruposAProbar);
+                    ArrayList<Long> exec_timesHC_set = new ArrayList(nGruposAProbar);*/
+
+                    //for (int o = 0; o < nGruposAProbar; o++) {
+                    for (int o = lowerIt; o <= maxIt; o++) {
+                        int nCentros = 5 + o*5;
+                        int nGrupos = nCentros * 20;
+
+                        double valueMeanSA = 0;
+                        long exec_timeMeanSA = 0;
+
+                        for (int z = 0; z < nReps; z++) {
+                            long start_time = System.currentTimeMillis();
+                            DesastresBoardv2 DB2 = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                            DB2.init0(nGrupos, nCentros, nHelis);
+                            Problem problem = new Problem(DB2, new DesastresSuccessorFunctionSA(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
+                            SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(step, stiter, k, lambda);
+                            //search.traceOn();
+                            SearchAgent agent = new SearchAgent(problem, search);
+                            long end_time = System.currentTimeMillis();
+                            long exec_time = end_time - start_time;
+                            DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                            valueMeanSA += b.getTime();
+                            exec_timeMeanSA += exec_time;
+                        }
+                        valueMeanSA = valueMeanSA / nReps;
+                        exec_timeMeanSA = exec_timeMeanSA / nReps;
+                        valuesSA_set.add(valueMeanSA);
+                        exec_timesSA_set.add(exec_timeMeanSA);
+
+                        System.out.println("SA done");
+
+                        /*
+                        // para el paso final
+                        long start_timeHC = System.currentTimeMillis();
+                        DesastresBoardv2 DBHC = new DesastresBoardv2(nGrupos, nCentros, nHelis, seed);
+                        DBHC.init0(nGrupos, nCentros, nHelis);
+                        Problem problemHC = new Problem(DBHC, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(), new DesastresHeuristicFunctionv2());
+                        HillClimbingSearch searchHC = new HillClimbingSearch();
+                        SearchAgent agentHC = new SearchAgent(problemHC, searchHC);
+                        long end_timeHC = System.currentTimeMillis();
+                        long exec_timeHC = end_timeHC - start_timeHC;
+                        DesastresBoardv2 bHC = (DesastresBoardv2) searchHC.getGoalState();
+                        double valueHC = bHC.getTime();
+                        valuesHC_set.add(valueHC);
+                        exec_timesHC_set.add(exec_timeHC);*/
+
+                    }
+                    System.out.println(step);
+                    used_steps_set.add(step);
+                    valuesSA_setSet.add(valuesSA_set);
+                    exec_timesSA_setSet.add(exec_timesSA_set);
+
+                    /*
+                    // para el paso final
+                    valuesHC_setSet.add(valuesHC_set);
+                    exec_timesHC_setSet.add(exec_timesHC_set);*/
+
+                }
+                /*values.set(i,values_set);
+                exec_times.set(i,exec_times_set);*/
+                valuesSA.add(valuesSA_setSet);
+                exec_timesSA.add(exec_timesSA_setSet);
+                used_steps.add(used_steps_set);
+
+                /*
+                // para el paso final
+                valuesHC.add(valuesHC_setSet);
+                exec_timesHC.add(exec_timesHC_setSet);*/
+
+            }
+            System.out.println("seed nCentros nGrupos steps costSA exec_timeSA");
+            //System.out.println("seed nCentros nGrupos steps costSA exec_timeSA costHC exec_timeHC");
+            for (int i = 0; i < n; i++) {
+                int s = seeds.get(i);
+                for (int j = 0; j < steps.length; j++) {
+                    int st = used_steps.get(i).get(j);
+                    for (int o = 0; o < nGruposAProbar; o++) {
+                        int nC = 5 + 5*o;
+                        int nG = nC * 20;
+                        double vSA = valuesSA.get(i).get(j).get(o);
+                        double etSA = exec_timesSA.get(i).get(j).get(o);
+                        System.out.println(s + " " + nC + " " + nG + " " + st + " " + vSA + " " + etSA);
+
+                        /*
+                        double vHC = valuesHC.get(i).get(j).get(o);
+                        double etHC = exec_timesHC.get(i).get(j).get(o);
+                        System.out.println(s + " " + nC + " " + nG + " " + st + " " + vSA + " " + etSA + " " + vHC + " " + etHC);*/
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 
 
