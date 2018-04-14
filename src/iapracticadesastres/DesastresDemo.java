@@ -37,6 +37,9 @@ public class DesastresDemo {
         //experiment888();
         //experiment88();
         //experiment3_prevSteps();
+        experiment6_1();
+        System.out.println("");
+        experiment6_2();
         //experiment7_1(); // exp7 comparison with old heuristic
         //experiment7_2(); // exp7 for n1 to n8 both HC and SA
         //experiment7_3(); // exp7 for n1 to n16 just SA
@@ -238,6 +241,104 @@ public class DesastresDemo {
         }
     }
 
+    public static void experiment6_1() {
+        try {
+            Random myRandom=new Random();
+            ArrayList<Integer> seeds = new ArrayList(10);
+            ArrayList<Long> times1 = new ArrayList(10);
+            ArrayList<Double> x = new ArrayList(10);
+            ArrayList<Long> times2 = new ArrayList(10);
+            ArrayList<Double> y = new ArrayList(10);
+            for (int i=0; i<10; i++) {
+                // original
+                int seed = myRandom.nextInt(400);
+                long start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB =new DesastresBoardv2(100,5,1,seed);
+                DB.init0(100, 5, 1);
+                Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search =  new HillClimbingSearch();
+                SearchAgent agent = new SearchAgent(problem,search);
+                long end_time = System.currentTimeMillis();
+                long difference = end_time-start_time;
+                DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                double time = b.getTime();
+                
+                // more helis per centre
+                start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB2 =new DesastresBoardv2(100,5,5,seed);
+                DB2.init0(100, 5, 5);
+                Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search2 = new HillClimbingSearch();
+                SearchAgent agent2 = new SearchAgent(problem2,search2);
+                end_time = System.currentTimeMillis();
+                long difference2 = end_time-start_time;
+                DesastresBoardv2 b2 = (DesastresBoardv2) search2.getGoalState();
+                double time2 = b2.getTime(); 
+                
+                seeds.add(seed);
+                x.add(time);
+                times1.add(difference);
+                y.add(time2);
+                times2.add(difference2);
+            }
+            System.out.println("seeds time1 time2 exec1 exec2");
+            for(int i=0; i<10; i++) {
+                System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + times1.get(i) + " " + times2.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void experiment6_2() {
+        try {
+            Random myRandom=new Random();
+            ArrayList<Integer> seeds = new ArrayList(10);
+            ArrayList<Long> times1 = new ArrayList(10);
+            ArrayList<Double> x = new ArrayList(10);
+            ArrayList<Long> times2 = new ArrayList(10);
+            ArrayList<Double> y = new ArrayList(10);
+            for (int i=0; i<10; i++) {
+                // original
+                int seed = myRandom.nextInt(400);
+                long start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB =new DesastresBoardv2(100,5,5,seed);
+                DB.init0(100, 5, 5);
+                Problem problem =  new Problem(DB,new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search =  new HillClimbingSearch();
+                SearchAgent agent = new SearchAgent(problem,search);
+                long end_time = System.currentTimeMillis();
+                long difference = end_time-start_time;
+                DesastresBoardv2 b = (DesastresBoardv2) search.getGoalState();
+                double time = b.getTime();
+                
+                // more centers, but same number of total helis
+                start_time = System.currentTimeMillis();
+                DesastresBoardv2 DB2 =new DesastresBoardv2(100,25,1,seed);
+                DB2.init0(100, 25, 1);
+                Problem problem2 = new Problem(DB2, new DesastresSuccessorFunctionv2(), new DesastresGoalTest(),new DesastresHeuristicFunctionv2());
+                Search search2 = new HillClimbingSearch();
+                SearchAgent agent2 = new SearchAgent(problem2,search2);
+                end_time = System.currentTimeMillis();
+                long difference2 = end_time-start_time;
+                DesastresBoardv2 b2 = (DesastresBoardv2) search2.getGoalState();
+                double time2 = b2.getTime(); 
+                
+                seeds.add(seed);
+                x.add(time);
+                times1.add(difference);
+                y.add(time2);
+                times2.add(difference2);
+            }
+            System.out.println("seeds time1 time2 exec1 exec2");
+            for(int i=0; i<10; i++) {
+                System.out.println(seeds.get(i) + " " + x.get(i) + " " + y.get(i) + " " + times1.get(i) + " " + times2.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     private static void experiment7_4() {
         try {
             int n = 6;

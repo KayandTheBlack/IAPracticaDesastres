@@ -1,0 +1,207 @@
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Respuestas previas:
+[enunciado:
+En los experimentos hasta ahora solo había un helicóptero por centro de rescate. Antes de hacer más
+experimentos ¿Como creéis que afectará aumentar el número de helicópteros por centro a la calidad de
+la solución? ¿Y al tiempo para hallar la solución? ¿es lo mismo que aumentar el número de centros con
+un solo helicóptero? Dad una explicación detallada de vuestras suposiciones e intentad confirmarlas
+experimentalmente usando las condiciones del primer apartado y el algoritmo de Hill-Climbing.
+}
+
+Creemos que la calidad de la solucion será mejor con más helicopteros por centro
+ya que como minimo nos ahorraremos algunos minutos que se han de pasar los
+helicopteros entre vuelos, por ejemplo si con un helicoptero tenemos dos vuelos
+entonces tendra que esperar 10m entre estos, pero si tenemos dos helicopteros cada
+uno puede hacer un vuelo y no habrá ninguna espera.
+Al haber más helicopteros como el espacio de soluciones aumentará y cada estado
+tendrá más sucesores creemos que el tiempo de ejecucion aumentará.
+
+Creemos que no es lo mismo aumentar el numero de helicopteros que aumentar el
+numero de centros (aunque en ambos casos el numero total de helicopteros sea el
+mismo) ya que en el segundo caso dado que los centros estaran en sitios
+diferentes es possible que se puedan hacer vuelos mas cortos que en el primer
+caso.
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+
+
+exp6.1 (1H 5C 100G vs 5H 5C 100G)
+
+seeds time1 time2 exec1 exec2
+341 2363.43 2178.62 7617 5548
+43 2662.18 2489.59 4233 6595
+170 2490.47 2362.04 5568 5830
+131 2506.25 2315.81 4058 5745
+324 2588.68 2415.57 4416 6053
+397 2431.37 2270.3 4200 5732
+7 2540.04 2352.86 4140 5480
+198 2502.36 2308.36 4478 6370
+220 2673.89 2516.72 3788 6295
+56 2832.67 2658.85 3637 5002
+
+dades <- read.table("clipboard",header=TRUE)
+A = dades$time1
+B = dades$time2
+C = dades$time3
+D = dades$exec1
+E = dades$exec2
+G = dades$exec3
+
+boxplot(A,B)
+boxplot(D,E)
+t.test(A,B, paired=TRUE)
+t.test(A,B, paired=TRUE,alt="less")
+t.test(D,E, paired=TRUE)
+t.test(D,E, paired=TRUE,alt="less")
+
+
+> t.test(A,B, paired=TRUE)
+
+	Paired t-test
+
+data:  A and B
+t = 27.781, df = 9, p-value = 4.927e-10
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 158.2348 186.2892
+sample estimates:
+mean of the differences 
+                172.262 
+
+> 
+> t.test(A,B, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  A and B
+t = 27.781, df = 9, p-value = 1
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 183.6288
+sample estimates:
+mean of the differences 
+                172.262 
+
+> t.test(D,E, paired=TRUE)
+
+	Paired t-test
+
+data:  D and E
+t = -3, df = 9, p-value = 0.01496
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -2195.1876  -307.8124
+sample estimates:
+mean of the differences 
+                -1251.5 
+
+> 
+> t.test(D,E, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  D and E
+t = -3, df = 9, p-value = 0.007478
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -486.7936
+sample estimates:
+mean of the differences 
+                -1251.5 
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Conclusion:
+Mirado los boxplots y haciendo dos paired t-tests vemos que aumentar el numero
+de helicopteros manteniendo el numero de centros constante mejora el valor
+heuristico pero empeora el tiempo de ejecucion.
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+exp6.2 (5H 5C 100G vs 1H 25C 100G)
+
+seeds time1 time2 exec1 exec2
+26 2544.17 2147.65 4732 6461
+119 2543.5 1958.54 5040 6106
+165 2750.72 1975.82 5117 6486
+260 2625.44 1886.88 4621 6479
+113 2161.67 1827.2 5740 6539
+201 2326.58 2071.01 5982 6665
+393 2694.23 2260.16 5598 6692
+379 2408.84 1982.62 6037 7231
+204 2425.53 2003.23 6099 6198
+149 2192.61 1895.46 5742 6695
+
+(using the same script as 6.1)
+
+> t.test(A,B, paired=TRUE)
+
+	Paired t-test
+
+data:  A and B
+t = 8.3144, df = 9, p-value = 1.625e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 339.5563 593.3877
+sample estimates:
+mean of the differences 
+                466.472 
+
+> 
+> t.test(A,B, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  A and B
+t = 8.3144, df = 9, p-value = 1
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 569.3167
+sample estimates:
+mean of the differences 
+                466.472 
+
+> 
+> t.test(D,E, paired=TRUE)
+
+	Paired t-test
+
+data:  D and E
+t = -6.7277, df = 9, p-value = 8.58e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1449.0263  -719.7737
+sample estimates:
+mean of the differences 
+                -1084.4 
+
+> 
+> t.test(D,E, paired=TRUE,alt="less")
+
+	Paired t-test
+
+data:  D and E
+t = -6.7277, df = 9, p-value = 4.29e-05
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+      -Inf -788.9293
+sample estimates:
+mean of the differences 
+                -1084.4 
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Conclusion:
+Mirado los boxplots y haciendo dos paired t-tests vemos que, manteniendo el
+numero total de helicopteros constante, el valor heuristico es mejor si tenemos
+muchos centros pero menos helicopteros por centro que si tenemos lo contrario.
+Al mismo tiempo pero, el tiempo de ejecucion tambien es peor en el primer caso
+que en el segundo.
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
