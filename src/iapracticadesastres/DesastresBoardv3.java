@@ -497,6 +497,7 @@ public class DesastresBoardv3 implements Cloneable {
         boolean wasMax = timePriority[h] == maxTimePriority;
         double tmptime = 0;
         double max = 0;
+        //int lastpriorityflight = -1;
         ArrayList <ArrayList < Integer > > heli = travels.get(h);
         int c = h/(getNHelis()/getNCentros());
         for (int i = 0; i < heli.size(); i++){ //for each flight a heli has
@@ -507,6 +508,7 @@ public class DesastresBoardv3 implements Cloneable {
             for (int j = 0; j < heli.get(i).size(); j++){ //for each group in it
                 if (gs.get(heli.get(i).get(j)).getPrioridad() == 1){
                     prio = true;
+                    //lastpriorityflight = i;
                     tmptime += gs.get(heli.get(i).get(j)).getNPersonas();
                 }
                 tmptime += gs.get(heli.get(i).get(j)).getNPersonas();
@@ -519,6 +521,13 @@ public class DesastresBoardv3 implements Cloneable {
                 max = tmptime;
             }
         }
+        //extra time for heuristics2.1
+        //if (lastpriorityflight != -1){
+        //    for (int g = 0; g < heli.get(lastpriorityflight).size();g++){
+        //        if (gs.get(heli.get(lastpriorityflight).get(g)).getPrioridad() == 1)
+        //            max+=10;
+        //    }
+        //}
         timePriority[h] = max;
         if (wasMax) { //the helicopter whose schedule was modified was potentially the one who took the longest to rescue a priority group
             max = 0;  //so we need to find who is the next who took longest, which might be him again
