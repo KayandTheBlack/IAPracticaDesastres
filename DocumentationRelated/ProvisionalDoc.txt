@@ -171,11 +171,14 @@ aparecen entre los elementos de las heurísticas.
 	Bajo el enunciado del problema, tenemos dos criterios ya numéricos a optimizar ya de por si: el tiempo secuencial y la tardía en rescatar heridos. Inicialmente pensamos en buscar criterios más complejos que posiblemente nos permitiera usar operadores con menos ramificación porque el heurístico guiara a la búsqueda mejor, y sin embargo las opciones que surgían no nos convencían, pues podían acabar en zonas que ni siquiera eran mínimo local de la función original a optimizar. 
 	Por ejemplo, pensamos añadir una ponderación añadida para ayudar a que los grupos fueran al centro más cercano, pero esto podría separar dos grupos que en un viaje serían rescatados más rápido en dos helicópteros, pues sus centros más cercanos no coincidieran.
 	Buscamos también encontrar una manera de hacer una función que 'premiara', crear nuevos vuelos, para evitar el castigo en tiempo que es la espera entre vuelos de un helicóptero, pero tampoco nos acabó de convencer.
+	Sin embargo, encontramos algo ligeramente problemático con la segunda función de calidad. Si tenemos el último vuelo de heridos con más de dos grupos de heridos, sería posible que el conjunto de operadores decidiera NO mover uno de esos grupos hacia atrás, pues no bajaría la latencia (el vuelo sigue teniendo grupos) y aumentaría el tiempo de rescate. Por ello, se nos ocurrió 'castigar' tener más de un grupo de heridos en la última posición, con 10 minutos por grupo extra.
 	Finalmente nos decidimos por forzar operadores más ramificados y simplificar la función de calidad a los criterios dados.
 	Nuestras funciones de calidad son, pues:
 	1. Sumatorio de los tiempos de los helicópteros.
 	2. Sumatorio de los tiempos de los helicópteros +  \ * máx(tiempo en rescatar al último grupo de heridos de cada helicóptero)
+	3. Sumatorio de los tiempos de los helicópteros +  \ * (máx(tiempo en rescatar al último grupo de heridos de cada helicóptero)+10*(grupos de heridos en ultimo vuelo-1))
 	Usamos un parámetro \, a decidir en tiempo de ejecución, pues no es nuestra decisión qué importa más, si el tiempo total del rescate o la tardía en salvar heridos, sino del usuario final.
+	
 
 RUBRICAS VARIAS: (EXPERIMENTACIÓN)
 Son informativos y se han hecho varias ejecuciones
