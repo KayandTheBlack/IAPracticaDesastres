@@ -30,7 +30,7 @@ public class DesastresDemo {
         System.out.println("9- Terminar sesión");
     }
     public static void exp1Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 1.1:");
         System.out.println("      Comparativa entre los conjuntos de operadores 1 y 3");
         System.out.println("2- Correr experimento 1.2");
@@ -50,12 +50,12 @@ public class DesastresDemo {
                 case 3:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp1Menu(sc);
             }
     }
     public static void exp2Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 2:");
         System.out.println("      Comparativa entre las 3 inicializaciones possibles");
         System.out.println("2- Volver al menú principal");
@@ -69,12 +69,12 @@ public class DesastresDemo {
                 case 2:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp2Menu(sc);
             }
     }
     public static void exp3Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 3.1:");
         System.out.println("      Comparativa entre varias cantidades de steps previo a buscar k, lambda y stiter");
         System.out.println("2- Correr experimento 3.2:");
@@ -112,12 +112,12 @@ public class DesastresDemo {
                 case 6:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp3Menu(sc);
             }
     }
     public static void exp4Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 4.1:");
         System.out.println("      Comparativa entre varias cantidades de steps con 5 centros y 100 grupos en SA");
         System.out.println("2- Correr experimento 4.2:");
@@ -126,11 +126,13 @@ public class DesastresDemo {
         System.out.println("      Comparativa entre varias cantidades de k (1, 5, 25, 125) con distintas lambdas (1, 0.01, 0.0001), 500k steps y stiter=100");
         System.out.println("4- Correr experimento 4.4:");
         System.out.println("      Comparativa entre varias cantidades de k (5, 25, 50, 75, 100, 125, 150, 175, 200) con lambda=0.0001, 500k steps y stiter=100");
-        System.out.println("5- Correr experimento 4.4:");
+        System.out.println("5- Correr experimento 4.5:");
         System.out.println("      Comparativa entre varias cantidades de stiter con k=175, lambda=0.0001 y 500k steps");
-        System.out.println("6- Correr experimento 4.5:");
+        System.out.println("6- Correr experimento 4.6:");
         System.out.println("      Comparativa entre varias cantidades de steps (100k, 500k, 1M, 2M) con k=175, lambda=0.0001 y stiter=100");
-        System.out.println("7- Volver al menú principal");
+        System.out.println("7- Correr experimento 4.7:");
+        System.out.println("      Comparativa entre varias cantidades de centros (5, 10, 15) y grupos (100, 150, 200) manteniendo la proporción 100:5, con HC y SA");
+        System.out.println("8- Volver al menú principal");
         int option = sc.nextInt();
             sc.nextLine();
             switch (option) {
@@ -159,9 +161,13 @@ public class DesastresDemo {
                     System.out.println("");
                     break;
                 case 7:
+                    experiment4(0,2);
+                    System.out.println("");
+                    break;
+                case 8:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp4Menu(sc);
             }
     }
@@ -186,12 +192,12 @@ public class DesastresDemo {
                 case 3:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp5Menu(sc);
             }
     }
     public static void exp6Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 6.1:");
         System.out.println("      Comparativa entre 100 grupos, 5 centros y 1 helicoptero por centro contra lo mismo pero con 5 helicopteros por centro");
         System.out.println("2- Correr experimento 6.2");
@@ -211,12 +217,12 @@ public class DesastresDemo {
                 case 3:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp6Menu(sc);
             }
     }
     public static void exp7Menu(Scanner sc){
-        System.out.println("Por favor escoja una acción:");
+        System.out.println("Por favor, escoja una acción:");
         System.out.println("1- Correr experimento 7.1:");
         System.out.println("      Comparativa entre heuristica 1 (sin segundo valor a optimizar) y heursitica 2.1 (con)");
         System.out.println("2- Correr experimento 7.2:");
@@ -248,7 +254,7 @@ public class DesastresDemo {
                 case 5:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp7Menu(sc);
             }
     }
@@ -267,11 +273,13 @@ public class DesastresDemo {
                 case 2:
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
                     exp8Menu(sc);
             }
     }
     public static void main(String[] args){
+        experiment4OnlySA(6,6);
+        System.exit(0);
         Scanner sc = new Scanner(System.in);
         //Bienvenida//
         System.out.println("Bienvenido al menú interactivo de la práctica sobre búsqueda local de los alumnos:");
@@ -318,7 +326,7 @@ public class DesastresDemo {
                     System.out.println("Goodbye");
                     break;
                 default:
-                    System.out.println("Opción invalida, por favor selecciona una opción dentro del rango.");
+                    System.out.println("Opción inválida. Por favor, seleccione una opción dentro del rango.");
             }
         }
         
@@ -2567,11 +2575,7 @@ public class DesastresDemo {
             //ArrayList<ArrayList<Integer>> used_nCentros = new ArrayList(n);
 
 
-
-
-            /*5:100
-para centros y grupos. Comenzad con 5 centros de distribución e incrementad el número de 5 en 5
-hasta que se vea la tendencia*/
+            /*5:100 para centros y grupos. Comenzad con 5 centros de distribución e incrementad el número de 5 en 5 hasta que se vea la tendencia*/
 
 
             int steps = 30400;
@@ -2722,7 +2726,7 @@ hasta que se vea la tendencia*/
                         valueMeanSA += b.getTime();
                         exec_timeMeanSA += exec_time;
 
-                        System.out.print("SA" + z);
+                        System.out.println("SA" + z);
                     }
 
                     valueMeanSA = valueMeanSA/nReps;
@@ -2742,7 +2746,7 @@ hasta que se vea la tendencia*/
                     //int nG = used_nGrupos.get(i).get(j);
                     double vSA = valuesSA.get(i).get(j);
                     double etSA = exec_timesSA.get(i).get(j);
-                    int nC = 5+5*j;
+                    int nC = lowerIt*5 + 5+5*j;
                     int nG=  20*nC;
                     System.out.println(s + " " + nC + " " + nG + " " + vSA + " " +  etSA);
 
