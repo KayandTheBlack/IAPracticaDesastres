@@ -1,0 +1,147 @@
+Experimento 4 - 3 ("repetir experimento 3" para más grupos y centros)
+
+PLAN
+
+En el experimento 4, hemos observado que aumentando la complejidad del problema (concretamente, aumentando el número de centros y de grupos proporcionalmente), SA sigue dando resultados buenos, pero ligeramente superiores a HC. Es posible que con el aumento de la complejidad SA ya no tenga tiempo de converger, o incluso que el conjunto de parámetros haya dejado de ser el óptimo. Cabe recordar que se había optimizado para las condiciones del experimento 3.
+
+Así, se considera oportuno repetir el experimento 3 para comprobar si SA sigue siendo óptima. Lo haremos de la forma explicada en el experimento 3, pero con alguna modificación para adaptar el método a las nuevas circunstancias. De entrada, no será viable ir comparando con HC, por el aumento de complejidad. Por el otro, tendremos que tener en cuenta ejecuciones con más centros y grupos.
+
+Observación: Para ejecuciones de SA con más complejidad (experimento 4), SA da valores ligeramente superiores que HC. Es posible que con el aumento de compljeidad SA no tenga tiempo de converger. o que el conjunto de parámetros entero haya dejado de ser el óptimo.
+Objetivo: Optimizar los parámetros de SA partiendo de una mayor complejidad más centros y grupos.
+Hipótesis: Los parámetros óptimos determinados en el experimento 3 vuelven a ser los óptimos (H0) o con el aumento de complejidad han cambiado.
+Método: El explicado en el experimento 3, pero sin ir comparando con HC en el paso previo y teniendo en cuenta 
+
+EJECUCIÓN
+
+-Con los parámetros por defecto de SA, corremos varias ejecuciones (con sus respectivas seeds) aumentando nGrupos y nCentros con la proporción 100:5. Esta vez probamos valores de steps más altos: 1000,5000,10000,30000,60000,120000,500000,1000000,2000000.
+
+Nos fijamos en los dos casos extremos: nCentros = 5, nGrupos = 100; nCentros = 35, nGrupos = 700 y calculamos una tabla de medias y graficamos resultados.
+
+\begin{tabular}{|c|c|}
+\hline
+steps & costSA \\
+\hline
+1000 & 3304.538 \\
+5000 & 2588.536 \\
+10000 & 2495.48 \\
+30000 &2463.836 \\
+60000 & 2460.876 \\
+120000 & 2454.606 \\
+500000 & 2469.584 \\
+1000000 & 2463.916 \\
+2000000	& 2470.9 \\
+\hline
+\end{tabular}
+
+[insertar imagen1.png. Caption: Gráfico de los valores finales del heurístico de SA según el número de steps, con los parámetros por defecto y con 5 centros y 100 grupos.]
+
+\begin{tabular}{|c|c|}
+\hline
+steps & costSA \\
+\hline
+1000 & 32414.446 \\
+5000 & 24767.228 \\
+10000 & 21378.194 \\
+30000 & 16828.48 \\
+60000 & 15091.096 \\
+120000 & 14298.48 \\
+500000 & 14121.758 \\
+1000000	& 14119.37 \\
+20000000 & 14134.286 \\
+\hline
+\end{tabular}
+
+[insertar imagen2.png. Caption: Gráfico de los valores finales del heurístico de SA según el número de steps, con los parámetros por defecto y con 35 centros y 700 grupos.]
+
+
+Confirmamos que con 30k da tiempo a converger en el caso inicial, pero en el grande aún varía demasiado. En 500k ya obervamos una cierta estabilidad, y aún es un número razonable de pasos, así que tomaremos 500k para la experimentación.
+
+
+-Fijando steps = 500k, stiter = 100 (por defecto), y tomando valores extremos de k y lambda como en el experimento 3, graficamos en 3D para buscar cómo varía el coste según k y lambda. Las condiciones serán las del caso de nCentros = 35, nGrupos = 700. Valores de lambda: 1,0.01,0.0001. Valores de k: 1,5,25,125.
+
+\begin{tabular}{|c|c|c|}
+\hline
+lambda & k & value \\
+\hline
+1 & 1 & 34017.504 \\
+1 & 5 & 33921.362 \\
+1 & 25 & 33907.674 \\
+1 & 125 & 33804.586 \\
+0.01 & 1 & 14749.298 \\
+0.01 & 5 & 14739.092 \\
+0.01 & 25 & 14785.302 \\
+0.01 & 125 & 14820.21 \\
+0.0001 & 1 & 13684.862 \\
+0.0001 & 5 & 13674.054 \\
+0.0001 & 25 & 13675.986 \\
+0.0001 & 125 & 13646.514 \\
+\hline
+\end{tabular}
+
+
+[insertar imagen3.png. Caption: Gráfico de barras en 3D para visualizar los valores finales del heurístico con respecto a los parámetros k y lambda.]
+
+
+Los resultados tienen una desviación alta: rango de entre 13600 y 34000 aproximadamente. Observamos que los parámetros k y lambda determinados en el experimento 3 siguen dando buenos resultados, lo que es muy buena señal. Concretamente, para k = 5 y lambda = 0.0001, tenemos el segundo valor más pequeño. Sin embargo, a diferencia del experimento 3, en que había más irregularidades pero habíamos detectado una zona que minimizaba en una esquina de los valores probados, esta vez observamos que los resultados son buenos para todo lambda = 0.0001 (en el 3, con esta lambda con K alta daba un resultado no muy bueno). Así, esta vez fijaremos lambda = 0.0001 y variaremos k. Escogeremos el mínimo.
+
+Valores de lambda: 0.0001. Valores de k: 5,[25-200] de cinco en cinco.
+
+\begin{tabular}{|c|c|c|}
+\hline
+k & value \\
+\hline
+5 & 13624.654 \\
+25 & 13626.556 \\
+50 & 13608.418 \\
+75 & 13616.688 \\
+100	& 13596.564 \\
+125	& 13612.45 \\
+150	& 13601.304 \\
+175	& 13594.928 \\
+200	& 13627.266 \\
+\hline
+\end{tabular}
+
+
+Observamos una variabilidad pequeña y sin que parezca haber tendencia remarcable alguna. Simplemente, escogeremos el mínimo, k = 175. Notamos, sin embargo, que está muy cerca del valor escogido en el experimento 3, así que también nos podríamos haber quedado con él. De nuevo, cabe recordar que el componente aleatorio se ha intentado controlar ejecutando varias ejecuciones con seeds distintas y, para una misma seed, corriendo alguna repetición para tomar la media.
+
+Una vez fijadas k y lambda (k = 125, lambda = 0.0001), nos fijaremos en stiter. Cabe recordar que este parámetro es posible que sea más o menos importante según los parámetros k y lambda fijados (en el 3 ha resultado ser poco relevante).
+
+\begin{tabular}{|c|c|c|}
+\hline
+stiter & value \\
+\hline
+50 & 13767.754 \\
+100	& 13754.932 \\
+125	& 13759.006 \\
+200	& 13751.634 \\
+250	& 13740.328 \\
+500	& 13741.828 \\
+800	& 13747.856 \\
+1000 & 13735.916 \\
+1500 & 13737.598 \\
+\hline
+\end{tabular}
+
+
+De nuevo, fijándonos en la tabla de medias el stiter parece muy poco relevante en este contexto. La función varia muy poco y no se aprecia ninguna tendencia. Puestos a escoger vamos a tomar el que permite conseguir el mínimo, que es 1000.
+
+-Finalmente, vamos a volver a medir diferencias con el número de pasos para ver cómo converge con los nuevos parámetros. La media de 500k, el valor inicial que hab íamos escogido para optimizar los demás parámetros, comprobamos que SA ya se ha estabilizado, aunque en 1M y 2M de pasos sigue bajando algo. Si cuadriplicar (aproximadamente) el tiempo de ejecución no es un problema y queremos afinar mucho la optimizaxión, podríamos quedarnos con el valor de 2M, que sigue siendo medianamente razonable, pero en 500k ya ha convergido.
+
+\begin{tabular}{|c|c|}
+\hline
+steps & costSA \\
+\hline
+1000 & 33458.656 \\
+100000 & 14463.79 \\
+500000 & 13745.266 \\
+1000000	& 13723.23 \\
+2000000 & 13692.368 \\
+\hline
+\end{tabular}
+
+[insertar imagen4.png. Caption: Gráfico de los los valores finales del heurístico de SA, con respecto al número de pasos de SA (parámetros  ya optimizados).]
+
+CONCLUSIÓN:
+
+Esta vez hemos determinado los siguientes parámetros óptimos: lambda = 0.0001, k = 125, k = 5, stiter = 1000, steps = 500k. En este sentido, refutamos la hipótesis nula porque no hemos determinados los mismos parámetros, pero cabe decir que lambda ha permanecido igual y que con k = 5 los resultados también eran bastante buenos. Respecto a la relevancia, lambda es muy relevante, porque la función varía enormemente según este parámetro. Los parámetros k y, sobre todo, stiter son poco determintantes. Respecto a steps, en 500k apreciamos que SA tiene tiempo de converger, pero si quisiéramos afinar la optimización y no nos importara el tiempo de ejecución podríamos llegar a 2M.

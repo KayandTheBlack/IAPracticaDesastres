@@ -1,0 +1,11 @@
+1) Descomprimir el zip en el directorio actual, deberían verse 2 carpetas llamadas lib y src
+
+2) Para compilar ejecutar desde el directorio actual:
+
+javac -cp ".:./lib/AIMA.jar:./lib/Desastres.jar" ./src/iapracticadesastres/*.java
+
+3) Para ejecutar el menu interactivo de la práctica ejecutar desde el mismo directorio:
+
+java -cp ".:./lib/AIMA.jar:./lib/Desastres.jar:./src" iapracticadesastres.DesastresDemo
+
+4) La información relativa a cómo realizar los experimentos estará explicitada durante ejecución.
