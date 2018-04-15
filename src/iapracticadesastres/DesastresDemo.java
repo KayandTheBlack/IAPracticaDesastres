@@ -287,6 +287,7 @@ public class DesastresDemo {
         System.out.println("Puedes navegar a través de diversos apartados para ejecutar distintas partes de cada experimento.");
         System.out.println("Cada parte viene acompañada de una muy breve explicación de esta.");
         System.out.println("Dada su brevedad es recomendado leer la documentación de la práctica si alguna explicación resulta insatisfactoria");
+        System.out.println("Atención! Algunos de los experimentos pueden tardar varios minutos en ejecutar, hasta más de 15!");
         System.out.println("Dicho esto, bienvenido al menú principal:");
         //Fin Bienvenida//
         boolean theresMore = true;
