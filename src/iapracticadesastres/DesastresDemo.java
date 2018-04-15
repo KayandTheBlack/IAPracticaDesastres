@@ -278,8 +278,6 @@ public class DesastresDemo {
             }
     }
     public static void main(String[] args){
-        experiment4OnlySA(6,6);
-        System.exit(0);
         Scanner sc = new Scanner(System.in);
         //Bienvenida//
         System.out.println("Bienvenido al menú interactivo de la práctica sobre búsqueda local de los alumnos:");
@@ -364,6 +362,10 @@ public class DesastresDemo {
         //experiment3_kLambda2();
         //experiment3_stiter2();
         //experiment43_prevSteps(6,6);
+        
+        /*experiment4OnlySA(6,6);
+        System.exit(0);*/
+        
     }
 
 
@@ -2761,8 +2763,9 @@ hasta que se vea la tendencia*/
 
     private static void experiment5_esc1() {
         try {
+            System.out.println("seed nCentros nGrupos value exec_time");
             int n = 1;
-            int nGruposAProbar = 3;
+            int nGruposAProbar = 4;
             Random myRandom = new Random();
             ArrayList<Integer> seeds = new ArrayList(n);
             ArrayList<ArrayList<Double>> values = new ArrayList(n);
@@ -2780,7 +2783,7 @@ hasta que se vea la tendencia*/
                 ArrayList<Long> exec_times_set = new ArrayList(nGruposAProbar);
                 ArrayList<Integer> used_nGrupos_set = new ArrayList(nGruposAProbar);
                 for (int j = 0; j < nGruposAProbar; j++) {
-                    nGrupos = nGrupos + j*50;
+                    nGrupos = 100 + j*50;
                     double meanValue = 0;
                     long meanExecTime = 0;
 
@@ -2801,15 +2804,18 @@ hasta que se vea la tendencia*/
                     values_set.add(meanValue);
                     exec_times_set.add(meanExecTime);
                     used_nGrupos_set.add(nGrupos);
-                    System.out.println(j);
+                    //System.out.println(j);
+                    //print between loops instead
+                    System.out.println(seed + " " + nCentros + " " + nGrupos + " " + meanValue + " " + meanExecTime);
+                    
                 }
                 values.add(values_set);
                 exec_times.add(exec_times_set);
                 used_nGrupos.add(used_nGrupos_set);
-
+                
             }
-            System.out.println("seed nCentros nGrupos value exec_time");
-            for (int i = 0; i < n; i++) {
+            //System.out.println("seed nCentros nGrupos value exec_time");
+            /*for (int i = 0; i < n; i++) {
                 int s = seeds.get(i);
                 for (int j = 0; j < nGruposAProbar; j++) {
                     int nG = used_nGrupos.get(i).get(j);
@@ -2818,7 +2824,7 @@ hasta que se vea la tendencia*/
                     System.out.println(s + " " + nCentros + " " + nG + " " + v + " " + et);
 
                 }
-            }
+            }*/
 
         } catch (Exception e) {
             e.printStackTrace();
